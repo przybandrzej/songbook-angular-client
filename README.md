@@ -1,6 +1,6 @@
-# SongbookAngularClient
+# Songbook Client (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
+Angular application for frontend client of the [Songbook Manager API](https://github.com/przybandrzej/Songbook_Manager-API).
 
 ## Development server
 
