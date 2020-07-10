@@ -5,6 +5,7 @@ import {SongsComponent} from './components/songs/songs.component';
 import {SongDetailsComponent} from './components/song-details/song-details.component';
 import {SongEditComponent} from './components/song-edit/song-edit.component';
 import {CategoryEditorComponent} from './components/category-editor/category-editor.component';
+import {SongAddComponent} from './components/song-add/song-add.component';
 
 
 const routes: Routes = [
@@ -31,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'add-song',
-    component: SongEditComponent
+    component: SongAddComponent
   },
   {
     path: 'add-category',

@@ -29,7 +29,6 @@ export class SongEditComponent implements OnInit {
     title: '',
     trivia: ''
   };
-  isNew = true;
 
   constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar) {
   }
@@ -38,25 +37,16 @@ export class SongEditComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
         this.songRestControllerService.getByIdUsingGET3(+params.get('id')).subscribe(res => this.song = res);
-        this.isNew = false;
       }
     });
   }
 
   cancel() {
-    if (!this.isNew) {
-      this.goToDetailScreen();
-    } else {
-      this.router.navigateByUrl('songs');
-    }
+    this.goToDetailScreen();
   }
 
   saveSong() {
-    if (!this.isNew) {
-      this.songRestControllerService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
-    } else {
-      // this.songRestControllerService.createUsingPOST4(this.song)
-    }
+    this.songRestControllerService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
   }
 
   goToDetailScreen() {
