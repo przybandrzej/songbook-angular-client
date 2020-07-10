@@ -1,5 +1,5 @@
-API Desc: -- the host destination with the OpenAPI specification (Songbook manager backend app)
-http://localhost:8001/v2/api-docs
+API Desc: -- the host destination with the OpenAPI specification (the backend app must be running)
+http://localhost:8081/v2/api-docs
 
 Help:
 java -jar swagger-codegen-cli.jar help

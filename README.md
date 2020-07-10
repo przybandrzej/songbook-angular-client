@@ -1,6 +1,14 @@
-# SongbookAngularClient
+# Songbook (Angular Client)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.11.
+
+## Tools
+
+* NodeJs - 12.8.2
+* Angular CLI - 9.1.11
+* Angular 9.1.12
+* Swagger codegen - 2.14.4
+* Angular Material - 9.0.0-beta.31
 
 ## Development server
 
@@ -8,11 +16,17 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component components/{component-name}` or `ng g c components/{component-name}` to generate a new component. 
+
+You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Swagger Codegen usage
+
+In `swagger-codegen-cli` run `java -jar swagger-codegen-cli.jar generate -i {OpenAPI v2 specification} -l typescript-angular -o ..\src\app`, where `{OpenAPI v2 specification}` is a file or URL to the API documentation e.g. `http://localhost:8080/v2/api-docs`, to generate API communication services and model.
 
 ## Running unit tests
 
