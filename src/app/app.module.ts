@@ -54,6 +54,7 @@ import {Configuration} from './configuration';
 import {environment} from '../environments/environment';
 import { SongDetailsComponent } from './components/song-details/song-details.component';
 import { SongEditComponent } from './components/song-edit/song-edit.component';
+import { CategoryEditorComponent } from './components/category-editor/category-editor.component';
 
 export function getAPIConfiguration() { return new Configuration({ basePath: environment.baseUrl }); }
 
@@ -63,7 +64,8 @@ export function getAPIConfiguration() { return new Configuration({ basePath: env
     LandingPageComponent,
     SongsComponent,
     SongDetailsComponent,
-    SongEditComponent
+    SongEditComponent,
+    CategoryEditorComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

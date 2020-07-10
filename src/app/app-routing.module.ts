@@ -4,6 +4,7 @@ import {LandingPageComponent} from './components/landing-page/landing-page.compo
 import {SongsComponent} from './components/songs/songs.component';
 import {SongDetailsComponent} from './components/song-details/song-details.component';
 import {SongEditComponent} from './components/song-edit/song-edit.component';
+import {CategoryEditorComponent} from './components/category-editor/category-editor.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,14 @@ const routes: Routes = [
   {
     path: 'song/:id/edit',
     component: SongEditComponent
+  },
+  {
+    path: 'add-category',
+    component: CategoryEditorComponent
+  },
+  {
+    path: 'edit-category/:id',
+    component: CategoryEditorComponent
   }
 ];
 
