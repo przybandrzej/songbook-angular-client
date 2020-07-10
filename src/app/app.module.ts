@@ -47,17 +47,18 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { ApplicationsComponent } from './components/applications/applications.component';
-import { UiWidgetsComponent } from './components/ui-widgets/ui-widgets.component';
+import { SongsComponent } from './components/songs/songs.component';
+import {ApiModule} from './api.module';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    ApplicationsComponent,
-    UiWidgetsComponent
+    SongsComponent
   ],
   imports: [
+    ApiModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -102,7 +103,8 @@ import { UiWidgetsComponent } from './components/ui-widgets/ui-widgets.component
     MatTooltipModule,
     MatTreeModule,
     ScrollingModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -13,11 +13,7 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showUiWidgets() {
-    this.router.navigateByUrl('widgets');
-  }
-
-  showApplications() {
-    this.router.navigateByUrl('applications');
+  showSongs() {
+    this.router.navigateByUrl('songs');
   }
 }

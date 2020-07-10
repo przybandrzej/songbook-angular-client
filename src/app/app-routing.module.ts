@@ -1,27 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
-import {UiWidgetsComponent} from './components/ui-widgets/ui-widgets.component';
-import {ApplicationsComponent} from './components/applications/applications.component';
+import {SongsComponent} from './components/songs/songs.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/landing-page',
+    redirectTo: '/',
     pathMatch: 'full'
   },
   {
-    path: 'landing-page',
+    path: '',
     component: LandingPageComponent
   },
   {
-    path: 'widgets',
-    component: UiWidgetsComponent
-  },
-  {
-    path: 'applications',
-    component: ApplicationsComponent
+    path: 'songs',
+    component: SongsComponent
   }
 ];
 

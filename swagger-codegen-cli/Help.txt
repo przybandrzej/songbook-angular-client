@@ -5,4 +5,6 @@ Help:
 java -jar swagger-codegen-cli.jar help
 
 Generation:
-java -jar swagger-codegen-cli.jar generate -i http://localhost:8081/v2/api-docs -l typescript-angular -o ..\src\app
+java -jar swagger-codegen-cli.jar generate -i http://localhost:8081/v2/api-docs -l typescript-angular -o ..\src\app --additional-properties ngVersion=9.0.0
+
+!! Please use the swagger-generate.sh script that fixes few bugs !!
