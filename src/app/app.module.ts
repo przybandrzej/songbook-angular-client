@@ -50,15 +50,23 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { SongsComponent } from './components/songs/songs.component';
 import {ApiModule} from './api.module';
 import {HttpClientModule} from '@angular/common/http';
+import {Configuration} from './configuration';
+import {environment} from '../environments/environment';
+import { SongDetailsComponent } from './components/song-details/song-details.component';
+import { SongEditComponent } from './components/song-edit/song-edit.component';
+
+export function getAPIConfiguration() { return new Configuration({ basePath: environment.baseUrl }); }
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    SongsComponent
+    SongsComponent,
+    SongDetailsComponent,
+    SongEditComponent
   ],
   imports: [
-    ApiModule,
+    ApiModule.forRoot(getAPIConfiguration),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

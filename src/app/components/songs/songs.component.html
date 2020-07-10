@@ -11,7 +11,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <div>Author</div>
         </th>
-        <td mat-cell *matCellDef="let element" style="font-style: italic"> {{element.author}} </td>
+        <td mat-cell *matCellDef="let element" style="font-style: italic"> {{element.author.name}} </td>
       </ng-container>
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>
@@ -21,7 +21,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer;" (click)="openSongDetails(row.song)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer;" (click)="openSongDetails(row.id)"></tr>
     </table>
   </mat-card-content>
 </mat-card>
