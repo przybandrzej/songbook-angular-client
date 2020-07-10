@@ -31,6 +31,6 @@ export class SongsComponent implements OnInit {
   }
 
   addSong() {
-    this.router.navigateByUrl('song/0/edit');
+    this.router.navigateByUrl('add-song');
   }
 }

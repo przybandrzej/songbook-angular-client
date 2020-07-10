@@ -26,7 +26,11 @@ const routes: Routes = [
     component: SongDetailsComponent
   },
   {
-    path: 'song/:id/edit',
+    path: 'edit-song/:id',
+    component: SongEditComponent
+  },
+  {
+    path: 'add-song',
     component: SongEditComponent
   },
   {

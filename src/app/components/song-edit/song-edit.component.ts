@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SongDTO, SongRestControllerService} from '../..';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -10,7 +10,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class SongEditComponent implements OnInit {
 
-  songId: number;
   song: SongDTO = {
     author: {
       id: -1,
@@ -30,27 +29,37 @@ export class SongEditComponent implements OnInit {
     title: '',
     trivia: ''
   };
+  isNew = true;
 
-  constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar) { }
+  constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
-    this.songId = +this.route.snapshot.paramMap.get('id');
-    this.songRestControllerService.getByIdUsingGET3(this.songId).subscribe(res => this.song = res);
+    this.route.paramMap.subscribe(params => {
+      if (params.keys.length > 0) {
+        this.songRestControllerService.getByIdUsingGET3(+params.get('id')).subscribe(res => this.song = res);
+        this.isNew = false;
+      }
+    });
   }
 
   cancel() {
-    if(this.songId > 0) {
-      this.router.navigateByUrl('song/' + this.songId);
+    if (!this.isNew) {
+      this.goToDetailScreen();
     } else {
       this.router.navigateByUrl('songs');
     }
   }
 
   saveSong() {
-    if(this.songId > 0) {
-      // put
+    if (!this.isNew) {
+      this.songRestControllerService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
     } else {
-      // post
+      // this.songRestControllerService.createUsingPOST4(this.song)
     }
+  }
+
+  goToDetailScreen() {
+    this.router.navigateByUrl('song/' + this.song.id);
   }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryDTO, CategoryRestControllerService} from '../..';
+import {CategoryDTO, CategoryRestControllerService, UniversalCreateDTO} from '../..';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -15,6 +15,13 @@ export class CategoryEditorComponent implements OnInit {
     name: ''
   };
 
+  newCategory: UniversalCreateDTO = {
+    id: null,
+    name: ''
+  };
+
+  isNew = true;
+
   constructor(private categoryRestControllerService: CategoryRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar) {
   }
 
@@ -22,6 +29,7 @@ export class CategoryEditorComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
         this.requestCategory(+params.get('id'));
+        this.isNew = false;
       }
     });
   }
@@ -35,6 +43,13 @@ export class CategoryEditorComponent implements OnInit {
   }
 
   saveCategory() {
-
+    if (this.isNew) {
+      this.categoryRestControllerService.createUsingPOST1(this.newCategory).subscribe(res => {
+        this.isNew = false;
+        this.category = res;
+      });
+    } else {
+      this.categoryRestControllerService.updateUsingPUT1(this.category).subscribe(res => this.category = res);
+    }
   }
 }
