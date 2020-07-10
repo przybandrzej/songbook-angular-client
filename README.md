@@ -26,7 +26,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Swagger Codegen usage
 
-In `swagger-codegen-cli` run `java -jar swagger-codegen-cli.jar generate -i {OpenAPI v2 specification} -l typescript-angular -o ..\src\app`, where `{OpenAPI v2 specification}` is a file or URL to the API documentation e.g. `http://localhost:8080/v2/api-docs`, to generate API communication services and model.
+In `swagger-codegen-cli`directory run `swagger-generate.sh` that generates services and model basing on the OpenAPI specification provided by the host and fixes a bug with the `FormData`. To change the host edit the script.
 
 ## Running unit tests
 
