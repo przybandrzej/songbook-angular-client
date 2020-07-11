@@ -1,8 +1,57 @@
-<mat-toolbar fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" color="primary">
-  <button mat-mini-fab color="accent" (click)="editSong()">
-    <mat-icon>edit</mat-icon>
-  </button>
-  <button mat-mini-fab color="accent" (click)="deleteSong()">
-    <mat-icon>remove_circle_outline</mat-icon>
-  </button>
+<mat-toolbar fxLayout="row" color="primary">
+  <div fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="50%">
+    <button mat-mini-fab color="accent" (click)="close()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div fxLayoutAlign="end center" fxLayoutGap="15px" fxFlex="50%">
+    <button mat-mini-fab color="accent" (click)="editSong()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent" (click)="deleteSong()">
+      <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
+
+<mat-card fxLayoutGap="30px">
+  <mat-card-header>
+    <mat-card-title>{{song.title}}</mat-card-title>
+    <mat-card-subtitle>{{song.author.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content fxLayout="row" fxLayoutGap="15px">
+    <mat-card-content fxFlex="50%" fxLayout="column">
+      <mat-card-subtitle>Lyrics:</mat-card-subtitle>
+      <div>{{song.lyrics}}</div>
+    </mat-card-content>
+    <mat-card-content fxFlex="50%" fxLayout="column">
+      <mat-card-subtitle>Guitar tabs:</mat-card-subtitle>
+      <div>{{song.guitarTabs}}</div>
+    </mat-card-content>
+  </mat-card-content>
+  <mat-card-content fxLayout="row" fxLayoutGap="15px">
+    <mat-card-content fxLayout="column" fxFlex="50%">
+      <div>Category: {{song.category.name}}</div>
+      <div>Average rating: {{song.averageRating}}</div>
+      <div>Tags: <p *ngFor="let tag of song.tags">#{{tag.name}} </p></div>
+      <div>
+        <ul>
+          <li *ngFor="let coauthor of coauthors">
+            {{coauthor._function}}: {{coauthor.name}}
+          </li>
+        </ul>
+      </div>
+  </mat-card-content>
+    <mat-card-content fxLayout="column" fxFlex="50%">
+      <mat-card-subtitle>
+        Trivia:
+      </mat-card-subtitle>
+      <div>{{song.trivia}}</div>
+    </mat-card-content>
+  </mat-card-content>
+  <mat-card-content fxLayout="row">
+    <mat-card-subtitle>Added:</mat-card-subtitle>
+    <div>{{song.creationTime}}</div>
+  </mat-card-content>
+
+</mat-card>

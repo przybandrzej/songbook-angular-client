@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SongDTO, SongRestControllerService} from '../..';
+import {AuthorRestControllerService, SongDTO, SongRestControllerService} from '../..';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -30,12 +30,24 @@ export class SongDetailsComponent implements OnInit {
     trivia: ''
   };
 
-  constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router) {
+  coauthors = [];
+
+  constructor(private songRestControllerService: SongRestControllerService, private authorService: AuthorRestControllerService,
+              private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
     this.songId = +this.route.snapshot.paramMap.get('id');
-    this.songRestControllerService.getByIdUsingGET3(this.songId).subscribe(res => this.song = res);
+    this.songRestControllerService.getByIdUsingGET3(this.songId).subscribe(res => {
+      this.song = res;
+      this.getCoauthors();
+    });
+  }
+
+  getCoauthors() {
+    for (const coauthor of this.song.coauthors) {
+      this.authorService.getByIdUsingGET(coauthor.authorId).subscribe(res => this.coauthors.push({name: res.name, _function: coauthor._function}));
+    }
   }
 
   editSong() {
@@ -47,5 +59,9 @@ export class SongDetailsComponent implements OnInit {
       this.songRestControllerService.deleteUsingDELETE4(this.songId).subscribe();
       this.router.navigateByUrl('songs');
     }
+  }
+
+  close() {
+    this.router.navigateByUrl('songs');
   }
 }
