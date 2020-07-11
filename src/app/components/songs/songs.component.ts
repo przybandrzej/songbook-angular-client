@@ -12,7 +12,7 @@ export class SongsComponent implements OnInit {
 
   public songs: SongDTO[] = [];
 
-  public displayedColumns = ['author', 'title'];
+  displayedColumns: string[] = ['author', 'title'];
 
   constructor(private songRestControllerService: SongRestControllerService, private router: Router, private dialog: MatDialog) { }
 
@@ -26,11 +26,11 @@ export class SongsComponent implements OnInit {
     });
   }
 
-  openSongDetails(song: any) {
-
+  openSongDetails(songId: number) {
+    this.router.navigateByUrl('song/' + songId);
   }
 
   addSong() {
-
+    this.router.navigateByUrl('add-song');
   }
 }

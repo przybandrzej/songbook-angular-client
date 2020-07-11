@@ -1,0 +1,45 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" color="primary">
+  <button mat-mini-fab color="accent" (click)="saveSong()">
+    <mat-icon>save_outline</mat-icon>
+  </button>
+  <button mat-mini-fab color="accent" (click)="cancel()">
+    <mat-icon>cancel</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-content fxLayout="column">
+    <p>Choose author from existing or write one:</p>
+    <mat-form-field>
+      <mat-label>Author</mat-label>
+      <mat-select [(ngModel)]="song.authorName">
+        <mat-option *ngFor="let author of authors" [value]="author.name">
+          {{author.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="author" [(ngModel)]="song.authorName">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="title" [(ngModel)]="song.title">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="song.categoryId">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="lyrics" [(ngModel)]="song.lyrics">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="guitar tabs" [(ngModel)]="song.guitarTabs">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="trivia" [(ngModel)]="song.trivia">
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
