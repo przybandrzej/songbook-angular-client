@@ -6,3 +6,163 @@
     <mat-icon>cancel</mat-icon>
   </button>
 </mat-toolbar>
+
+<!-- Title, category and author -->
+<div fxLayout="row">
+  <!-- Title and category -->
+  <div fxLayout="column" fxFlex="50%">
+    <!-- Title card -->
+    <mat-card>
+      <mat-card-content fxLayout="column">
+        <mat-card-header fxLayout="column">
+          <mat-card-title>Title</mat-card-title>
+        </mat-card-header>
+        <mat-card>
+          <mat-card-content>
+            <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title">
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Category card -->
+    <mat-card fxLayoutGap="10px">
+      <mat-card-content>
+        <mat-card-header fxLayout="column">
+          <mat-card-title>Category</mat-card-title>
+        </mat-card-header>
+        <mat-card>
+          <mat-select placeholder="select category..." [(ngModel)]="song.category.id">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+              {{category.name}}
+            </mat-option>
+          </mat-select>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Author card -->
+  <mat-card fxFlex="50%">
+    <mat-card-content fxLayout="column" fxLayoutGap="15px">
+      <mat-card-header fxLayout="column">
+        <mat-card-title>Author</mat-card-title>
+        <mat-card-subtitle>Choose from the list or add new author</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card>
+        <mat-card-content fxLayout="column" fxLayoutGap="8px">
+          <mat-select placeholder="select author..." [(ngModel)]="song.author.id">
+            <mat-option *ngFor="let author of authors" [value]="author.id">
+              {{author.name}}
+            </mat-option>
+          </mat-select>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Lyrics and guitar tabs -->
+<div fxLayout="row">
+  <!-- lyrics card -->
+  <mat-card fxFlex="50%">
+    <mat-card-content fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>Lyrics</mat-card-title>
+      </mat-card-header>
+      <textarea fxFlex="100%" matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="30" [(ngModel)]="song.lyrics"></textarea>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- guitar tabs card -->
+  <mat-card fxFlex="50%">
+    <mat-card-content fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>Guitar tabs</mat-card-title>
+      </mat-card-header>
+      <textarea fxFlex="100%" matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="30" [(ngModel)]="song.guitarTabs"></textarea>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Coauthors Tags and Trivia -->
+<div fxLayout="row">
+  <!-- Coauthors card -->
+  <mat-card fxFlex="40%">
+    <mat-card-content fxLayout="column" fxLayoutGap="15px">
+      <mat-card-header fxLayout="column">
+        <mat-card-title>Coauthors</mat-card-title>
+        <mat-card-subtitle>Choose from the list or add new coauthor</mat-card-subtitle>
+      </mat-card-header>
+      <div fxLayout="row">
+
+        <mat-card fxFlex="50%">
+          <mat-card-content fxLayout="column" fxLayoutGap="8px">
+            <mat-form-field>
+              <mat-select placeholder="select author..." [(ngModel)]="coauthorToAdd.authorId">
+                <mat-option *ngFor="let author of authors" [value]="author.id">
+                  {{author.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
+                <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
+                  {{fun}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-button color="accent" (click)="addCouathor()">Add coauthor</button>
+          </mat-card-content>
+        </mat-card>
+
+        <div fxFlex="50%">
+          <ul>
+            <li *ngFor="let coauthor of coauthorsToAdd" fxLayout="row">
+              <div fxLayoutAlign="start center">{{coauthor.coauthorFunction}}: {{getCoauthorName(coauthor.authorId)}}</div>
+              <button mat-button color="accent" (click)="removeCoauthor(coauthor)">remove</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tags card -->
+  <mat-card fxFlex="20%">
+    <mat-card-content fxLayout="column" fxLayoutGap="15px">
+      <mat-card-header fxLayout="column">
+        <mat-card-title>Tags</mat-card-title>
+      </mat-card-header>
+      <div fxLayout="column">
+        <div>
+          <ul>
+            <li *ngFor="let tag of song.tags" fxLayout="row">
+              <div fxLayoutAlign="start center">#{{tag.name}}</div>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Trivia card -->
+  <mat-card fxFlex="40%">
+    <mat-card-content fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>Trivia</mat-card-title>
+        <mat-card-subtitle>You can write something about the song here</mat-card-subtitle>
+      </mat-card-header>
+      <textarea fxFlex="100%" matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="10" [(ngModel)]="song.trivia"></textarea>
+    </mat-card-content>
+  </mat-card>
+</div>

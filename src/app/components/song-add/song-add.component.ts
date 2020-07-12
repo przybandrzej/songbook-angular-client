@@ -63,7 +63,6 @@ export class SongAddComponent implements OnInit {
       this.song.tags.push(tag);
     }
     this.songRestControllerService.createUsingPOST4(this.song).subscribe(res => {
-      console.log(res);
       this.router.navigateByUrl('song/' + res.id);
     });
   }
