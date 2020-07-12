@@ -4,6 +4,7 @@ import {
   AuthorRestControllerService,
   CategoryDTO,
   CategoryRestControllerService,
+  CreateCoauthorDTO,
   CreateSongDTO,
   SongRestControllerService
 } from '../..';
@@ -28,9 +29,18 @@ export class SongAddComponent implements OnInit {
     trivia: ''
   };
 
-  authors: AuthorDTO[];
+  coauthorFunctions = ['muzyka', 'tekst'];
 
-  categories: CategoryDTO[];
+  authors: AuthorDTO[] = [];
+  categories: CategoryDTO[] = [];
+  coauthorsToAdd: CreateCoauthorDTO[] = [];
+  tagsToAdd: string[] = [];
+
+  coauthorToAdd: CreateCoauthorDTO = {
+    authorName: '',
+    coauthorFunction: ''
+  };
+  tagToAdd = '';
 
   constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
               private authorRestControllerService: AuthorRestControllerService, private categoryRestControllerService: CategoryRestControllerService) {
@@ -46,9 +56,37 @@ export class SongAddComponent implements OnInit {
   }
 
   saveSong() {
+    for (const coauthor of this.coauthorsToAdd) {
+      this.song.coauthors.push(coauthor);
+    }
+    for (const tag of this.tagsToAdd) {
+      this.song.tags.push(tag);
+    }
+    console.log(this.song);
     this.songRestControllerService.createUsingPOST4(this.song).subscribe(res => {
       console.log(res);
       this.router.navigateByUrl('song/' + res.id);
     });
+  }
+
+  addCouathor() {
+    this.coauthorsToAdd.push({authorName: this.coauthorToAdd.authorName, coauthorFunction: this.coauthorToAdd.coauthorFunction});
+    this.coauthorToAdd.authorName = '';
+    this.coauthorToAdd.coauthorFunction = '';
+  }
+
+  removeCoauthor(coauthorDTO: CreateCoauthorDTO) {
+    const index = this.coauthorsToAdd.indexOf(coauthorDTO, 0);
+    this.coauthorsToAdd.splice(index, 1);
+  }
+
+  addTag() {
+    this.tagsToAdd.push(this.tagToAdd);
+    this.tagToAdd = '';
+  }
+
+  removeTag(tagName: string) {
+    const index = this.tagsToAdd.indexOf(tagName, 0);
+    this.tagsToAdd.splice(index, 1);
   }
 }

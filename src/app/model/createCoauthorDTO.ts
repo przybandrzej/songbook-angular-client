@@ -13,5 +13,5 @@
 
 export interface CreateCoauthorDTO { 
     authorName?: string;
-    _function?: string;
+    coauthorFunction?: string;
 }
