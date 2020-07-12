@@ -162,8 +162,8 @@
         <div>
           <ul>
             <li *ngFor="let tag of tagsToAdd" fxLayout="row">
-              <div fxLayoutAlign="start center">#{{tag.name}}</div>
-              <button mat-button color="accent" (click)="removeTag(tag.name)">remove</button>
+              <div fxLayoutAlign="start center">#{{tag}}</div>
+              <button mat-button color="accent" (click)="removeTag(tag)">remove</button>
             </li>
           </ul>
         </div>
