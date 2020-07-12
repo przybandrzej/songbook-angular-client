@@ -13,6 +13,6 @@
 
 export interface SongCoauthorDTO { 
     authorId: number;
-    _function?: string;
+    coauthorFunction?: string;
     songId: number;
 }

@@ -19,39 +19,52 @@
     <mat-card-title>{{song.title}}</mat-card-title>
     <mat-card-subtitle>{{song.author.name}}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content fxLayout="row" fxLayoutGap="15px">
-    <mat-card-content fxFlex="50%" fxLayout="column">
-      <mat-card-subtitle>Lyrics:</mat-card-subtitle>
-      <div>{{song.lyrics}}</div>
-    </mat-card-content>
-    <mat-card-content fxFlex="50%" fxLayout="column">
-      <mat-card-subtitle>Guitar tabs:</mat-card-subtitle>
-      <div>{{song.guitarTabs}}</div>
-    </mat-card-content>
-  </mat-card-content>
-  <mat-card-content fxLayout="row" fxLayoutGap="15px">
-    <mat-card-content fxLayout="column" fxFlex="50%">
-      <div>Category: {{song.category.name}}</div>
-      <div>Average rating: {{song.averageRating}}</div>
-      <div>Tags: <p *ngFor="let tag of song.tags">#{{tag.name}} </p></div>
-      <div>
-        <ul>
-          <li *ngFor="let coauthor of coauthors">
-            {{coauthor._function}}: {{coauthor.name}}
-          </li>
-        </ul>
-      </div>
-  </mat-card-content>
-    <mat-card-content fxLayout="column" fxFlex="50%">
-      <mat-card-subtitle>
-        Trivia:
-      </mat-card-subtitle>
-      <div>{{song.trivia}}</div>
-    </mat-card-content>
-  </mat-card-content>
-  <mat-card-content fxLayout="row">
-    <mat-card-subtitle>Added:</mat-card-subtitle>
-    <div>{{song.creationTime}}</div>
-  </mat-card-content>
 
+  <mat-card fxLayout="row">
+    <mat-card-content fxFlex="50%" fxLayout="column" fxLayoutGap="15px">
+      <mat-card-subtitle>Lyrics</mat-card-subtitle>
+      <pre>{{song.lyrics}}</pre>
+    </mat-card-content>
+    <mat-card-content fxFlex="50%" fxLayout="column">
+      <mat-card-subtitle>Guitar tabs</mat-card-subtitle>
+      <pre>{{song.guitarTabs}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <div fxLayout="row">
+
+    <mat-card fxFlex="50%">
+      <mat-card-content fxLayout="column">
+        <div>Category: {{song.category.name}}</div>
+        <div>Average rating: {{song.averageRating}}</div>
+        <pre fxLayout="row">Tags: <div *ngFor="let tag of song.tags">#{{tag.name}} </div></pre>
+        <mat-card *ngIf="coauthors.length > 0">
+          <mat-card-content>
+            Coauthors:
+            <ul>
+              <li *ngFor="let coauthor of coauthors">
+                {{coauthor.coauthorFunction}}: {{coauthor.name}}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card fxFlex="50%">
+      <mat-card-content fxLayout="column">
+        <mat-card-subtitle>
+          Trivia:
+        </mat-card-subtitle>
+        <pre>{{song.trivia}}</pre>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <mat-card fxLayout="row">
+    <mat-card-content>
+      <div>Added: {{song.creationTime}}</div>
+    </mat-card-content>
+  </mat-card>
 </mat-card>
