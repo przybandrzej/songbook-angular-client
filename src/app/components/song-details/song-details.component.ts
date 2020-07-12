@@ -48,7 +48,7 @@ export class SongDetailsComponent implements OnInit {
     for (const coauthor of this.song.coauthors) {
       this.authorService.getByIdUsingGET(coauthor.authorId).subscribe(res => this.coauthors.push({
         name: res.name,
-        _function: coauthor.coauthorFunction
+        coauthorFunction: coauthor.coauthorFunction
       }));
     }
   }
