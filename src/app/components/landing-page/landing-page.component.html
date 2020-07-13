@@ -4,18 +4,18 @@
       <mat-card-header>
         <mat-card-title>Browse songs</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content fxLayoutAlign="start">
         <i class="material-icons md-48">library_books</i>
       </mat-card-content>
     </mat-card>
   </div>
 
   <div fxFlex="50%" fxFlex.lt-md="100%">
-    <mat-card style="background-color: lightcoral" class="mat-button">
+    <mat-card (click)="showCategories()" style="background-color: lightcoral" class="mat-button">
       <mat-card-header>
-        <mat-card-title>UI Widgets</mat-card-title>
+        <mat-card-title>Categories</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content fxLayoutAlign="start">
         <i class="material-icons md-48">widgets</i>
       </mat-card-content>
     </mat-card>

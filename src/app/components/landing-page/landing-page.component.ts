@@ -16,4 +16,8 @@ export class LandingPageComponent implements OnInit {
   showSongs() {
     this.router.navigateByUrl('songs');
   }
+
+  showCategories() {
+    this.router.navigateByUrl('categories');
+  }
 }
