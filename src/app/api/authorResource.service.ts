@@ -18,18 +18,18 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { CreatePlaylistDTO } from '../model/createPlaylistDTO';
-import { PlaylistDTO } from '../model/playlistDTO';
-import { Resource } from '../model/resource';
+import { AuthorDTO } from '../model/authorDTO';
+import { SongDTO } from '../model/songDTO';
+import { UniversalCreateDTO } from '../model/universalCreateDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class PlaylistRestControllerService {
+export class AuthorResourceService {
 
-    protected basePath = 'https://localhost:8081';
+    protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -61,17 +61,17 @@ export class PlaylistRestControllerService {
     /**
      * create
      * 
-     * @param dto dto
+     * @param authorDto authorDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST2(dto: CreatePlaylistDTO, observe?: 'body', reportProgress?: boolean): Observable<PlaylistDTO>;
-    public createUsingPOST2(dto: CreatePlaylistDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlaylistDTO>>;
-    public createUsingPOST2(dto: CreatePlaylistDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlaylistDTO>>;
-    public createUsingPOST2(dto: CreatePlaylistDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public createUsingPOST(authorDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling createUsingPOST2.');
+        if (authorDto === null || authorDto === undefined) {
+            throw new Error('Required parameter authorDto was null or undefined when calling createUsingPOST.');
         }
 
         let headers = this.defaultHeaders;
@@ -94,8 +94,8 @@ export class PlaylistRestControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<PlaylistDTO>(`${this.basePath}/api/playlists`,
-            dto,
+        return this.httpClient.post<AuthorDTO>(`${this.basePath}/api/authors`,
+            authorDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -112,13 +112,13 @@ export class PlaylistRestControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE2(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE2.');
+            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -136,48 +136,7 @@ export class PlaylistRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/playlists/id/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * downloadPlaylistPdfSongbook
-     * 
-     * @param id id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public downloadPlaylistPdfSongbookUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Resource>;
-    public downloadPlaylistPdfSongbookUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Resource>>;
-    public downloadPlaylistPdfSongbookUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Resource>>;
-    public downloadPlaylistPdfSongbookUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling downloadPlaylistPdfSongbookUsingGET.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Resource>(`${this.basePath}/api/playlists/download/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -190,22 +149,17 @@ export class PlaylistRestControllerService {
     /**
      * getAll
      * 
-     * @param includePrivate include_private
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET2(includePrivate?: boolean, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PlaylistDTO>>;
-    public getAllUsingGET2(includePrivate?: boolean, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlaylistDTO>>>;
-    public getAllUsingGET2(includePrivate?: boolean, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlaylistDTO>>>;
-    public getAllUsingGET2(includePrivate?: boolean, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
+    public getAllUsingGET(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
+    public getAllUsingGET(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
+    public getAllUsingGET(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
+    public getAllUsingGET(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (includePrivate !== undefined && includePrivate !== null) {
-            queryParameters = queryParameters.set('include_private', <any>includePrivate);
-        }
         if (limit !== undefined && limit !== null) {
             queryParameters = queryParameters.set('limit', <any>limit);
         }
@@ -225,7 +179,7 @@ export class PlaylistRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/playlists`,
+        return this.httpClient.get<Array<AuthorDTO>>(`${this.basePath}/api/authors`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -240,23 +194,16 @@ export class PlaylistRestControllerService {
      * getById
      * 
      * @param id id
-     * @param includePrivate include_private
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET2(id: number, includePrivate?: boolean, observe?: 'body', reportProgress?: boolean): Observable<PlaylistDTO>;
-    public getByIdUsingGET2(id: number, includePrivate?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlaylistDTO>>;
-    public getByIdUsingGET2(id: number, includePrivate?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlaylistDTO>>;
-    public getByIdUsingGET2(id: number, includePrivate?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET1(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public getByIdUsingGET1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public getByIdUsingGET1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public getByIdUsingGET1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET2.');
-        }
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (includePrivate !== undefined && includePrivate !== null) {
-            queryParameters = queryParameters.set('include_private', <any>includePrivate);
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET1.');
         }
 
         let headers = this.defaultHeaders;
@@ -274,9 +221,8 @@ export class PlaylistRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<PlaylistDTO>(`${this.basePath}/api/playlists/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<AuthorDTO>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}`,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -286,29 +232,24 @@ export class PlaylistRestControllerService {
     }
 
     /**
-     * getByName
+     * getByNameFragment
      * 
      * @param name name
-     * @param includePrivate include_private
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByNameUsingGET1(name: string, includePrivate?: boolean, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PlaylistDTO>>;
-    public getByNameUsingGET1(name: string, includePrivate?: boolean, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlaylistDTO>>>;
-    public getByNameUsingGET1(name: string, includePrivate?: boolean, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlaylistDTO>>>;
-    public getByNameUsingGET1(name: string, includePrivate?: boolean, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
+    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
+    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
+    public getByNameFragmentUsingGET(name: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getByNameUsingGET1.');
+            throw new Error('Required parameter name was null or undefined when calling getByNameFragmentUsingGET.');
         }
-
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (includePrivate !== undefined && includePrivate !== null) {
-            queryParameters = queryParameters.set('include_private', <any>includePrivate);
-        }
         if (limit !== undefined && limit !== null) {
             queryParameters = queryParameters.set('limit', <any>limit);
         }
@@ -328,7 +269,7 @@ export class PlaylistRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/playlists/name/${encodeURIComponent(String(name))}`,
+        return this.httpClient.get<Array<AuthorDTO>>(`${this.basePath}/api/authors/name/${encodeURIComponent(String(name))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -340,26 +281,19 @@ export class PlaylistRestControllerService {
     }
 
     /**
-     * getByOwnerId
+     * getSongsByAuthorId
      * 
      * @param id id
-     * @param includePrivate include_private
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByOwnerIdUsingGET(id: number, includePrivate?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<PlaylistDTO>>;
-    public getByOwnerIdUsingGET(id: number, includePrivate?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlaylistDTO>>>;
-    public getByOwnerIdUsingGET(id: number, includePrivate?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlaylistDTO>>>;
-    public getByOwnerIdUsingGET(id: number, includePrivate?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSongsByAuthorIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getSongsByAuthorIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getSongsByAuthorIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getSongsByAuthorIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByOwnerIdUsingGET.');
-        }
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (includePrivate !== undefined && includePrivate !== null) {
-            queryParameters = queryParameters.set('include_private', <any>includePrivate);
+            throw new Error('Required parameter id was null or undefined when calling getSongsByAuthorIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -377,9 +311,8 @@ export class PlaylistRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/playlists/ownerId/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}/songs`,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -391,17 +324,17 @@ export class PlaylistRestControllerService {
     /**
      * update
      * 
-     * @param dto dto
+     * @param authorDto authorDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT2(dto: PlaylistDTO, observe?: 'body', reportProgress?: boolean): Observable<PlaylistDTO>;
-    public updateUsingPUT2(dto: PlaylistDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlaylistDTO>>;
-    public updateUsingPUT2(dto: PlaylistDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlaylistDTO>>;
-    public updateUsingPUT2(dto: PlaylistDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public updateUsingPUT(authorDto: AuthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT2.');
+        if (authorDto === null || authorDto === undefined) {
+            throw new Error('Required parameter authorDto was null or undefined when calling updateUsingPUT.');
         }
 
         let headers = this.defaultHeaders;
@@ -424,8 +357,8 @@ export class PlaylistRestControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<PlaylistDTO>(`${this.basePath}/api/playlists`,
-            dto,
+        return this.httpClient.put<AuthorDTO>(`${this.basePath}/api/authors`,
+            authorDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

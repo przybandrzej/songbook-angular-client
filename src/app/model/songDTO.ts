@@ -12,17 +12,20 @@
 import { AuthorDTO } from './authorDTO';
 import { CategoryDTO } from './categoryDTO';
 import { SongCoauthorDTO } from './songCoauthorDTO';
+import { SongTimestampDTO } from './songTimestampDTO';
 import { TagDTO } from './tagDTO';
 
 
 export interface SongDTO { 
+    addedBy: Array<SongTimestampDTO>;
     author?: AuthorDTO;
     averageRating?: number;
     category?: CategoryDTO;
     coauthors: Array<SongCoauthorDTO>;
-    creationTime?: string;
+    edits: Array<SongTimestampDTO>;
     guitarTabs?: string;
     id: number;
+    isAwaiting?: boolean;
     lyrics?: string;
     tags: Array<TagDTO>;
     title: string;

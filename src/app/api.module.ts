@@ -3,30 +3,34 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { AuthorRestControllerService } from './api/authorRestController.service';
-import { CategoryRestControllerService } from './api/categoryRestController.service';
-import { PlaylistRestControllerService } from './api/playlistRestController.service';
-import { SongCoauthorRestControllerService } from './api/songCoauthorRestController.service';
-import { SongRestControllerService } from './api/songRestController.service';
-import { TagRestControllerService } from './api/tagRestController.service';
-import { UserRestControllerService } from './api/userRestController.service';
-import { UserRoleRestControllerService } from './api/userRoleRestController.service';
-import { UserSongRatingRestControllerService } from './api/userSongRatingRestController.service';
+import { AdminResourceService } from './api/adminResource.service';
+import { AuthorResourceService } from './api/authorResource.service';
+import { AwaitingSongResourceService } from './api/awaitingSongResource.service';
+import { CategoryResourceService } from './api/categoryResource.service';
+import { PlaylistResourceService } from './api/playlistResource.service';
+import { SongCoauthorResourceService } from './api/songCoauthorResource.service';
+import { SongResourceService } from './api/songResource.service';
+import { TagResourceService } from './api/tagResource.service';
+import { UserResourceService } from './api/userResource.service';
+import { UserRoleResourceService } from './api/userRoleResource.service';
+import { UserSongRatingResourceService } from './api/userSongRatingResource.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    AuthorRestControllerService,
-    CategoryRestControllerService,
-    PlaylistRestControllerService,
-    SongCoauthorRestControllerService,
-    SongRestControllerService,
-    TagRestControllerService,
-    UserRestControllerService,
-    UserRoleRestControllerService,
-    UserSongRatingRestControllerService ]
+    AdminResourceService,
+    AuthorResourceService,
+    AwaitingSongResourceService,
+    CategoryResourceService,
+    PlaylistResourceService,
+    SongCoauthorResourceService,
+    SongResourceService,
+    TagResourceService,
+    UserResourceService,
+    UserRoleResourceService,
+    UserSongRatingResourceService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

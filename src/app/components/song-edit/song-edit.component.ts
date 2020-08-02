@@ -1,13 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  AuthorDTO,
-  AuthorRestControllerService,
-  CategoryDTO,
-  CategoryRestControllerService,
-  SongCoauthorDTO,
-  SongDTO,
-  SongRestControllerService
-} from '../..';
+import {AuthorDTO, AuthorResourceService, CategoryDTO, CategoryResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../..';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -28,7 +20,8 @@ export class SongEditComponent implements OnInit {
       name: ''
     },
     coauthors: [],
-    creationTime: '',
+    edits: [],
+    addedBy: [],
     guitarTabs: '',
     id: -1,
     lyrics: '',
@@ -49,14 +42,14 @@ export class SongEditComponent implements OnInit {
     coauthorFunction: ''
   };
 
-  constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router,
-              private categoryService: CategoryRestControllerService, private authorService: AuthorRestControllerService) {
+  constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
+              private categoryService: CategoryResourceService, private authorService: AuthorResourceService) {
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
-        this.songRestControllerService.getByIdUsingGET3(+params.get('id')).subscribe(res => {
+        this.songService.getByIdUsingGET5(+params.get('id')).subscribe(res => {
           this.song = res;
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
@@ -65,7 +58,7 @@ export class SongEditComponent implements OnInit {
       }
     });
     this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
-    this.categoryService.getAllUsingGET1().subscribe(res => this.categories = res);
+    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
   }
 
   cancel() {
@@ -79,7 +72,7 @@ export class SongEditComponent implements OnInit {
     this.song.coauthors = [...new Set(this.song.coauthors)];
     this.song.author.name = this.authors.filter((value, index, array) => value.id === this.song.author.id)[0].name;
     this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-    this.songRestControllerService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
+    this.songService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
   }
 
   goToDetailScreen() {

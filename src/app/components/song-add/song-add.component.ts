@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {
   AuthorDTO,
-  AuthorRestControllerService,
+  AuthorResourceService,
   CategoryDTO,
-  CategoryRestControllerService,
+  CategoryResourceService,
   CreateCoauthorDTO,
   CreateSongDTO,
-  SongRestControllerService
+  SongResourceService
 } from '../..';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -26,7 +26,8 @@ export class SongAddComponent implements OnInit {
     lyrics: '',
     tags: [],
     title: '',
-    trivia: ''
+    trivia: '',
+    userIdAdded: 0
   };
 
   coauthorFunctions = ['muzyka', 'tekst'];
@@ -42,13 +43,13 @@ export class SongAddComponent implements OnInit {
   };
   tagToAdd = '';
 
-  constructor(private songRestControllerService: SongRestControllerService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
-              private authorRestControllerService: AuthorRestControllerService, private categoryRestControllerService: CategoryRestControllerService) {
+  constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
+              private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
   }
 
   ngOnInit(): void {
-    this.authorRestControllerService.getAllUsingGET().subscribe(res => this.authors = res);
-    this.categoryRestControllerService.getAllUsingGET1().subscribe(res => this.categories = res);
+    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
+    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
   }
 
   cancel() {
@@ -62,7 +63,7 @@ export class SongAddComponent implements OnInit {
     for (const tag of this.tagsToAdd) {
       this.song.tags.push(tag);
     }
-    this.songRestControllerService.createUsingPOST4(this.song).subscribe(res => {
+    this.songService.createUsingPOST4(this.song).subscribe(res => {
       this.router.navigateByUrl('song/' + res.id);
     });
   }

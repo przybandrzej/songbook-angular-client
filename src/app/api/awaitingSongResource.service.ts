@@ -18,18 +18,16 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { CategoryDTO } from '../model/categoryDTO';
 import { SongDTO } from '../model/songDTO';
-import { UniversalCreateDTO } from '../model/universalCreateDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class CategoryRestControllerService {
+export class AwaitingSongResourceService {
 
-    protected basePath = 'https://localhost:8081';
+    protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -59,103 +57,22 @@ export class CategoryRestControllerService {
 
 
     /**
-     * create
-     * 
-     * @param categoryDto categoryDto
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (categoryDto === null || categoryDto === undefined) {
-            throw new Error('Required parameter categoryDto was null or undefined when calling createUsingPOST1.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<CategoryDTO>(`${this.basePath}/api/categories`,
-            categoryDto,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * delete
-     * 
-     * @param id id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteUsingDELETE1(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE1.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.delete<any>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * getAll
      * 
+     * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET1(observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
-    public getAllUsingGET1(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
-    public getAllUsingGET1(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
-    public getAllUsingGET1(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllUsingGET1(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getAllUsingGET1(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getAllUsingGET1(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getAllUsingGET1(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -172,8 +89,58 @@ export class CategoryRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<CategoryDTO>>(`${this.basePath}/api/categories`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs`,
             {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getByCategory
+     * 
+     * @param categoryId categoryId
+     * @param limit limit
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getByCategoryUsingGET(categoryId: number, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getByCategoryUsingGET(categoryId: number, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getByCategoryUsingGET(categoryId: number, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getByCategoryUsingGET(categoryId: number, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (categoryId === null || categoryId === undefined) {
+            throw new Error('Required parameter categoryId was null or undefined when calling getByCategoryUsingGET.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs/category/${encodeURIComponent(String(categoryId))}`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -189,13 +156,13 @@ export class CategoryRestControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET1(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public getByIdUsingGET1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public getByIdUsingGET1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public getByIdUsingGET1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET2(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public getByIdUsingGET2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public getByIdUsingGET2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public getByIdUsingGET2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET1.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET2.');
         }
 
         let headers = this.defaultHeaders;
@@ -213,7 +180,7 @@ export class CategoryRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<CategoryDTO>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<SongDTO>(`${this.basePath}/api/awaiting-songs/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -224,19 +191,26 @@ export class CategoryRestControllerService {
     }
 
     /**
-     * getByName
+     * getByLyricsFragment
      * 
-     * @param name name
+     * @param value value
+     * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByNameUsingGET(name: string, observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
-    public getByNameUsingGET(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
-    public getByNameUsingGET(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
-    public getByNameUsingGET(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByLyricsFragmentUsingGET(value: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getByLyricsFragmentUsingGET(value: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getByLyricsFragmentUsingGET(value: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getByLyricsFragmentUsingGET(value: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getByNameUsingGET.');
+        if (value === null || value === undefined) {
+            throw new Error('Required parameter value was null or undefined when calling getByLyricsFragmentUsingGET.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
         }
 
         let headers = this.defaultHeaders;
@@ -254,8 +228,9 @@ export class CategoryRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<CategoryDTO>>(`${this.basePath}/api/categories/name/${encodeURIComponent(String(name))}`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs/lyrics_fragment/${encodeURIComponent(String(value))}`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -265,19 +240,26 @@ export class CategoryRestControllerService {
     }
 
     /**
-     * getSongsByCategoryId
+     * getByTag
      * 
-     * @param id id
+     * @param tagId tagId
+     * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSongsByCategoryIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getSongsByCategoryIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getSongsByCategoryIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getSongsByCategoryIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByTagUsingGET(tagId: number, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getByTagUsingGET(tagId: number, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getByTagUsingGET(tagId: number, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getByTagUsingGET(tagId: number, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getSongsByCategoryIdUsingGET.');
+        if (tagId === null || tagId === undefined) {
+            throw new Error('Required parameter tagId was null or undefined when calling getByTagUsingGET.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
         }
 
         let headers = this.defaultHeaders;
@@ -295,8 +277,9 @@ export class CategoryRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}/songs`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs/tag/${encodeURIComponent(String(tagId))}`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -306,19 +289,26 @@ export class CategoryRestControllerService {
     }
 
     /**
-     * update
+     * getByTitleFragment
      * 
-     * @param categoryDto categoryDto
+     * @param title title
+     * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getByTitleFragmentUsingGET(title: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (categoryDto === null || categoryDto === undefined) {
-            throw new Error('Required parameter categoryDto was null or undefined when calling updateUsingPUT1.');
+        if (title === null || title === undefined) {
+            throw new Error('Required parameter title was null or undefined when calling getByTitleFragmentUsingGET.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
         }
 
         let headers = this.defaultHeaders;
@@ -334,16 +324,58 @@ export class CategoryRestControllerService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs/title/${encodeURIComponent(String(title))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getLatest
+     * 
+     * @param limit limit
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLatestUsingGET(limit: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getLatestUsingGET(limit: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getLatestUsingGET(limit: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getLatestUsingGET(limit: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (limit === null || limit === undefined) {
+            throw new Error('Required parameter limit was null or undefined when calling getLatestUsingGET.');
         }
 
-        return this.httpClient.put<CategoryDTO>(`${this.basePath}/api/categories`,
-            categoryDto,
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/awaiting-songs/latest`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

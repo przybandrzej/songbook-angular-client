@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryDTO, CategoryRestControllerService, SongRestControllerService} from '../..';
+import {CategoryDTO, CategoryResourceService, SongResourceService} from '../..';
 import {Router} from '@angular/router';
 
 @Component({
@@ -18,11 +18,11 @@ export class CategoriesBrowserComponent implements OnInit {
 
   categories: CategoryDTO[] = [];
 
-  constructor(private categoryService: CategoryRestControllerService, private router: Router, private songService: SongRestControllerService) {
+  constructor(private categoryService: CategoryResourceService, private router: Router, private songService: SongResourceService) {
   }
 
   ngOnInit(): void {
-    this.categoryService.getAllUsingGET1().subscribe(res => this.categories = res);
+    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
   }
 
   addCategory() {

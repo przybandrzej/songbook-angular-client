@@ -18,16 +18,18 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { SongCoauthorDTO } from '../model/songCoauthorDTO';
+import { UniversalCreateDTO } from '../model/universalCreateDTO';
+import { UserDTO } from '../model/userDTO';
+import { UserRoleDTO } from '../model/userRoleDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class SongCoauthorRestControllerService {
+export class UserRoleResourceService {
 
-    protected basePath = 'https://localhost:8081';
+    protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -59,17 +61,17 @@ export class SongCoauthorRestControllerService {
     /**
      * create
      * 
-     * @param songCoauthorDTO songCoauthorDTO
+     * @param userRoleDto userRoleDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST3(songCoauthorDTO: SongCoauthorDTO, observe?: 'body', reportProgress?: boolean): Observable<SongCoauthorDTO>;
-    public createUsingPOST3(songCoauthorDTO: SongCoauthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongCoauthorDTO>>;
-    public createUsingPOST3(songCoauthorDTO: SongCoauthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongCoauthorDTO>>;
-    public createUsingPOST3(songCoauthorDTO: SongCoauthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songCoauthorDTO === null || songCoauthorDTO === undefined) {
-            throw new Error('Required parameter songCoauthorDTO was null or undefined when calling createUsingPOST3.');
+        if (userRoleDto === null || userRoleDto === undefined) {
+            throw new Error('Required parameter userRoleDto was null or undefined when calling createUsingPOST6.');
         }
 
         let headers = this.defaultHeaders;
@@ -92,8 +94,8 @@ export class SongCoauthorRestControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<SongCoauthorDTO>(`${this.basePath}/api/coauthors`,
-            songCoauthorDTO,
+        return this.httpClient.post<UserRoleDTO>(`${this.basePath}/api/user_roles`,
+            userRoleDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -106,17 +108,17 @@ export class SongCoauthorRestControllerService {
     /**
      * delete
      * 
-     * @param songCoauthorDTO songCoauthorDTO
+     * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE7(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE7(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE7(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE7(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songCoauthorDTO === null || songCoauthorDTO === undefined) {
-            throw new Error('Required parameter songCoauthorDTO was null or undefined when calling deleteUsingDELETE3.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE7.');
         }
 
         let headers = this.defaultHeaders;
@@ -133,12 +135,8 @@ export class SongCoauthorRestControllerService {
         // to determine the Content-Type header
         const consumes: string[] = [
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/coauthors`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -149,19 +147,55 @@ export class SongCoauthorRestControllerService {
     }
 
     /**
-     * getByAuthorId
+     * getAll
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllUsingGET7(observe?: 'body', reportProgress?: boolean): Observable<Array<UserRoleDTO>>;
+    public getAllUsingGET7(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserRoleDTO>>>;
+    public getAllUsingGET7(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserRoleDTO>>>;
+    public getAllUsingGET7(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<UserRoleDTO>>(`${this.basePath}/api/user_roles`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByAuthorIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongCoauthorDTO>>;
-    public getByAuthorIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongCoauthorDTO>>>;
-    public getByAuthorIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongCoauthorDTO>>>;
-    public getByAuthorIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET8(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public getByIdUsingGET8(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public getByIdUsingGET8(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public getByIdUsingGET8(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByAuthorIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET8.');
         }
 
         let headers = this.defaultHeaders;
@@ -179,7 +213,7 @@ export class SongCoauthorRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongCoauthorDTO>>(`${this.basePath}/api/coauthors/author/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<UserRoleDTO>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -190,19 +224,19 @@ export class SongCoauthorRestControllerService {
     }
 
     /**
-     * getByFunction
+     * getByNameSearchQuery
      * 
-     * @param _function function
+     * @param searchQuery searchQuery
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByFunctionUsingGET(_function: string, observe?: 'body', reportProgress?: boolean): Observable<Array<SongCoauthorDTO>>;
-    public getByFunctionUsingGET(_function: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongCoauthorDTO>>>;
-    public getByFunctionUsingGET(_function: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongCoauthorDTO>>>;
-    public getByFunctionUsingGET(_function: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByNameSearchQueryUsingGET(searchQuery: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserRoleDTO>>;
+    public getByNameSearchQueryUsingGET(searchQuery: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserRoleDTO>>>;
+    public getByNameSearchQueryUsingGET(searchQuery: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserRoleDTO>>>;
+    public getByNameSearchQueryUsingGET(searchQuery: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (_function === null || _function === undefined) {
-            throw new Error('Required parameter _function was null or undefined when calling getByFunctionUsingGET.');
+        if (searchQuery === null || searchQuery === undefined) {
+            throw new Error('Required parameter searchQuery was null or undefined when calling getByNameSearchQueryUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -220,7 +254,7 @@ export class SongCoauthorRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongCoauthorDTO>>(`${this.basePath}/api/coauthors/function/${encodeURIComponent(String(_function))}`,
+        return this.httpClient.get<Array<UserRoleDTO>>(`${this.basePath}/api/user_roles/name/${encodeURIComponent(String(searchQuery))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -231,19 +265,19 @@ export class SongCoauthorRestControllerService {
     }
 
     /**
-     * getBySongId
+     * getUsersByUserRoleId
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBySongIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongCoauthorDTO>>;
-    public getBySongIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongCoauthorDTO>>>;
-    public getBySongIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongCoauthorDTO>>>;
-    public getBySongIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
+    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
+    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
+    public getUsersByUserRoleIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getBySongIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getUsersByUserRoleIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -261,7 +295,7 @@ export class SongCoauthorRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongCoauthorDTO>>(`${this.basePath}/api/coauthors/song/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<Array<UserDTO>>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}/users`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -274,17 +308,17 @@ export class SongCoauthorRestControllerService {
     /**
      * update
      * 
-     * @param songCoauthorDTO songCoauthorDTO
+     * @param userRoleDto userRoleDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT3(songCoauthorDTO: SongCoauthorDTO, observe?: 'body', reportProgress?: boolean): Observable<SongCoauthorDTO>;
-    public updateUsingPUT3(songCoauthorDTO: SongCoauthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongCoauthorDTO>>;
-    public updateUsingPUT3(songCoauthorDTO: SongCoauthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongCoauthorDTO>>;
-    public updateUsingPUT3(songCoauthorDTO: SongCoauthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT7(userRoleDto: UserRoleDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public updateUsingPUT7(userRoleDto: UserRoleDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public updateUsingPUT7(userRoleDto: UserRoleDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public updateUsingPUT7(userRoleDto: UserRoleDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songCoauthorDTO === null || songCoauthorDTO === undefined) {
-            throw new Error('Required parameter songCoauthorDTO was null or undefined when calling updateUsingPUT3.');
+        if (userRoleDto === null || userRoleDto === undefined) {
+            throw new Error('Required parameter userRoleDto was null or undefined when calling updateUsingPUT7.');
         }
 
         let headers = this.defaultHeaders;
@@ -307,8 +341,8 @@ export class SongCoauthorRestControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<SongCoauthorDTO>(`${this.basePath}/api/coauthors`,
-            songCoauthorDTO,
+        return this.httpClient.put<UserRoleDTO>(`${this.basePath}/api/user_roles`,
+            userRoleDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

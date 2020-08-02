@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SongDTO, SongRestControllerService} from '../..';
+import {SongDTO, SongResourceService} from '../..';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {FormControl} from '@angular/forms';
@@ -20,7 +20,7 @@ export class SongsComponent implements OnInit {
 
   filteredSongs: any;
 
-  constructor(private songRestControllerService: SongRestControllerService, public router: Router, private dialog: MatDialog) {
+  constructor(private songService: SongResourceService, public router: Router, private dialog: MatDialog) {
     this.songFormControl = new FormControl();
   }
 
@@ -36,7 +36,7 @@ export class SongsComponent implements OnInit {
   }
 
   private getAllSongs() {
-    this.songRestControllerService.getAllUsingGET3().subscribe(next => {
+    this.songService.getAllUsingGET4().subscribe(next => {
       this.songs = next;
     });
   }

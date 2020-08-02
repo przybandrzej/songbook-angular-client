@@ -18,20 +18,18 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { LoginForm } from '../model/loginForm';
-import { PlaylistDTO } from '../model/playlistDTO';
-import { RegisterNewUserForm } from '../model/registerNewUserForm';
-import { UserDTO } from '../model/userDTO';
-import { UserSongRatingDTO } from '../model/userSongRatingDTO';
+import { SongDTO } from '../model/songDTO';
+import { TagDTO } from '../model/tagDTO';
+import { UniversalCreateDTO } from '../model/universalCreateDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class UserRestControllerService {
+export class TagResourceService {
 
-    protected basePath = 'https://localhost:8081';
+    protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -61,19 +59,66 @@ export class UserRestControllerService {
 
 
     /**
+     * create
+     * 
+     * @param tagDto tagDto
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createUsingPOST5(tagDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
+    public createUsingPOST5(tagDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
+    public createUsingPOST5(tagDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
+    public createUsingPOST5(tagDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (tagDto === null || tagDto === undefined) {
+            throw new Error('Required parameter tagDto was null or undefined when calling createUsingPOST5.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<TagDTO>(`${this.basePath}/api/tags`,
+            tagDto,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * delete
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE6(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE5(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE5(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE5(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE5(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE6.');
+            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE5.');
         }
 
         let headers = this.defaultHeaders;
@@ -91,7 +136,7 @@ export class UserRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/tags/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -108,9 +153,9 @@ export class UserRestControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET5(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
-    public getAllUsingGET5(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
-    public getAllUsingGET5(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
+    public getAllUsingGET5(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<TagDTO>>;
+    public getAllUsingGET5(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TagDTO>>>;
+    public getAllUsingGET5(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TagDTO>>>;
     public getAllUsingGET5(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -134,7 +179,7 @@ export class UserRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<UserDTO>>(`${this.basePath}/api/users`,
+        return this.httpClient.get<Array<TagDTO>>(`${this.basePath}/api/tags`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -152,13 +197,13 @@ export class UserRestControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET5(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public getByIdUsingGET5(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public getByIdUsingGET5(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public getByIdUsingGET5(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET6(id: number, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
+    public getByIdUsingGET6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
+    public getByIdUsingGET6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
+    public getByIdUsingGET6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET5.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET6.');
         }
 
         let headers = this.defaultHeaders;
@@ -176,7 +221,7 @@ export class UserRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<UserDTO>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<TagDTO>(`${this.basePath}/api/tags/id/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -187,19 +232,60 @@ export class UserRestControllerService {
     }
 
     /**
-     * getPlaylistsByUserId
+     * getByName
+     * 
+     * @param name name
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getByNameUsingGET2(name: string, observe?: 'body', reportProgress?: boolean): Observable<Array<TagDTO>>;
+    public getByNameUsingGET2(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TagDTO>>>;
+    public getByNameUsingGET2(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TagDTO>>>;
+    public getByNameUsingGET2(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling getByNameUsingGET2.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<TagDTO>>(`${this.basePath}/api/tags/name/${encodeURIComponent(String(name))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongsByTagId
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPlaylistsByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PlaylistDTO>>;
-    public getPlaylistsByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlaylistDTO>>>;
-    public getPlaylistsByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlaylistDTO>>>;
-    public getPlaylistsByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSongsByTagIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getSongsByTagIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getSongsByTagIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getSongsByTagIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getPlaylistsByUserIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getSongsByTagIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -217,142 +303,7 @@ export class UserRestControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/playlists`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getRatingsByUserId
-     * 
-     * @param id id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getRatingsByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserSongRatingDTO>>;
-    public getRatingsByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSongRatingDTO>>>;
-    public getRatingsByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSongRatingDTO>>>;
-    public getRatingsByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getRatingsByUserIdUsingGET.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/ratings`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * login
-     * 
-     * @param form form
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public loginUsingPOST(form: LoginForm, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public loginUsingPOST(form: LoginForm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public loginUsingPOST(form: LoginForm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public loginUsingPOST(form: LoginForm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (form === null || form === undefined) {
-            throw new Error('Required parameter form was null or undefined when calling loginUsingPOST.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<UserDTO>(`${this.basePath}/api/users/login`,
-            form,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * register
-     * 
-     * @param form form
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (form === null || form === undefined) {
-            throw new Error('Required parameter form was null or undefined when calling registerUsingPOST.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<UserDTO>(`${this.basePath}/api/users/register`,
-            form,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/tags/id/${encodeURIComponent(String(id))}/songs`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -365,17 +316,17 @@ export class UserRestControllerService {
     /**
      * update
      * 
-     * @param dto dto
+     * @param tagDto tagDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT6(dto: UserDTO, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public updateUsingPUT6(dto: UserDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public updateUsingPUT6(dto: UserDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public updateUsingPUT6(dto: UserDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT5(tagDto: TagDTO, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
+    public updateUsingPUT5(tagDto: TagDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
+    public updateUsingPUT5(tagDto: TagDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
+    public updateUsingPUT5(tagDto: TagDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT6.');
+        if (tagDto === null || tagDto === undefined) {
+            throw new Error('Required parameter tagDto was null or undefined when calling updateUsingPUT5.');
         }
 
         let headers = this.defaultHeaders;
@@ -398,8 +349,8 @@ export class UserRestControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<UserDTO>(`${this.basePath}/api/users`,
-            dto,
+        return this.httpClient.put<TagDTO>(`${this.basePath}/api/tags`,
+            tagDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
