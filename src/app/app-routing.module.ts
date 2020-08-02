@@ -11,11 +11,6 @@ import {CategoriesBrowserComponent} from './components/categories-browser/catego
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: LandingPageComponent
   },
   {
@@ -37,6 +32,10 @@ const routes: Routes = [
   {
     path: 'categories',
     component: CategoriesBrowserComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
 
@@ -44,4 +43,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

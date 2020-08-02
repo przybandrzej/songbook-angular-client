@@ -1,24 +1,27 @@
 <div class="page" fxLayout="column" fxLayoutGap="25px">
-
-
-  <mat-toolbar fxLayout fxFlex="0 0 auto" color="primary" fxLayoutGap="15px" fxLayoutAlign="end center">
-    <span>STK Songbook</span>
+  <mat-toolbar fxLayout fxFlex="0 0 auto" class="mat-elevation-z6 app-navbar" color="primary" fxLayoutGap="15px">
+    <div fxLayoutAlign="start center" fxFlex="50%">
+      <span class="link" style="cursor:pointer" (click)="showLandingPage()">STK Songbook</span>
+    </div>
+    <div fxLayoutAlign="end center" fxFlex="50%">
+      <mat-icon class="icon_button" color="accent" (click)="logout()">power_settings_new</mat-icon>
+    </div>
   </mat-toolbar>
 
-  <div fxFlex="1 1 auto" style="overflow-y:auto">
-    <div fxLayout="column">
-      <div fxFlex="0 0 10px"></div>
-      <div fxFlex="1 1 auto" fxLayout="row" style="padding-top: 3px">
-        <div fxFlex="1 1 10%"></div>
-        <div fxFlex="8 8 80%">
+
+  <div fxLayout="column" style="border-style: none; border-color: skyblue;" class="main">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px" fxLayoutAlign="space-between"
+         style="border-style: none; border-color: salmon;">
+      <div fxFlex="1 1 calc(3% - 2px)" fxFlex.lt-sm="1 1 100%" fxLayout="column"
+           style="border-style: none; border-color: gold;">
+      </div>
+      <div fxFlex="1 1 calc(90% - 2px)" fxFlex.lt-sm="1 1 100%" style="border-style: none; border-color: tomato;">
+        <div class="router-wrapper">
           <router-outlet></router-outlet>
         </div>
-        <div fxFlex="1 1 10%"></div>
+      </div>
+      <div fxFlex="1 1 calc(3% - 2px)" fxFlex.lt-sm="1 1 100%" style="border-style: none; border-color: green;">
       </div>
     </div>
   </div>
-
-  <mat-toolbar fxFlex="0 0 auto" color="primary">
-  </mat-toolbar>
-
 </div>
