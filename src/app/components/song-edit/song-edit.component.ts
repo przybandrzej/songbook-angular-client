@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthorDTO, AuthorResourceService, CategoryDTO, CategoryResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../..';
+import {AuthorDTO, AuthorResourceService, CategoryDTO, CategoryResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -21,7 +21,7 @@ export class SongEditComponent implements OnInit {
     },
     coauthors: [],
     edits: [],
-    addedBy: [],
+    addedBy: null,
     guitarTabs: '',
     id: -1,
     lyrics: '',
@@ -30,7 +30,7 @@ export class SongEditComponent implements OnInit {
     trivia: ''
   };
 
-  coauthorFunctions = ['muzyka', 'tekst'];
+  coauthorFunctions = Object.values(SongCoauthorDTO.CoauthorFunctionEnum);
 
   authors: AuthorDTO[] = [];
   categories: CategoryDTO[] = [];
@@ -39,7 +39,7 @@ export class SongEditComponent implements OnInit {
   coauthorToAdd: SongCoauthorDTO = {
     authorId: -1,
     songId: -1,
-    coauthorFunction: ''
+    coauthorFunction: null
   };
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
@@ -49,7 +49,7 @@ export class SongEditComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
-        this.songService.getByIdUsingGET5(+params.get('id')).subscribe(res => {
+        this.songService.getByIdUsingGET4(+params.get('id')).subscribe(res => {
           this.song = res;
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
@@ -86,7 +86,7 @@ export class SongEditComponent implements OnInit {
       coauthorFunction: this.coauthorToAdd.coauthorFunction
     });
     this.coauthorToAdd.authorId = -1;
-    this.coauthorToAdd.coauthorFunction = '';
+    this.coauthorToAdd.coauthorFunction = null;
   }
 
   removeCoauthor(coauthorDTO: SongCoauthorDTO) {

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthorResourceService, SongDTO, SongResourceService} from '../..';
+import {AuthorResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class SongDetailsComponent implements OnInit {
     },
     coauthors: [],
     edits: [],
-    addedBy: [],
+    addedBy: null,
     guitarTabs: '',
     id: -1,
     lyrics: '',
@@ -39,7 +39,7 @@ export class SongDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.songId = +this.route.snapshot.paramMap.get('id');
-    this.songService.getByIdUsingGET5(this.songId).subscribe(res => {
+    this.songService.getByIdUsingGET4(this.songId).subscribe(res => {
       this.song = res;
       this.getCoauthors();
     });
@@ -47,7 +47,7 @@ export class SongDetailsComponent implements OnInit {
 
   getCoauthors() {
     for (const coauthor of this.song.coauthors) {
-      this.authorService.getByIdUsingGET1(coauthor.authorId).subscribe(res => this.coauthors.push({
+      this.authorService.getByIdUsingGET(coauthor.authorId).subscribe(res => this.coauthors.push({
         name: res.name,
         coauthorFunction: coauthor.coauthorFunction
       }));

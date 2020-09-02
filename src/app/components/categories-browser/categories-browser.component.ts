@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryDTO, CategoryResourceService, SongResourceService} from '../..';
 import {Router} from '@angular/router';
+import {CategoryDTO, CategoryResourceService, SongResourceService} from '../../songbook';
 
 @Component({
   selector: 'app-categories-browser',

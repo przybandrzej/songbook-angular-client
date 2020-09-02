@@ -5,9 +5,9 @@ import {
   CategoryDTO,
   CategoryResourceService,
   CreateCoauthorDTO,
-  CreateSongDTO,
+  CreateSongDTO, SongCoauthorDTO,
   SongResourceService
-} from '../..';
+} from '../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -26,11 +26,10 @@ export class SongAddComponent implements OnInit {
     lyrics: '',
     tags: [],
     title: '',
-    trivia: '',
-    userIdAdded: 0
+    trivia: ''
   };
 
-  coauthorFunctions = ['muzyka', 'tekst'];
+  coauthorFunctions = Object.values(SongCoauthorDTO.CoauthorFunctionEnum);
 
   authors: AuthorDTO[] = [];
   categories: CategoryDTO[] = [];
@@ -39,7 +38,7 @@ export class SongAddComponent implements OnInit {
 
   coauthorToAdd: CreateCoauthorDTO = {
     authorName: '',
-    coauthorFunction: ''
+    coauthorFunction: null
   };
   tagToAdd = '';
 
@@ -71,7 +70,7 @@ export class SongAddComponent implements OnInit {
   addCouathor() {
     this.coauthorsToAdd.push({authorName: this.coauthorToAdd.authorName, coauthorFunction: this.coauthorToAdd.coauthorFunction});
     this.coauthorToAdd.authorName = '';
-    this.coauthorToAdd.coauthorFunction = '';
+    this.coauthorToAdd.coauthorFunction = null;
   }
 
   removeCoauthor(coauthorDTO: CreateCoauthorDTO) {

@@ -6,6 +6,9 @@ import {SongDetailsComponent} from './components/song-details/song-details.compo
 import {SongEditComponent} from './components/song-edit/song-edit.component';
 import {SongAddComponent} from './components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
+import {AuthenticationGuard} from './guards/authentication.guard';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 
 
 const routes: Routes = [
@@ -23,15 +26,25 @@ const routes: Routes = [
   },
   {
     path: 'edit-song/:id',
-    component: SongEditComponent
+    component: SongEditComponent,
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'add-song',
-    component: SongAddComponent
+    component: SongAddComponent,
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'categories',
     component: CategoriesBrowserComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '**',
