@@ -189,13 +189,13 @@ export class CategoryResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET3(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public getByIdUsingGET3(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public getByIdUsingGET3(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public getByIdUsingGET3(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET2(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
+    public getByIdUsingGET2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
+    public getByIdUsingGET2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
+    public getByIdUsingGET2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET3.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET2.');
         }
 
         let headers = this.defaultHeaders;

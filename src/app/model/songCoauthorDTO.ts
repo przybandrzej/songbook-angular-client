@@ -13,6 +13,13 @@
 
 export interface SongCoauthorDTO { 
     authorId: number;
-    coauthorFunction?: string;
+    coauthorFunction: SongCoauthorDTO.CoauthorFunctionEnum;
     songId: number;
+}
+export namespace SongCoauthorDTO {
+    export type CoauthorFunctionEnum = 'MUSIC' | 'TEXT';
+    export const CoauthorFunctionEnum = {
+        MUSIC: 'MUSIC' as CoauthorFunctionEnum,
+        TEXT: 'TEXT' as CoauthorFunctionEnum
+    };
 }

@@ -196,10 +196,10 @@ export class SongCoauthorResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByFunctionUsingGET(_function: string, observe?: 'body', reportProgress?: boolean): Observable<Array<SongCoauthorDTO>>;
-    public getByFunctionUsingGET(_function: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongCoauthorDTO>>>;
-    public getByFunctionUsingGET(_function: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongCoauthorDTO>>>;
-    public getByFunctionUsingGET(_function: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByFunctionUsingGET(_function: 'MUSIC' | 'TEXT', observe?: 'body', reportProgress?: boolean): Observable<Array<SongCoauthorDTO>>;
+    public getByFunctionUsingGET(_function: 'MUSIC' | 'TEXT', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongCoauthorDTO>>>;
+    public getByFunctionUsingGET(_function: 'MUSIC' | 'TEXT', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongCoauthorDTO>>>;
+    public getByFunctionUsingGET(_function: 'MUSIC' | 'TEXT', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (_function === null || _function === undefined) {
             throw new Error('Required parameter _function was null or undefined when calling getByFunctionUsingGET.');

@@ -337,13 +337,13 @@ export class UserSongRatingResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT8(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
-    public updateUsingPUT8(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
-    public updateUsingPUT8(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
-    public updateUsingPUT8(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public updateUsingPUT7(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT8.');
+            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT7.');
         }
 
         let headers = this.defaultHeaders;

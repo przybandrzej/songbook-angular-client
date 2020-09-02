@@ -14,6 +14,5 @@
 export interface CreatePlaylistDTO { 
     isPrivate: boolean;
     name?: string;
-    ownerId: number;
     songs: Array<number>;
 }

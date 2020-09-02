@@ -16,7 +16,6 @@ import { CreateCoauthorDTO } from './createCoauthorDTO';
  * Class representing a DTO for creating songs in the application.
  */
 export interface CreateSongDTO { 
-    userIdAdded: number;
     /**
      * Author's name (doesn't have to exist)
      */

@@ -197,13 +197,13 @@ export class TagResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET6(id: number, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
-    public getByIdUsingGET6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
-    public getByIdUsingGET6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
-    public getByIdUsingGET6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET5(id: number, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
+    public getByIdUsingGET5(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
+    public getByIdUsingGET5(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
+    public getByIdUsingGET5(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET6.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET5.');
         }
 
         let headers = this.defaultHeaders;

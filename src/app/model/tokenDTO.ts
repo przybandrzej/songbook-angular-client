@@ -11,7 +11,6 @@
  */
 
 
-export interface LoginForm { 
-    login?: string;
-    password?: string;
+export interface TokenDTO { 
+    idToken?: string;
 }

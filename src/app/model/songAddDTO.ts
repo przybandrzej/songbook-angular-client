@@ -11,7 +11,9 @@
  */
 
 
-export interface LoginForm { 
-    login?: string;
-    password?: string;
+export interface SongAddDTO { 
+    addedBy: number;
+    addedSong: number;
+    id: number;
+    timestamp?: Date;
 }

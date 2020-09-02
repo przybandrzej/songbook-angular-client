@@ -12,9 +12,13 @@
 
 
 export interface UserDTO { 
+    activated?: boolean;
+    email: string;
     firstName?: string;
     id: number;
+    imageUrl?: string;
     lastName?: string;
+    registrationDate?: Date;
     songs: Array<number>;
     userRoleId: number;
     username: string;

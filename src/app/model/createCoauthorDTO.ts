@@ -13,5 +13,12 @@
 
 export interface CreateCoauthorDTO { 
     authorName?: string;
-    coauthorFunction?: string;
+    coauthorFunction: CreateCoauthorDTO.CoauthorFunctionEnum;
+}
+export namespace CreateCoauthorDTO {
+    export type CoauthorFunctionEnum = 'MUSIC' | 'TEXT';
+    export const CoauthorFunctionEnum = {
+        MUSIC: 'MUSIC' as CoauthorFunctionEnum,
+        TEXT: 'TEXT' as CoauthorFunctionEnum
+    };
 }

@@ -12,7 +12,7 @@
 
 
 export interface PlaylistDTO { 
-    creationTime?: string;
+    creationTime?: Date;
     id: number;
     isPrivate: boolean;
     name: string;

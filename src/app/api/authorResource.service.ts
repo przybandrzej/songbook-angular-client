@@ -197,13 +197,13 @@ export class AuthorResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET1(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
-    public getByIdUsingGET1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
-    public getByIdUsingGET1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
-    public getByIdUsingGET1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public getByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public getByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public getByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET1.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;

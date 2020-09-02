@@ -18,9 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { LoginForm } from '../model/loginForm';
 import { PlaylistDTO } from '../model/playlistDTO';
-import { RegisterNewUserForm } from '../model/registerNewUserForm';
 import { UserDTO } from '../model/userDTO';
 import { UserSongRatingDTO } from '../model/userSongRatingDTO';
 
@@ -152,13 +150,13 @@ export class UserResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET7(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public getByIdUsingGET7(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public getByIdUsingGET7(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public getByIdUsingGET7(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET6(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
+    public getByIdUsingGET6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
+    public getByIdUsingGET6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
+    public getByIdUsingGET6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET7.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET6.');
         }
 
         let headers = this.defaultHeaders;
@@ -259,147 +257,6 @@ export class UserResourceService {
         ];
 
         return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/ratings`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * login
-     * 
-     * @param form form
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public loginUsingPOST(form: LoginForm, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public loginUsingPOST(form: LoginForm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public loginUsingPOST(form: LoginForm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public loginUsingPOST(form: LoginForm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (form === null || form === undefined) {
-            throw new Error('Required parameter form was null or undefined when calling loginUsingPOST.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<UserDTO>(`${this.basePath}/api/users/login`,
-            form,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * register
-     * 
-     * @param form form
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public registerUsingPOST(form: RegisterNewUserForm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (form === null || form === undefined) {
-            throw new Error('Required parameter form was null or undefined when calling registerUsingPOST.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<UserDTO>(`${this.basePath}/api/users/register`,
-            form,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * update
-     * 
-     * @param dto dto
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateUsingPUT6(dto: UserDTO, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public updateUsingPUT6(dto: UserDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public updateUsingPUT6(dto: UserDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public updateUsingPUT6(dto: UserDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT6.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.put<UserDTO>(`${this.basePath}/api/users`,
-            dto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

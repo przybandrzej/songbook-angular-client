@@ -11,7 +11,7 @@
  */
 
 
-export interface LoginForm { 
-    login?: string;
-    password?: string;
+export interface TokenAndPasswordDTO { 
+    newPassword?: string;
+    token?: string;
 }
