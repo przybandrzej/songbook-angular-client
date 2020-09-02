@@ -8,6 +8,7 @@ import {SongAddComponent} from './components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '**',
