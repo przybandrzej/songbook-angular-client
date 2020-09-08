@@ -1,9 +1,17 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {AuthorResourceService, SongResourceService, UserResourceService} from '../../songbook';
-import {Observable, of} from 'rxjs';
+import {
+  AuthorDTO,
+  AuthorResourceService,
+  SongCoauthorDTO,
+  SongDTO,
+  SongResourceService,
+  UserDTO,
+  UserResourceService
+} from '../../songbook';
+import {forkJoin, Observable, of} from 'rxjs';
 import {SongDetailsData} from '../../model/songDetailsData';
-import {map} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,15 +37,51 @@ export class SongResolveService implements Resolve<SongDetailsData> {
   }
 
   private loadData(songId: number): Observable<SongDetailsData> {
-    return this.songService.getByIdUsingGET4(songId).pipe(map(result => {
-      this.data.song = result;
-      this.data.editsUsers = [];
-      this.data.coauthorsAuthors = [];
-      this.userService.getByIdUsingGET6(result.addedBy.addedBy).subscribe(next => this.data.addedByUser = next);
-      result.edits.forEach(edit => this.userService.getByIdUsingGET6(edit.editedBy).subscribe(next => this.data.editsUsers.push(next)));
-      result.coauthors.forEach(coauthor => this.authorService.getByIdUsingGET(coauthor.authorId)
-        .subscribe(next => this.data.coauthorsAuthors.push({coauthor, author: next})));
-      return this.data;
-    }));
+    return this.songService.getByIdUsingGET4(songId).pipe(
+      mergeMap(result => this.expandToAddedUser(result)),
+      mergeMap(result => this.expandToEdits(result)),
+      mergeMap(result => this.expandToCoauthors(result))
+    );
+  }
+
+  private expandToAddedUser(song: SongDTO): Observable<SongDetailsData> {
+    const returned: SongDetailsData = {addedByUser: undefined, coauthorsAuthors: [], editsUsers: [], song: undefined};
+    returned.song = song;
+    return this.userService.getByIdUsingGET6(song.addedBy.addedBy).pipe(
+      map(next => {
+        returned.addedByUser = next;
+        return returned;
+      }));
+  }
+
+  private expandToEdits(songDetails: SongDetailsData): Observable<SongDetailsData> {
+    const functions: Observable<UserDTO>[] = [];
+    songDetails.song.edits.forEach(editId => functions.push(this.userService.getByIdUsingGET6(editId.editedBy)));
+    if (functions.length === 0) {
+      return of(songDetails);
+    }
+    return forkJoin(functions).pipe(
+      map(results => {
+        songDetails.editsUsers = results;
+        return songDetails;
+      }));
+  }
+
+  private expandToCoauthors(songDetails: SongDetailsData): Observable<SongDetailsData> {
+    const functions: Observable<AuthorDTO>[] = [];
+    songDetails.song.coauthors.forEach(coauthor => functions.push(this.authorService.getByIdUsingGET(coauthor.authorId)));
+    if (functions.length === 0) {
+      return of(songDetails);
+    }
+    return forkJoin(functions).pipe(
+      map(results => {
+        const coauthorsAuthors: { coauthor: SongCoauthorDTO, author: AuthorDTO }[] = [];
+        results.forEach(author => {
+          const coauthor = songDetails.song.coauthors.find(it => it.authorId === author.id);
+          coauthorsAuthors.push({coauthor, author});
+        });
+        songDetails.coauthorsAuthors = coauthorsAuthors;
+        return songDetails;
+      }));
   }
 }
