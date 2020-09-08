@@ -3,8 +3,10 @@
     <div fxLayoutAlign="start center" fxFlex="50%">
       <span class="link" style="cursor:pointer" (click)="showLandingPage()">STK Songbook</span>
     </div>
-    <div fxLayoutAlign="end center" fxFlex="50%">
-      <mat-icon class="icon_button" color="accent" (click)="logout()">power_settings_new</mat-icon>
+    <div fxLayoutAlign="end center" fxFlex="50%" fxLayout="row" fxLayoutGap="15px">
+      <button *ngIf="!isLoggedIn()" mat-raised-button color="accent" (click)="register()">Register</button>
+      <button *ngIf="!isLoggedIn()" mat-raised-button color="accent" (click)="login()">Log in</button>
+      <button *ngIf="isLoggedIn()" mat-raised-button color="accent" (click)="logout()">Log out</button>
     </div>
   </mat-toolbar>
 

@@ -38,7 +38,8 @@ const routes: Routes = [
   },
   {
     path: 'categories',
-    component: CategoriesBrowserComponent
+    component: CategoriesBrowserComponent,
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'login',

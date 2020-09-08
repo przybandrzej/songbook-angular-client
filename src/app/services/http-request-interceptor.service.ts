@@ -48,8 +48,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
     } else {
       this.openSnackBar('Something went wrong!', 'OK', 6000);
     }
-    // this.location.back();
-    return throwError(error);
+    return throwError(error).subscribe(() => this.location.back());
   }
 
   private openSnackBar(message: string, action: string, duration?: number) {
