@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {SongDTO, SongResourceService} from '../../songbook';
+import {AwaitingSongResourceService, SongDTO, SongResourceService, UserResourceService} from '../../songbook';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {FormControl} from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-songs',
@@ -12,33 +10,22 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class SongsComponent implements OnInit {
 
-  public songs: SongDTO[] = [];
+  public approvedSongs: SongDTO[] = [];
+  public awaitingSongs: SongDTO[] = [];
+  displayedColumnsAwaiting: string[] = ['author', 'title', 'added by', 'edits'];
+  displayedColumnsApproved: string[] = ['author', 'title', 'average rating', 'category'];
 
-  songFormControl: FormControl;
-
-  displayedColumns: string[] = ['author', 'title', 'average rating'];
-
-  filteredSongs: any;
-
-  constructor(private songService: SongResourceService, public router: Router, private dialog: MatDialog) {
-    this.songFormControl = new FormControl();
+  constructor(private songService: SongResourceService, private awaitingSongResourceService: AwaitingSongResourceService,
+              private userResourceService: UserResourceService, public router: Router, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.getAllSongs();
-
-    this.songFormControl.valueChanges.pipe(
-      startWith(null as string),
-      map(value => this.filterSongs(value)))
-      .subscribe(songsFiltered => {
-        this.filteredSongs = songsFiltered;
-      });
   }
 
   private getAllSongs() {
-    this.songService.getAllUsingGET4().subscribe(next => {
-      this.songs = next;
-    });
+    this.songService.getAllUsingGET4().subscribe(next => this.approvedSongs = next);
+    this.awaitingSongResourceService.getAllUsingGET1().subscribe(next => this.awaitingSongs = next);
   }
 
   openSongDetails(songId: number) {
@@ -47,25 +34,6 @@ export class SongsComponent implements OnInit {
 
   addSong() {
     this.router.navigateByUrl('add-song');
-  }
-
-  filterSongs(val: string): SongDTO[] {
-    let filtered: Array<SongDTO> = [];
-    filtered = filtered.concat(this.songs.filter(song => song.title.toLocaleLowerCase().includes(val, 0)));
-    filtered = filtered.concat(this.songs.filter(song => song.author.name.toLocaleLowerCase().includes(val, 0)));
-    filtered = filtered.concat(this.songs.filter(song => song.category.name.toLocaleLowerCase().includes(val, 0)));
-    filtered = filtered.concat(this.songs.filter(song => {
-      for (const tag of song.tags) {
-        if (tag.name.toLocaleLowerCase().includes(val, 0)) {
-          return true;
-        }
-      }
-      return false;
-    }));
-    filtered = filtered.concat(this.songs.filter(song => song.lyrics.toLocaleLowerCase().includes(val, 0)));
-    filtered = filtered.concat(this.songs.filter(song => song.trivia.toLocaleLowerCase().includes(val, 0)));
-    filtered = [...new Set(filtered)];
-    return filtered;
   }
 
   navToSong(id: number) {
