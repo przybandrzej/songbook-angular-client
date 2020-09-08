@@ -5,13 +5,14 @@ import {Router} from '@angular/router';
 import {LoginService} from './login.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {tap} from 'rxjs/operators';
+import {Location} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpRequestInterceptorService implements HttpInterceptor {
 
-  constructor(private loginService: LoginService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private loginService: LoginService, private router: Router, private snackBar: MatSnackBar, private location: Location) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -47,7 +48,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
     } else {
       this.openSnackBar('Something went wrong!', 'OK', 6000);
     }
-    return throwError(error);
+    return throwError(error).subscribe(() => this.location.back());
   }
 
   private openSnackBar(message: string, action: string, duration?: number) {

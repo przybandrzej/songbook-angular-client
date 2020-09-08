@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthorResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SongDetailsData} from '../../model/songDetailsData';
+import {SongResourceService} from '../../songbook';
 
 @Component({
   selector: 'app-song-details',
@@ -9,58 +10,22 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SongDetailsComponent implements OnInit {
 
-  songId: number;
-  song: SongDTO = {
-    author: {
-      id: -1,
-      name: ''
-    },
-    averageRating: 0,
-    category: {
-      id: -1,
-      name: ''
-    },
-    coauthors: [],
-    edits: [],
-    addedBy: null,
-    guitarTabs: '',
-    id: -1,
-    lyrics: '',
-    tags: [],
-    title: '',
-    trivia: ''
-  };
+  data: SongDetailsData;
 
-  coauthors = [];
-
-  constructor(private songService: SongResourceService, private authorService: AuthorResourceService,
-              private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService) {
   }
 
   ngOnInit(): void {
-    this.songId = +this.route.snapshot.paramMap.get('id');
-    this.songService.getByIdUsingGET4(this.songId).subscribe(res => {
-      this.song = res;
-      this.getCoauthors();
-    });
-  }
-
-  getCoauthors() {
-    for (const coauthor of this.song.coauthors) {
-      this.authorService.getByIdUsingGET(coauthor.authorId).subscribe(res => this.coauthors.push({
-        name: res.name,
-        coauthorFunction: coauthor.coauthorFunction
-      }));
-    }
+    this.data = this.route.snapshot.data.data;
   }
 
   editSong() {
-    this.router.navigateByUrl('edit-song/' + this.songId);
+    this.router.navigateByUrl('edit-song/' + this.data.song.id);
   }
 
   deleteSong() {
-    if (this.songId > 0) {
-      this.songService.deleteUsingDELETE4(this.songId).subscribe();
+    if (this.data) {
+      this.songService.deleteUsingDELETE4(this.data.song.id).subscribe();
       this.router.navigateByUrl('songs');
     }
   }

@@ -1,5 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthorDTO, AuthorResourceService, CategoryDTO, CategoryResourceService, SongCoauthorDTO, SongDTO, SongResourceService} from '../../songbook';
+import {
+  AuthorDTO,
+  AuthorResourceService,
+  CategoryDTO,
+  CategoryResourceService,
+  SongCoauthorDTO,
+  SongDTO,
+  SongResourceService,
+  TagDTO
+} from '../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -100,5 +109,17 @@ export class SongEditComponent implements OnInit {
         return author.name;
       }
     }
+  }
+
+  removeTag(tag: TagDTO) {
+    const index = this.song.tags.indexOf(tag);
+    if (index > -1) {
+      this.song.tags.splice(index, 1);
+    }
+    this.saveSong();
+  }
+
+  approveSong() {
+    this.songService.approveSongUsingPUT(this.song).subscribe(res => this.song = res);
   }
 }

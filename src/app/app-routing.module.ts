@@ -9,6 +9,7 @@ import {CategoriesBrowserComponent} from './components/categories-browser/catego
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
+import {SongResolveService} from './services/resolve/song-resolve.service';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   },
   {
     path: 'song/:id',
-    component: SongDetailsComponent
+    component: SongDetailsComponent,
+    resolve: {data: SongResolveService}
   },
   {
     path: 'edit-song/:id',
@@ -36,7 +38,8 @@ const routes: Routes = [
   },
   {
     path: 'categories',
-    component: CategoriesBrowserComponent
+    component: CategoriesBrowserComponent,
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'login',
