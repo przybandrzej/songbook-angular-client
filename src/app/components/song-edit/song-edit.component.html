@@ -1,10 +1,17 @@
-<mat-toolbar fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" color="primary">
-  <button mat-mini-fab color="accent" (click)="saveSong()">
-    <mat-icon>save_outline</mat-icon>
-  </button>
-  <button mat-mini-fab color="accent" (click)="cancel()">
-    <mat-icon>cancel</mat-icon>
-  </button>
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary">
+  <div>
+    <button *ngIf="song.isAwaiting" (click)="approveSong()" mat-mini-fab color="accent" matTooltip="Approve the song">
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+  <div fxLayoutGap="15px" fxLayout="row">
+    <button mat-mini-fab color="accent" (click)="saveSong()" matTooltip="Save the song">
+      <mat-icon>save_outline</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent" (click)="cancel()" matTooltip="Cancel">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
 <!-- Title, category and author -->
@@ -118,7 +125,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-button color="accent" (click)="addCouathor()">Add coauthor</button>
+            <button mat-button color="accent" (click)="addCouathor()" matTooltip="Add coauthor">Add coauthor</button>
           </mat-card-content>
         </mat-card>
 
@@ -126,7 +133,7 @@
           <ul>
             <li *ngFor="let coauthor of coauthorsToAdd" fxLayout="row">
               <div fxLayoutAlign="start center">{{coauthor.coauthorFunction}}: {{getCoauthorName(coauthor.authorId)}}</div>
-              <button mat-button color="accent" (click)="removeCoauthor(coauthor)">remove</button>
+              <button mat-button color="accent" (click)="removeCoauthor(coauthor)" matTooltip="Remove coauthor">remove</button>
             </li>
           </ul>
         </div>
@@ -143,8 +150,9 @@
       <div fxLayout="column">
         <div>
           <ul>
-            <li *ngFor="let tag of song.tags" fxLayout="row">
+            <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
               <div fxLayoutAlign="start center">#{{tag.name}}</div>
+              <mat-icon (click)="removeTag(tag)" matTooltip="Remove tag">cancel</mat-icon>
               </li>
           </ul>
         </div>

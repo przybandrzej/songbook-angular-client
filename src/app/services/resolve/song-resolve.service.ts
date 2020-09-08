@@ -5,6 +5,7 @@ import {
   AuthorResourceService,
   SongCoauthorDTO,
   SongDTO,
+  SongEditDTO,
   SongResourceService,
   UserDTO,
   UserResourceService
@@ -62,7 +63,12 @@ export class SongResolveService implements Resolve<SongDetailsData> {
     }
     return forkJoin(functions).pipe(
       map(results => {
-        songDetails.editsUsers = results;
+        const edits: { edit: SongEditDTO, user: UserDTO }[] = [];
+        results.forEach(user => {
+          const edit = songDetails.song.edits.find(it => it.editedBy === user.id);
+          edits.push({edit, user});
+        });
+        songDetails.editsUsers = edits;
         return songDetails;
       }));
   }

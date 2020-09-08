@@ -1,14 +1,14 @@
 <mat-toolbar fxLayout="row" color="primary">
   <div fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="50%">
-    <button mat-mini-fab color="accent" (click)="close()">
+    <button mat-mini-fab color="accent" (click)="close()" matTooltip="Close">
       <mat-icon>cancel</mat-icon>
     </button>
   </div>
   <div fxLayoutAlign="end center" fxLayoutGap="15px" fxFlex="50%">
-    <button mat-mini-fab color="accent" (click)="editSong()">
+    <button mat-mini-fab color="accent" (click)="editSong()" matTooltip="Edit the song">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-mini-fab color="accent" (click)="deleteSong()">
+    <button mat-mini-fab color="accent" (click)="deleteSong()" matTooltip="Delete the song">
       <mat-icon>remove_circle_outline</mat-icon>
     </button>
   </div>
@@ -34,20 +34,25 @@
   <div fxLayout="row">
 
     <mat-card fxFlex="50%">
-      <mat-card-content fxLayout="column">
+      <mat-card-content fxLayout="column" fxLayoutAlign="space-evenly start">
         <div>Category: {{data.song.category.name}}</div>
         <div>Average rating: {{data.song.averageRating}}</div>
-        <pre fxLayout="row">Tags: <div *ngFor="let tag of data.song.tags">#{{tag.name}} </div></pre>
-        <mat-card *ngIf="data.coauthorsAuthors.length > 0">
-          <mat-card-content>
+        <div fxLayout="row">Tags: <div *ngFor="let tag of data.song.tags">#{{tag.name}} </div></div>
+        <div *ngIf="data.coauthorsAuthors.length > 0">
             Coauthors:
-            <ul>
-              <li *ngFor="let coauthor of data.coauthorsAuthors">
+              <div *ngFor="let coauthor of data.coauthorsAuthors">
                 {{coauthor.coauthor.coauthorFunction}}: {{coauthor.author.name}}
-              </li>
-            </ul>
-          </mat-card-content>
-        </mat-card>
+              </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="space-around start">
+          <div>
+            <div>Added: {{data.song.addedBy.timestamp}} by {{data.addedByUser.username}}</div>
+          </div>
+          <div>
+            <div>Edits:</div>
+            <div *ngFor="let edit of data.editsUsers">{{edit.user.username}} - {{edit.edit.timestamp}}</div>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
 
@@ -62,9 +67,4 @@
 
   </div>
 
-  <mat-card fxLayout="row">
-    <mat-card-content>
-      <div>Added: {{data.song.addedBy.timestamp}}</div>
-    </mat-card-content>
-  </mat-card>
 </mat-card>
