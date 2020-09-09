@@ -58,6 +58,9 @@ import {CategoriesBrowserComponent} from './components/categories-browser/catego
 import {LoginComponent} from './components/login/login.component';
 import {HttpRequestInterceptorService} from './services/http-request-interceptor.service';
 import { RegisterComponent } from './components/register/register.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserSongsComponent } from './components/user-songs/user-songs.component';
+import { UserProfilePanelComponent } from './components/user-profile-panel/user-profile-panel.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -73,7 +76,10 @@ export function getAPIConfiguration() {
     SongAddComponent,
     CategoriesBrowserComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserProfileComponent,
+    UserSongsComponent,
+    UserProfilePanelComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

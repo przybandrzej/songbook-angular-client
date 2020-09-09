@@ -13,7 +13,7 @@ export class LoginService {
     return 'id_token' + environment.version;
   }
 
-  constructor(private loginService: AuthenticationResourceService, private modelProvider: ModelProviderService, private router: Router) {
+  constructor(private authService: AuthenticationResourceService, private modelProvider: ModelProviderService, private router: Router) {
   }
 
   login() {
@@ -21,7 +21,7 @@ export class LoginService {
       return;
     }
     const loginForm: LoginForm = {password: this.modelProvider.password, login: this.modelProvider.login};
-    this.loginService.authenticateUsingPOST(loginForm).subscribe(observer => {
+    this.authService.authenticateUsingPOST(loginForm).subscribe(observer => {
         console.log(observer);
         console.log('Token: ' + observer.idToken);
         if (observer.idToken) {
