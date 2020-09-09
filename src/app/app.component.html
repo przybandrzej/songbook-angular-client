@@ -6,6 +6,10 @@
     <div fxLayoutAlign="end center" fxFlex="50%" fxLayout="row" fxLayoutGap="15px">
       <button *ngIf="!isLoggedIn()" mat-raised-button color="accent" (click)="register()">Register</button>
       <button *ngIf="!isLoggedIn()" mat-raised-button color="accent" (click)="login()">Log in</button>
+      <div *ngIf="isLoggedIn()" (click)="getProfile()" fxLayout="row" fxLayoutGap="8px">
+        <div [style.background-image]="profileImg()"></div>
+        <div>{{username()}}</div>
+      </div>
       <button *ngIf="isLoggedIn()" mat-raised-button color="accent" (click)="logout()">Log out</button>
     </div>
   </mat-toolbar>

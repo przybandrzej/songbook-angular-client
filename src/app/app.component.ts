@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {LoginService} from './services/login.service';
+import {AuthenticationResourceService, UserDTO} from './songbook';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,10 @@ import {LoginService} from './services/login.service';
 export class AppComponent {
   title = 'songbook-angular-client';
 
-  constructor(private router: Router, private loginService: LoginService) {
+  user: UserDTO;
+
+  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationResourceService) {
+    this.authService.getAccountUsingGET().subscribe(res => this.user = res);
   }
 
   logout() {
@@ -31,5 +35,21 @@ export class AppComponent {
 
   login() {
     this.router.navigateByUrl('login');
+  }
+
+  getProfile() {
+    this.router.navigateByUrl('profile');
+  }
+
+  profileImg() {
+    if (this.user) {
+      return this.user.imageUrl;
+    } else {
+      return '';
+    }
+  }
+
+  username() {
+    return this.user ? this.user.username : '';
   }
 }
