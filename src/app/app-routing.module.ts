@@ -7,9 +7,11 @@ import {SongEditComponent} from './components/song-edit/song-edit.component';
 import {SongAddComponent} from './components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
-import {LoginComponent} from './components/login/login.component';
-import {RegisterComponent} from './components/register/register.component';
+import {LoginComponent} from './components/utils/login/login.component';
+import {RegisterComponent} from './components/utils/register/register.component';
 import {SongResolveService} from './services/resolve/song-resolve.service';
+import {UserProfileComponent} from './components/user-profile/user-profile.component';
+import {UserResolveService} from './services/resolve/user-resolve.service';
 
 
 const routes: Routes = [
@@ -48,6 +50,12 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'profile',
+    component: UserProfileComponent,
+    resolve: {data: UserResolveService},
+    canActivate: [AuthenticationGuard]
   },
   {
     path: '**',

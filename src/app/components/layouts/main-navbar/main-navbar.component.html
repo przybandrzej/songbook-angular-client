@@ -1,0 +1,14 @@
+<mat-toolbar fxLayout fxFlex="0 0 auto" class="stick mat-elevation-z6 app-navbar" color="primary" fxLayoutGap="15px">
+  <div fxLayoutAlign="start center" fxFlex="50%">
+    <span class="link" (click)="showLandingPage()">{{siteName}}</span>
+  </div>
+  <div fxLayoutAlign="end center" fxFlex="50%" fxLayout="row" fxLayoutGap="15px">
+    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()">Register</button>
+    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()">Log in</button>
+    <div class="link" *ngIf="loggedIn" (click)="expandUserMenu()" fxLayout="row" fxLayoutGap="8px">
+      <div>{{username}}</div>
+      <div class="avatar-placeholder" [style.background-image]="profileImgUrl"></div>
+    </div>
+    <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout($event)">Log out</button>
+  </div>
+</mat-toolbar>

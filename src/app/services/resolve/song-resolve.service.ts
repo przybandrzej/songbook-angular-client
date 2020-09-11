@@ -11,7 +11,7 @@ import {
   UserResourceService
 } from '../../songbook';
 import {forkJoin, Observable, of} from 'rxjs';
-import {SongDetailsData} from '../../model/songDetailsData';
+import {SongDetailsData} from '../../model/song-details-data';
 import {map, mergeMap} from 'rxjs/operators';
 
 @Injectable({
