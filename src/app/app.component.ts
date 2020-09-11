@@ -52,4 +52,12 @@ export class AppComponent {
   username() {
     return this.user ? this.user.username : '';
   }
+
+  showContact() {
+
+  }
+
+  showStk() {
+
+  }
 }

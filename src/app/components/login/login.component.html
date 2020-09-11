@@ -1,11 +1,10 @@
-<div fxLayout="column">
-
-  <div fxFlex="30%">
+<div fxLayout="column" fxFlex="100%" fxLayoutAlign="center center">
+  <div fxFlex="50%">
     <div fxLayout>
       <div fxFlex="30%" fxFlex.lt-lg="0px"></div>
       <div fxFlex="5%"></div>
       <form #UserLogin="ngForm" fxFlex="30%" fxFlex.lt-lg="90%" (ngSubmit)="login()">
-        <mat-card>
+        <mat-card fxLayoutAlign="space-evenly stretch" fxLayout="column">
           <mat-card-content fxLayout="column">
             <mat-form-field>
               <input name="username" matInput placeholder="Username or email" [(ngModel)]="modelProvider.login">
@@ -14,7 +13,9 @@
               <input name="password" matInput type="password" placeholder="Password" [(ngModel)]="modelProvider.password">
             </mat-form-field>
           </mat-card-content>
-          <button type="submit" mat-raised-button color="accent">Login</button>
+          <div fxLayoutAlign="center center">
+            <button type="submit" mat-raised-button color="accent">Login</button>
+          </div>
         </mat-card>
       </form>
       <div fxFlex="5%"></div>
