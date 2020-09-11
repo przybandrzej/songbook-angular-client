@@ -55,14 +55,20 @@ import {SongDetailsComponent} from './components/song-details/song-details.compo
 import {SongEditComponent} from './components/song-edit/song-edit.component';
 import {SongAddComponent} from './components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
-import {LoginComponent} from './components/login/login.component';
 import {HttpRequestInterceptorService} from './services/http-request-interceptor.service';
-import { RegisterComponent } from './components/register/register.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { UserSongsComponent } from './components/user-songs/user-songs.component';
-import { UserProfilePanelComponent } from './components/user-profile-panel/user-profile-panel.component';
-import { UserPlaylistPanelComponent } from './components/user-playlist-panel/user-playlist-panel.component';
-import { UserSongsPanelComponent } from './components/user-songs-panel/user-songs-panel.component';
+import {UserProfileComponent} from './components/user-profile/user-profile.component';
+import {UserSongsComponent} from './components/user-songs/user-songs.component';
+import {UserProfilePanelComponent} from './components/user-profile-panel/user-profile-panel.component';
+import {UserPlaylistPanelComponent} from './components/user-playlist-panel/user-playlist-panel.component';
+import {UserSongsPanelComponent} from './components/user-songs-panel/user-songs-panel.component';
+import {SongSearchComponent} from './components/song-search/song-search.component';
+import {LeftNavBarComponent} from './components/layouts/left-nav-bar/left-nav-bar.component';
+import {SearchBarComponent} from './components/utils/search-bar/search-bar.component';
+import {UserFaceMenuComponent} from './components/layouts/user-face-menu/user-face-menu.component';
+import {MainNavbarComponent} from './components/layouts/main-navbar/main-navbar.component';
+import {FooterComponent} from './components/layouts/footer/footer.component';
+import {LoginComponent} from './components/utils/login/login.component';
+import {RegisterComponent} from './components/utils/register/register.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -83,7 +89,13 @@ export function getAPIConfiguration() {
     UserSongsComponent,
     UserProfilePanelComponent,
     UserPlaylistPanelComponent,
-    UserSongsPanelComponent
+    UserSongsPanelComponent,
+    SongSearchComponent,
+    LeftNavBarComponent,
+    SearchBarComponent,
+    UserFaceMenuComponent,
+    MainNavbarComponent,
+    FooterComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

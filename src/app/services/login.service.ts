@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ModelProviderService} from './model-provider.service';
 import {Router} from '@angular/router';
-import {AuthenticationResourceService, LoginForm} from '../songbook';
+import {AuthenticationResourceService, LoginForm, UserDTO} from '../songbook';
 import {environment} from '../../environments/environment';
+import {AsyncSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,6 @@ export class LoginService {
     }
     const loginForm: LoginForm = {password: this.modelProvider.password, login: this.modelProvider.login};
     this.authService.authenticateUsingPOST(loginForm).subscribe(observer => {
-        console.log(observer);
-        console.log('Token: ' + observer.idToken);
         if (observer.idToken) {
           localStorage.setItem(LoginService.getTokenName(), observer.idToken);
           this.modelProvider.password = null;
@@ -43,6 +42,7 @@ export class LoginService {
     this.router.navigateByUrl('login');
   }
 
+  // todo should check on the server if it's valid
   isLoggedIn(): boolean {
     return localStorage.getItem(LoginService.getTokenName()) != null;
   }

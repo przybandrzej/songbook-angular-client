@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationResourceService, RegisterNewUserForm} from '../../songbook';
+import {AuthenticationResourceService, RegisterNewUserForm} from '../../../songbook';
 import {Router} from '@angular/router';
 
 @Component({

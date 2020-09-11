@@ -1,63 +1,30 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from './services/login.service';
 import {AuthenticationResourceService, UserDTO} from './songbook';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'songbook-angular-client';
 
-  user: UserDTO;
+  userObservable: Observable<UserDTO>;
 
-  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationResourceService) {
-    this.authService.getAccountUsingGET().subscribe(res => this.user = res);
+  constructor(private loginService: LoginService, private authService: AuthenticationResourceService) {
+  }
+
+  ngOnInit(): void {
+    this.userObservable = this.authService.getAccountUsingGET();
   }
 
   logout() {
     this.loginService.logout();
   }
 
-  showLandingPage() {
-    this.router.navigateByUrl('');
-  }
-
   isLoggedIn() {
     return this.loginService.isLoggedIn();
-  }
-
-  register() {
-    this.router.navigateByUrl('register');
-  }
-
-  login() {
-    this.router.navigateByUrl('login');
-  }
-
-  getProfile() {
-    this.router.navigateByUrl('profile');
-  }
-
-  profileImg() {
-    if (this.user) {
-      return this.user.imageUrl;
-    } else {
-      return '';
-    }
-  }
-
-  username() {
-    return this.user ? this.user.username : '';
-  }
-
-  showContact() {
-
-  }
-
-  showStk() {
-
   }
 }
