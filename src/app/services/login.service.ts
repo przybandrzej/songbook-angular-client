@@ -5,6 +5,7 @@ import {AuthenticationResourceService, LoginForm, UserDTO} from '../songbook';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {Role} from '../model/user-role';
 
 @Injectable({
   providedIn: 'root'
@@ -89,5 +90,28 @@ export class LoginService {
   private setLoggedUser(user: UserDTO) {
     this.user = user;
     this.userSubject.next(this.user);
+  }
+
+  public getUserRole(): string {
+    if (this.getToken()) {
+      return JSON.parse(atob(this.getToken().split('.')[1])).auth;
+    }
+    return undefined;
+  }
+
+  public isSuperuser(): boolean {
+    return this.hasRole(Role.Superuser);
+  }
+
+  public isAdmin(): boolean {
+    return this.hasRole(Role.Admin) || this.isSuperuser();
+  }
+
+  public isModerator(): boolean {
+    return this.hasRole(Role.Moderator) || this.isAdmin();
+  }
+
+  private hasRole(role: Role): boolean {
+    return this.getUserRole() === role;
   }
 }
