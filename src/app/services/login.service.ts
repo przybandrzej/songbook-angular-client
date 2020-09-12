@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {ModelProviderService} from './model-provider.service';
 import {Router} from '@angular/router';
 import {AuthenticationResourceService, LoginForm, UserDTO} from '../songbook';
 import {environment} from '../../environments/environment';
@@ -20,7 +19,7 @@ export class LoginService {
     return 'id_token' + environment.version;
   }
 
-  constructor(private authService: AuthenticationResourceService, private modelProvider: ModelProviderService, private router: Router) {
+  constructor(private authService: AuthenticationResourceService, private router: Router) {
     this.userSubject = new BehaviorSubject<UserDTO>(this.user);
     this.userObservable = this.userSubject.asObservable();
   }
@@ -29,18 +28,17 @@ export class LoginService {
     return this.userSubject.value;
   }
 
-  login() {
-    if (this.modelProvider.login == null || this.modelProvider.password == null) {
+  login(login: string, password: string, requestedUrl: string) {
+    if (login == null || password == null) {
       return;
     }
-    const loginForm: LoginForm = {password: this.modelProvider.password, login: this.modelProvider.login};
+    const loginForm: LoginForm = {login, password};
     this.authService.authenticateUsingPOST(loginForm).subscribe(observer => {
         if (observer.idToken) {
           localStorage.setItem(LoginService.getTokenName(), observer.idToken);
-          this.modelProvider.password = null;
           this.fetchUser(this.setLoggedUser);
-          if (this.modelProvider.requestedUrl != null) {
-            this.router.navigateByUrl(this.modelProvider.requestedUrl);
+          if (requestedUrl != null) {
+            this.router.navigateByUrl(requestedUrl);
           } else {
             this.router.navigateByUrl('/');
           }
@@ -51,7 +49,6 @@ export class LoginService {
 
   logout() {
     localStorage.removeItem(LoginService.getTokenName());
-    this.modelProvider.login = null;
     this.user = null;
     this.userSubject.next(null);
     this.router.navigateByUrl('login');

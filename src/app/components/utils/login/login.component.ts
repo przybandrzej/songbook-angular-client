@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ModelProviderService} from '../../../services/model-provider.service';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../../services/login.service';
+import {LoginForm} from '../../../songbook';
 
 @Component({
   selector: 'app-login-page',
@@ -9,13 +9,16 @@ import {LoginService} from '../../../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginService: LoginService, public modelProvider: ModelProviderService) { }
+  form: LoginForm = {};
+
+  constructor(private loginService: LoginService) {
+  }
 
   ngOnInit() {
   }
 
   login() {
-    this.loginService.login();
+    this.loginService.login(this.form.login, this.form.password, undefined);
   }
 
 }

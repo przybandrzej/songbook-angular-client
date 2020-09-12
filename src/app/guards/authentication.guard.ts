@@ -3,7 +3,6 @@ import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from 
 import {Observable} from 'rxjs';
 import {LoginService} from '../services/login.service';
 import {Location} from '@angular/common';
-import {Role} from '../model/user-role';
 
 @Injectable({
   providedIn: 'root'
