@@ -38,6 +38,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
       if (error.status >= 400 && error.status < 500) {
         if (error.status === 401) {
           alert('You are unauthorized to this resource!');
+          return this.location.back();
         }
         this.openSnackBar(message, 'OK');
       } else if (error.status >= 500 && error.status < 600) {

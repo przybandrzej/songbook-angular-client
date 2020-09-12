@@ -12,6 +12,7 @@ import {RegisterComponent} from './components/utils/register/register.component'
 import {SongResolveService} from './services/resolve/song-resolve.service';
 import {UserProfileComponent} from './components/user-profile/user-profile.component';
 import {UserResolveService} from './services/resolve/user-resolve.service';
+import {Role} from './model/user-role';
 
 
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
   {
     path: 'categories',
     component: CategoriesBrowserComponent,
-    canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard],
+    data: { roles: [Role.Admin, Role.Moderator, Role.Superuser] }
   },
   {
     path: 'login',
