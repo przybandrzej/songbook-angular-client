@@ -72,6 +72,7 @@ import {RegisterComponent} from './components/utils/register/register.component'
 import {AuthService} from './services/auth.service';
 import { ActivateComponent } from './components/account/activate/activate.component';
 import { PasswordResetComponent } from './components/account/password-reset/password-reset.component';
+import { PasswordResetRequestComponent } from './components/account/password-reset-request/password-reset-request.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -100,7 +101,8 @@ export function getAPIConfiguration() {
     MainNavbarComponent,
     FooterComponent,
     ActivateComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    PasswordResetRequestComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

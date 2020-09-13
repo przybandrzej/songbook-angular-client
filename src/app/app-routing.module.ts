@@ -16,6 +16,7 @@ import {Role} from './model/user-role';
 import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 import {ActivateComponent} from './components/account/activate/activate.component';
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
+import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
 
 
 const routes: Routes = [
@@ -71,6 +72,10 @@ const routes: Routes = [
   {
     path: 'password-reset',
     component: PasswordResetComponent
+  },
+  {
+    path: 'password-reset-request',
+    component: PasswordResetRequestComponent
   },
   {
     path: '**',
