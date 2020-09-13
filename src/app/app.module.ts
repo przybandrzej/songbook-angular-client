@@ -69,6 +69,7 @@ import {MainNavbarComponent} from './components/layouts/main-navbar/main-navbar.
 import {FooterComponent} from './components/layouts/footer/footer.component';
 import {LoginComponent} from './components/utils/login/login.component';
 import {RegisterComponent} from './components/utils/register/register.component';
+import {AuthService} from './services/auth.service';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -147,11 +148,12 @@ export function getAPIConfiguration() {
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [LoginComponent, {
+  providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: HttpRequestInterceptorService,
     multi: true,
-  }],
+  },
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

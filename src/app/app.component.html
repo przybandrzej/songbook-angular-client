@@ -1,5 +1,5 @@
 <div class="page" fxLayout="column" fxLayoutGap="25px" [style.height]="'100%'">
-  <app-main-navbar [userObservable]="userObservable" [loggedIn]="isLoggedIn()" (logOutEvent)="logout()"></app-main-navbar>
+  <app-main-navbar></app-main-navbar>
 
   <div fxFlex="grow">
     <router-outlet></router-outlet>

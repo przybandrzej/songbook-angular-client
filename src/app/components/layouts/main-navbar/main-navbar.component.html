@@ -9,6 +9,6 @@
       <div>{{username}}</div>
       <div class="avatar-placeholder" [style.background-image]="profileImgUrl"></div>
     </div>
-    <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout($event)">Log out</button>
+    <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()">Log out</button>
   </div>
 </mat-toolbar>

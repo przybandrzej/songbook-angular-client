@@ -291,9 +291,9 @@ export class AuthenticationResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public isAuthenticatedUsingGET(observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public isAuthenticatedUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public isAuthenticatedUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public isAuthenticatedUsingGET(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public isAuthenticatedUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public isAuthenticatedUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
     public isAuthenticatedUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -311,7 +311,7 @@ export class AuthenticationResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<string>(`${this.basePath}/api/authenticate`,
+        return this.httpClient.get<boolean>(`${this.basePath}/api/is-authenticated`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

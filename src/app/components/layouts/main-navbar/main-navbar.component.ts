@@ -1,37 +1,46 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {UserDTO} from '../../../songbook';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-main-navbar',
   templateUrl: './main-navbar.component.html',
   styleUrls: ['./main-navbar.component.scss']
 })
-export class MainNavbarComponent implements OnInit {
+export class MainNavbarComponent implements OnInit, OnDestroy {
 
-  @Input()
-  userObservable: Observable<UserDTO>;
-  @Input()
+  user: UserDTO;
   loggedIn: boolean;
-  @Output()
-  logOutEvent = new EventEmitter();
 
   username = '';
   profileImgUrl = '';
   siteName = environment.applicationName;
-  private userId: number;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.userObservable.subscribe(user => {
-      this.username = user.username;
-      this.profileImgUrl = user.imageUrl;
-      this.userId = user.id;
+    this.authService.loggedIn.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
+      if (loggedIn) {
+        this.authService.user.subscribe(user => {
+          this.user = user;
+          if (user) {
+            this.username = user.username;
+            this.profileImgUrl = user.imageUrl;
+          } else {
+            this.username = '';
+            this.profileImgUrl = '';
+          }
+        });
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   showLandingPage() {
@@ -50,7 +59,7 @@ export class MainNavbarComponent implements OnInit {
 
   }
 
-  logout(event) {
-    this.logOutEvent.emit(event);
+  logout() {
+    this.authService.logout();
   }
 }

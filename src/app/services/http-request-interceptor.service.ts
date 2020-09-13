@@ -1,18 +1,18 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {from, Observable, throwError} from 'rxjs';
 import {Router} from '@angular/router';
-import {LoginService} from './login.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {tap} from 'rxjs/operators';
 import {Location} from '@angular/common';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpRequestInterceptorService implements HttpInterceptor {
 
-  constructor(private loginService: LoginService, private router: Router, private snackBar: MatSnackBar, private location: Location) {
+  constructor(private injector: Injector, private router: Router, private snackBar: MatSnackBar, private location: Location) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -21,7 +21,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
   }
 
   private addToken(req: HttpRequest<any>): HttpRequest<any> {
-    const token = this.loginService.getToken();
+    const token = AuthService.getToken();
     return req.clone({headers: req.headers.set('Authorization', 'Bearer ' + token)});
   }
 
@@ -37,8 +37,9 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
       const message = error.message + '. ' + error.error.message;
       if (error.status >= 400 && error.status < 500) {
         if (error.status === 401) {
-          alert('You are unauthorized to this resource!');
-          return this.location.back();
+          this.injector.get(AuthService).setLoggedOut();
+          console.log('You are logged out');
+          this.router.navigateByUrl('login');
         }
         this.openSnackBar(message, 'OK');
       } else if (error.status >= 500 && error.status < 600) {
