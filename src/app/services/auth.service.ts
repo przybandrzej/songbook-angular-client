@@ -13,9 +13,9 @@ const TOKEN_NAME = 'id_token' + environment.version;
 export class AuthService {
 
   private loggedInSubject: ReplaySubject<boolean>;
-  private loggedIn$: Observable<boolean>;
+  private readonly loggedIn$: Observable<boolean>;
   private userSubject: ReplaySubject<UserDTO>;
-  private user$: Observable<UserDTO>;
+  private readonly user$: Observable<UserDTO>;
   private lastUser: UserDTO;
 
   private counterSubscription: Subscription;
