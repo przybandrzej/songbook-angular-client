@@ -13,6 +13,7 @@ import {SongResolveService} from './services/resolve/song-resolve.service';
 import {UserProfileComponent} from './components/user-profile/user-profile.component';
 import {UserResolveService} from './services/resolve/user-resolve.service';
 import {Role} from './model/user-role';
+import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 
 
 const routes: Routes = [
@@ -47,11 +48,13 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [NotLoggedInGuard]
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [NotLoggedInGuard]
   },
   {
     path: 'profile',
