@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Role} from '../model/user-role';
 import {environment} from '../../environments/environment';
 import {Observable, ReplaySubject, Subscription} from 'rxjs';
-import {AuthenticationResourceService, LoginForm, UserDTO} from '../songbook';
+import {AuthenticationResourceService, LoginForm, PasswordChangeDTO, TokenAndPasswordDTO, UserDTO} from '../songbook';
 import {Router} from '@angular/router';
 
 const TOKEN_NAME = 'id_token' + environment.version;
@@ -69,6 +69,25 @@ export class AuthService {
   public logout(): void {
     this.setLoggedOut();
     this.router.navigateByUrl('login');
+  }
+
+  // todo validate?
+  public requestResetPassword(mail: string): void {
+    this.authService.requestPasswordResetUsingPOST(mail).subscribe();
+  }
+
+  // todo validate?
+  public completePasswordReset(passReset: TokenAndPasswordDTO): void {
+    this.authService.finishPasswordResetUsingPOST(passReset).subscribe();
+  }
+
+  // todo validate?
+  public changePassword(passChange: PasswordChangeDTO): void {
+    this.authService.changePasswordUsingPOST(passChange).subscribe();
+  }
+
+  public activateAccount(activationKey: string): void {
+    this.authService.activateAccountUsingGET(activationKey).subscribe();
   }
 
   public get loggedIn(): Observable<boolean> {
