@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SongDetailsData} from '../../model/song-details-data';
-import {SongResourceService} from '../../songbook';
+import {SongDetailsData} from '../../../model/song-details-data';
+import {SongResourceService} from '../../../songbook';
 
 @Component({
   selector: 'app-song-details',

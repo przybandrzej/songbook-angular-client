@@ -8,7 +8,7 @@ import {
   SongDTO,
   SongResourceService,
   TagDTO
-} from '../../songbook';
+} from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

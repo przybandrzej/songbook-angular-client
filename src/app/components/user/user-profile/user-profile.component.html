@@ -10,12 +10,12 @@
     </div>
   </div>
   <div fxLayoutAlign="space-around center" fxLayout="row" fxLayoutGap="15px" [style.height]="'100%'">
-    <div [style.height]="'100%'">Profile</div>
-    <div>Songs</div>
-    <div>Playlists</div>
-    <div>Added songs</div>
-    <div>Edited songs</div>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 0">Profile</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 1">Songs</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 2">Playlists</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 3">Added songs</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 4">Edited songs</button>
   </div>
 </mat-toolbar>
 
-<app-user-profile-panel [user]="data.user" [roleName]="data.role.name"></app-user-profile-panel>
+<app-user-profile-panel *ngIf="openTab === 0" [user]="data.user" [roleName]="data.role.name" (resetPassword)="resetPassword()"></app-user-profile-panel>

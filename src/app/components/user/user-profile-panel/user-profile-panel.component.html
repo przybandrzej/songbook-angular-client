@@ -5,7 +5,7 @@
   </mat-card-header>
   <mat-card-content fxLayoutAlign="start start" fxLayoutGap="10px" fxLayout="row">
 
-    <div fxLayout="column" fxLayoutAlign="space-around start">
+    <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="10px">
       <div [style.background-image]="user.imageUrl"></div>
       <div>Username: {{user.username}}</div>
       <div>Email: {{user.email}}</div>
@@ -13,11 +13,10 @@
       <div>Last name: {{user.lastName}}</div>
       <div>Registered: {{user.registrationDate}}</div>
       <div>Songs in library: {{user.songs.length}}</div>
+      <button mat-button (click)="resetPassword()">Reset password</button>
+      <span *ngIf="resetActivated">Password reset email has been sent</span>
     </div>
 
-    <div fxLayout="column" fxLayoutAlign="space-around start">
-
-    </div>
   </mat-card-content>
 
 </mat-card>

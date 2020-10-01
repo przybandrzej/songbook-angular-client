@@ -56,7 +56,7 @@ export class MainNavbarComponent implements OnInit, OnDestroy {
   }
 
   expandUserMenu() {
-
+    this.router.navigateByUrl('profile');
   }
 
   logout() {

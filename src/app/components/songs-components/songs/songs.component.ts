@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AwaitingSongResourceService, SongDTO, SongResourceService, UserResourceService} from '../../songbook';
+import {AwaitingSongResourceService, SongDTO, SongResourceService, UserResourceService} from '../../../songbook';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 

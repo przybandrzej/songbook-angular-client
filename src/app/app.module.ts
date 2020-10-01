@@ -47,29 +47,26 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {SongsComponent} from './components/songs/songs.component';
+import {SongsComponent} from './components/songs-components/songs/songs.component';
 import {ApiModule, Configuration} from './songbook';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {environment} from '../environments/environment';
-import {SongDetailsComponent} from './components/song-details/song-details.component';
-import {SongEditComponent} from './components/song-edit/song-edit.component';
-import {SongAddComponent} from './components/song-add/song-add.component';
+import {SongDetailsComponent} from './components/songs-components/song-details/song-details.component';
+import {SongEditComponent} from './components/songs-components/song-edit/song-edit.component';
+import {SongAddComponent} from './components/songs-components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {HttpRequestInterceptorService} from './services/http-request-interceptor.service';
-import {UserProfileComponent} from './components/user-profile/user-profile.component';
-import {UserSongsComponent} from './components/user-songs/user-songs.component';
-import {UserProfilePanelComponent} from './components/user-profile-panel/user-profile-panel.component';
-import {UserPlaylistPanelComponent} from './components/user-playlist-panel/user-playlist-panel.component';
-import {UserSongsPanelComponent} from './components/user-songs-panel/user-songs-panel.component';
-import {SongSearchComponent} from './components/song-search/song-search.component';
+import {UserProfileComponent} from './components/user/user-profile/user-profile.component';
+import {UserSongsComponent} from './components/user/user-songs/user-songs.component';
+import {UserProfilePanelComponent} from './components/user/user-profile-panel/user-profile-panel.component';
+import {UserPlaylistPanelComponent} from './components/user/user-playlist-panel/user-playlist-panel.component';
+import {UserSongsPanelComponent} from './components/user/user-songs-panel/user-songs-panel.component';
 import {LeftNavBarComponent} from './components/layouts/left-nav-bar/left-nav-bar.component';
-import {SearchBarComponent} from './components/utils/search-bar/search-bar.component';
 import {UserFaceMenuComponent} from './components/layouts/user-face-menu/user-face-menu.component';
 import {MainNavbarComponent} from './components/layouts/main-navbar/main-navbar.component';
 import {FooterComponent} from './components/layouts/footer/footer.component';
 import {LoginComponent} from './components/utils/login/login.component';
 import {RegisterComponent} from './components/utils/register/register.component';
-import {AuthService} from './services/auth.service';
 import { ActivateComponent } from './components/account/activate/activate.component';
 import { PasswordResetComponent } from './components/account/password-reset/password-reset.component';
 import { PasswordResetRequestComponent } from './components/account/password-reset-request/password-reset-request.component';
@@ -94,9 +91,7 @@ export function getAPIConfiguration() {
     UserProfilePanelComponent,
     UserPlaylistPanelComponent,
     UserSongsPanelComponent,
-    SongSearchComponent,
     LeftNavBarComponent,
-    SearchBarComponent,
     UserFaceMenuComponent,
     MainNavbarComponent,
     FooterComponent,

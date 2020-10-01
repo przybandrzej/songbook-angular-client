@@ -7,7 +7,7 @@ import {
   CreateCoauthorDTO,
   CreateSongDTO, SongCoauthorDTO,
   SongResourceService
-} from '../../songbook';
+} from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
