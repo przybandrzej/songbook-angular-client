@@ -10,6 +10,7 @@ import {AuthService} from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
 
   form: LoginForm = {};
+  error = false;
 
   constructor(private authService: AuthService) {
   }
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.form, undefined);
+    this.authService.login(this.form, undefined, () => this.error = true);
   }
 
 }
