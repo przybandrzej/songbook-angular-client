@@ -38,7 +38,6 @@ export class AuthService {
     this.loggedInSubject = new ReplaySubject<boolean>(1);
     this.loggedIn$ = this.loggedInSubject.asObservable();
     this.setLogged(this.checkTokenNotExpired());
-    // this.authService.isAuthenticatedUsingGET().subscribe(value => this.setLogged(value));
   }
 
   private setLogged(value: boolean): void {
@@ -49,8 +48,7 @@ export class AuthService {
     }
   }
 
-  public login(loginForm: LoginForm, requestedUrl: string): void {
-    console.log('enter login()');
+  public login(loginForm: LoginForm, requestedUrl: string, errorCallback: () => void): void {
     this.authService.authenticateUsingPOST(loginForm).subscribe(observer => {
         if (observer.idToken) {
           AuthService.setToken(observer.idToken);
@@ -60,8 +58,10 @@ export class AuthService {
           } else {
             this.router.navigateByUrl('/');
           }
-          console.log('finish login()');
         }
+      },
+      error => {
+        errorCallback();
       }
     );
   }

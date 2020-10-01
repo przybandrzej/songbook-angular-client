@@ -28,18 +28,25 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
   private callHttp(requestWithToken: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>> {
     return next.handle(requestWithToken).pipe(tap((event: HttpEvent<any>) => {
     }, (err: any) => {
-      this.handleError(err);
+      this.handleError(err, requestWithToken);
     })).toPromise();
   }
 
-  private handleError(error: any) {
+  private handleError(error: any, request: HttpRequest<any>) {
     if (error instanceof HttpErrorResponse) {
       const message = error.message + '. ' + error.error.message;
       if (error.status >= 400 && error.status < 500) {
         if (error.status === 401) {
           this.injector.get(AuthService).setLoggedOut();
-          console.log('You are logged out');
           this.router.navigateByUrl('login');
+        } else if (error.status === 404) {
+          if (request.url.includes('authenticate') && request.method.includes('POST')) {
+            return;
+          }
+        } else if (error.status === 400) {
+          if (request.url.includes('register') && request.method.includes('POST')) {
+            return;
+          }
         }
         this.openSnackBar(message, 'OK');
       } else if (error.status >= 500 && error.status < 600) {

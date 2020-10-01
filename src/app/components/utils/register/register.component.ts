@@ -12,6 +12,8 @@ export class RegisterComponent implements OnInit {
   form: RegisterNewUserForm = {email: '', password: '', username: ''};
   confirmPassword = '';
   isCreated = false;
+  isError = false;
+  errors: string[] = [];
 
   constructor(private authService: AuthenticationResourceService, private router: Router) {
   }
@@ -20,10 +22,24 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.authService.registerUsingPOST(this.form).subscribe(next => this.isCreated = true);
+    this.errors = [];
+    if (this.confirmPassword !== this.form.password) {
+      this.isError = true;
+      this.errors.push('Passwords don\'t match');
+      return;
+    }
+    this.authService.registerUsingPOST(this.form).subscribe(() => {
+        this.isCreated = true;
+      },
+      error => {
+        this.isError = true;
+        this.errors = error.error.subErrors.map(it => it.message);
+      });
   }
 
   goToLogin() {
     this.router.navigateByUrl('login');
   }
+
+
 }
