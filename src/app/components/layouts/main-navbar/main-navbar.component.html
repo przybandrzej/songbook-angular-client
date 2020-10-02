@@ -7,7 +7,7 @@
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()">Log in</button>
     <div class="link" *ngIf="loggedIn" (click)="expandUserMenu()" fxLayout="row" fxLayoutGap="8px">
       <div>{{username}}</div>
-      <div class="avatar-placeholder" [style.background-image]="profileImgUrl"></div>
+      <div class="avatar-placeholder" [style.background-image]="'https://cdn3.iconfinder.com/data/icons/users-6/100/men-computer-2-512.png'"></div>
     </div>
     <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()">Log out</button>
   </div>

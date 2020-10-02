@@ -1,22 +1,23 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
-import {SongsComponent} from './components/songs/songs.component';
-import {SongDetailsComponent} from './components/song-details/song-details.component';
-import {SongEditComponent} from './components/song-edit/song-edit.component';
-import {SongAddComponent} from './components/song-add/song-add.component';
+import {SongsComponent} from './components/songs-components/songs/songs.component';
+import {SongDetailsComponent} from './components/songs-components/song-details/song-details.component';
+import {SongEditComponent} from './components/songs-components/song-edit/song-edit.component';
+import {SongAddComponent} from './components/songs-components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {LoginComponent} from './components/utils/login/login.component';
 import {RegisterComponent} from './components/utils/register/register.component';
 import {SongResolveService} from './services/resolve/song-resolve.service';
-import {UserProfileComponent} from './components/user-profile/user-profile.component';
+import {UserProfileComponent} from './components/user/user-profile/user-profile.component';
 import {UserResolveService} from './services/resolve/user-resolve.service';
 import {Role} from './model/user-role';
 import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 import {ActivateComponent} from './components/account/activate/activate.component';
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
+import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
     path: 'categories',
     component: CategoriesBrowserComponent,
     canActivate: [AuthenticationGuard],
-    data: { roles: [Role.Admin, Role.Moderator, Role.Superuser] }
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
   },
   {
     path: 'login',
@@ -62,7 +63,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: UserProfileComponent,
-    resolve: {data: UserResolveService},
+    resolve: {data: UserResolveService, songData: UserSongsDataResolveService},
     canActivate: [AuthenticationGuard]
   },
   {
