@@ -57,7 +57,6 @@ import {SongAddComponent} from './components/songs-components/song-add/song-add.
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {HttpRequestInterceptorService} from './services/http-request-interceptor.service';
 import {UserProfileComponent} from './components/user/user-profile/user-profile.component';
-import {UserSongsComponent} from './components/user/user-songs/user-songs.component';
 import {UserProfilePanelComponent} from './components/user/user-profile-panel/user-profile-panel.component';
 import {UserPlaylistPanelComponent} from './components/user/user-playlist-panel/user-playlist-panel.component';
 import {UserSongsPanelComponent} from './components/user/user-songs-panel/user-songs-panel.component';
@@ -89,7 +88,6 @@ export function getAPIConfiguration() {
     LoginComponent,
     RegisterComponent,
     UserProfileComponent,
-    UserSongsComponent,
     UserProfilePanelComponent,
     UserPlaylistPanelComponent,
     UserSongsPanelComponent,
