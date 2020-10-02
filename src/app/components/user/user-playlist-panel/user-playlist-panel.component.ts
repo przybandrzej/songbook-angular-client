@@ -1,6 +1,8 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PlaylistDTO, PlaylistResourceService, UserDTO} from '../../../songbook';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {PlaylistDTO, PlaylistResourceService, SongDTO, SongResourceService, UserDTO} from '../../../songbook';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {forkJoin, Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-playlist-panel',
@@ -19,10 +21,11 @@ export class UserPlaylistPanelComponent implements OnInit {
   public playlistsChange: EventEmitter<PlaylistDTO[]> = new EventEmitter<PlaylistDTO[]>();
 
   public columns: string[] = ['name', 'status', 'created', 'songs', 'actions'];
-
   public selectedPlaylist: PlaylistDTO;
+  public selectedPlaylistSongs: SongDTO[] = [];
+  public songsColumns: string[] = ['author', 'title', 'category'];
 
-  constructor(private playlistService: PlaylistResourceService) {
+  constructor(private playlistService: PlaylistResourceService, private songService: SongResourceService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -37,6 +40,7 @@ export class UserPlaylistPanelComponent implements OnInit {
       ownerId: this.user.id,
       songs: []
     };
+    this.selectedPlaylistSongs = [];
   }
 
   createPlaylist() {
@@ -69,6 +73,7 @@ export class UserPlaylistPanelComponent implements OnInit {
 
   select(playlist: PlaylistDTO) {
     this.selectedPlaylist = playlist;
+    this.getPlaylistSongs();
   }
 
   editPlaylist() {
@@ -91,5 +96,15 @@ export class UserPlaylistPanelComponent implements OnInit {
    */
   private refreshTable(): void {
     this.playlists = this.playlists.slice();
+  }
+
+  private getPlaylistSongs(): void {
+    const songs$: Observable<SongDTO>[] = [];
+    this.selectedPlaylist.songs.forEach(it => songs$.push(this.songService.getByIdUsingGET4(it)));
+    forkJoin(songs$).subscribe(res => this.selectedPlaylistSongs = res);
+  }
+
+  openSongDetails(id: number) {
+    this.router.navigateByUrl('song/' + id);
   }
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SongDetailsData} from '../../../model/song-details-data';
 import {SongResourceService} from '../../../songbook';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-song-details',
@@ -12,7 +13,7 @@ export class SongDetailsComponent implements OnInit {
 
   data: SongDetailsData;
 
-  constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService) {
+  constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -31,6 +32,6 @@ export class SongDetailsComponent implements OnInit {
   }
 
   close() {
-    this.router.navigateByUrl('songs');
+    this.location.back();
   }
 }
