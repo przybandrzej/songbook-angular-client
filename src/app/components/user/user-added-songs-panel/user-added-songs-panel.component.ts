@@ -14,10 +14,15 @@ export class UserAddedSongsPanelComponent implements OnInit {
   @Input()
   public username: string;
 
+  public columns: string[] = ['author', 'title', 'average rating', 'category'];
+
   constructor() {
   }
 
   ngOnInit(): void {
   }
 
+  openSongDetails(id: number) {
+
+  }
 }

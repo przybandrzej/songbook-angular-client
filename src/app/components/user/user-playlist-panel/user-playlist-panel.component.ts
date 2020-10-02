@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {PlaylistDTO} from '../../../songbook';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {PlaylistDTO, PlaylistResourceService, UserDTO} from '../../../songbook';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-user-playlist-panel',
@@ -12,11 +13,83 @@ export class UserPlaylistPanelComponent implements OnInit {
   public playlists: PlaylistDTO[];
 
   @Input()
-  public username: string;
+  public user: UserDTO;
 
-  constructor() { }
+  @Output()
+  public playlistsChange: EventEmitter<PlaylistDTO[]> = new EventEmitter<PlaylistDTO[]>();
 
-  ngOnInit(): void {
+  public columns: string[] = ['name', 'status', 'created', 'songs', 'actions'];
+
+  public selectedPlaylist: PlaylistDTO;
+
+  constructor(private playlistService: PlaylistResourceService) {
   }
 
+  ngOnInit(): void {
+    this.initPlaylist();
+  }
+
+  private initPlaylist() {
+    this.selectedPlaylist = {
+      id: 0,
+      isPrivate: true,
+      name: '',
+      ownerId: this.user.id,
+      songs: []
+    };
+  }
+
+  createPlaylist() {
+    this.playlistService.createUsingPOST2(this.selectedPlaylist).subscribe(
+      playlist => {
+        this.playlists.push(playlist);
+        this.playlistsChange.emit(this.playlists);
+        this.selectedPlaylist = playlist;
+        this.refreshTable();
+      });
+  }
+
+  delete(event: MouseEvent, id: number) {
+    event.stopPropagation();
+    this.playlistService.deleteUsingDELETE2(id).subscribe(() => {
+      const copy = this.playlists.slice();
+      const item = copy.filter(it => it.id === id)[0];
+      if (this.selectedPlaylist.id === id) {
+        this.initPlaylist();
+      }
+      copy.splice(this.playlists.indexOf(item), 1);
+      this.playlists = copy;
+      this.playlistsChange.emit(this.playlists);
+    });
+  }
+
+  deselect() {
+    this.initPlaylist();
+  }
+
+  select(playlist: PlaylistDTO) {
+    this.selectedPlaylist = playlist;
+  }
+
+  editPlaylist() {
+    this.playlistService.updateUsingPUT2(this.selectedPlaylist).subscribe(playlist => {
+      const old = this.playlists.filter(it => it.id === playlist.id)[0];
+      const index = this.playlists.indexOf(old);
+      this.playlists.splice(index, 1, playlist);
+      this.playlistsChange.emit(this.playlists);
+      this.selectedPlaylist = playlist;
+      this.refreshTable();
+    });
+  }
+
+  privacyChanged(event: MatSlideToggleChange) {
+    this.selectedPlaylist.isPrivate = !event.checked;
+  }
+
+  /**
+   * This is necessary to refresh table data source
+   */
+  private refreshTable(): void {
+    this.playlists = this.playlists.slice();
+  }
 }

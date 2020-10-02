@@ -17,7 +17,7 @@ import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 import {ActivateComponent} from './components/account/activate/activate.component';
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
-import {UserDataResolveService} from './services/resolve/user-data-resolve.service';
+import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
 
 
 const routes: Routes = [
@@ -63,7 +63,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: UserProfileComponent,
-    resolve: {data: UserResolveService, songData: UserDataResolveService},
+    resolve: {data: UserResolveService, songData: UserSongsDataResolveService},
     canActivate: [AuthenticationGuard]
   },
   {
