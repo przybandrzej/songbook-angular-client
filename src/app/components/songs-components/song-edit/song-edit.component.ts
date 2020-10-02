@@ -51,6 +51,8 @@ export class SongEditComponent implements OnInit {
     coauthorFunction: null
   };
 
+  authorToAdd = '';
+
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService) {
   }
@@ -79,9 +81,19 @@ export class SongEditComponent implements OnInit {
       this.song.coauthors.push(coauthor);
     }
     this.song.coauthors = [...new Set(this.song.coauthors)];
-    this.song.author.name = this.authors.filter((value, index, array) => value.id === this.song.author.id)[0].name;
-    this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-    this.songService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
+    if(this.song.author.id) {
+      this.song.author = this.authors.filter(it => it.id === this.song.author.id)[0];
+    }
+    if (this.authorToAdd.length > 0) {
+      this.authorService.createUsingPOST({id: null, name: this.authorToAdd}).subscribe(res => {
+        this.song.author = res;
+        this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
+        this.songService.updateUsingPUT4(this.song).subscribe(() => this.goToDetailScreen());
+      });
+    } else {
+      this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
+      this.songService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
+    }
   }
 
   goToDetailScreen() {
