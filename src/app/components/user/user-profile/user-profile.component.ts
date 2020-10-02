@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {UserDetailsData} from '../../../model/user-details-data';
 import {AuthService} from '../../../services/auth.service';
+import {UserData} from '../../../model/user-data';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,12 +15,14 @@ export class UserProfileComponent implements OnInit {
   public data: UserDetailsData;
   public tabs: string[] = ['Profile', 'Songs', 'Playlists', 'Added songs', 'Edited songs'];
   public openTab = UserProfileTabs.PROFILE;
+  public songData: UserData;
 
   constructor(private route: ActivatedRoute, private location: Location, private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.data = this.route.snapshot.data.data;
+    this.songData = this.route.snapshot.data.songData;
   }
 
   close() {

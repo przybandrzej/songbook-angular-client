@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {PlaylistDTO} from '../../../songbook';
 
 @Component({
   selector: 'app-user-playlist-panel',
@@ -6,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-playlist-panel.component.scss']
 })
 export class UserPlaylistPanelComponent implements OnInit {
+
+  @Input()
+  public playlists: PlaylistDTO[];
+
+  @Input()
+  public username: string;
 
   constructor() { }
 

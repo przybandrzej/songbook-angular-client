@@ -1,3 +1,5 @@
+export * from './adminResource.service';
+import { AdminResourceService } from './adminResource.service';
 export * from './authenticationResource.service';
 import { AuthenticationResourceService } from './authenticationResource.service';
 export * from './authorResource.service';
@@ -20,4 +22,4 @@ export * from './userRoleResource.service';
 import { UserRoleResourceService } from './userRoleResource.service';
 export * from './userSongRatingResource.service';
 import { UserSongRatingResourceService } from './userSongRatingResource.service';
-export const APIS = [AuthenticationResourceService, AuthorResourceService, AwaitingSongResourceService, CategoryResourceService, PlaylistResourceService, SongCoauthorResourceService, SongResourceService, TagResourceService, UserResourceService, UserRoleResourceService, UserSongRatingResourceService];
+export const APIS = [AdminResourceService, AuthenticationResourceService, AuthorResourceService, AwaitingSongResourceService, CategoryResourceService, PlaylistResourceService, SongCoauthorResourceService, SongResourceService, TagResourceService, UserResourceService, UserRoleResourceService, UserSongRatingResourceService];

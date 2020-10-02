@@ -19,3 +19,7 @@
 </mat-toolbar>
 
 <app-user-profile-panel *ngIf="openTab === 0" [user]="data.user" [roleName]="data.role.name" (resetPassword)="resetPassword()"></app-user-profile-panel>
+<app-user-songs-panel *ngIf="openTab === 1" [songs]="songData.songs" [username]="data.user.username"></app-user-songs-panel>
+<app-user-playlist-panel *ngIf="openTab === 2" [playlists]="songData.playlists" [username]="data.user.username"></app-user-playlist-panel>
+<app-user-added-songs-panel *ngIf="openTab === 3" [songs]="songData.added" [username]="data.user.username"></app-user-added-songs-panel>
+<app-user-edited-songs-panel *ngIf="openTab === 4" [songs]="songData.edited" [username]="data.user.username"></app-user-edited-songs-panel>

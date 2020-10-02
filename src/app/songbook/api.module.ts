@@ -3,6 +3,7 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { AdminResourceService } from './api/adminResource.service';
 import { AuthenticationResourceService } from './api/authenticationResource.service';
 import { AuthorResourceService } from './api/authorResource.service';
 import { AwaitingSongResourceService } from './api/awaitingSongResource.service';
@@ -20,6 +21,7 @@ import { UserSongRatingResourceService } from './api/userSongRatingResource.serv
   declarations: [],
   exports:      [],
   providers: [
+    AdminResourceService,
     AuthenticationResourceService,
     AuthorResourceService,
     AwaitingSongResourceService,

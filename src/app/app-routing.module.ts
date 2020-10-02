@@ -17,6 +17,7 @@ import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 import {ActivateComponent} from './components/account/activate/activate.component';
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
+import {UserDataResolveService} from './services/resolve/user-data-resolve.service';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
     path: 'categories',
     component: CategoriesBrowserComponent,
     canActivate: [AuthenticationGuard],
-    data: { roles: [Role.Admin, Role.Moderator, Role.Superuser] }
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
   },
   {
     path: 'login',
@@ -62,7 +63,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: UserProfileComponent,
-    resolve: {data: UserResolveService},
+    resolve: {data: UserResolveService, songData: UserDataResolveService},
     canActivate: [AuthenticationGuard]
   },
   {

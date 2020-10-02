@@ -70,6 +70,8 @@ import {RegisterComponent} from './components/utils/register/register.component'
 import { ActivateComponent } from './components/account/activate/activate.component';
 import { PasswordResetComponent } from './components/account/password-reset/password-reset.component';
 import { PasswordResetRequestComponent } from './components/account/password-reset-request/password-reset-request.component';
+import { UserAddedSongsPanelComponent } from './components/user/user-added-songs-panel/user-added-songs-panel.component';
+import { UserEditedSongsPanelComponent } from './components/user/user-edited-songs-panel/user-edited-songs-panel.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -97,7 +99,9 @@ export function getAPIConfiguration() {
     FooterComponent,
     ActivateComponent,
     PasswordResetComponent,
-    PasswordResetRequestComponent
+    PasswordResetRequestComponent,
+    UserAddedSongsPanelComponent,
+    UserEditedSongsPanelComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

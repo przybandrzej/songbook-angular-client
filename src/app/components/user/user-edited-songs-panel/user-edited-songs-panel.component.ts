@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SongDTO} from '../../../songbook';
 
 @Component({
-  selector: 'app-user-songs-panel',
-  templateUrl: './user-songs-panel.component.html',
-  styleUrls: ['./user-songs-panel.component.scss']
+  selector: 'app-user-edited-songs-panel',
+  templateUrl: './user-edited-songs-panel.component.html',
+  styleUrls: ['./user-edited-songs-panel.component.scss']
 })
-export class UserSongsPanelComponent implements OnInit {
+export class UserEditedSongsPanelComponent implements OnInit {
 
   @Input()
   public songs: SongDTO[];
