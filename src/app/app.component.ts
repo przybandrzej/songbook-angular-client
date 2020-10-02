@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +8,6 @@ import {Router} from '@angular/router';
 export class AppComponent {
   title = 'songbook-angular-client';
 
-  constructor(private router: Router) {
-  }
-
-  logout() {
-    // todo
-    // this.loginService.logOut();
-  }
-
-  showLandingPage() {
-    this.router.navigateByUrl('');
+  constructor() {
   }
 }

@@ -1,0 +1,25 @@
+<mat-toolbar fxLayout="row" color="primary" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+    <div fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="50%">
+      <button mat-mini-fab color="accent" (click)="close()" matTooltip="Close">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
+    <div fxLayoutAlign="end center" fxLayoutGap="15px" fxFlex="50%">
+      {{data.user.username}}
+    </div>
+  </div>
+  <div fxLayoutAlign="space-around center" fxLayout="row" fxLayoutGap="15px" [style.height]="'100%'">
+    <button mat-button [style.height]="'100%'" (click)="openTab = 0">Profile</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 1">Songs</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 2">Playlists</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 3">Added songs</button>
+    <button mat-button [style.height]="'100%'" (click)="openTab = 4">Edited songs</button>
+  </div>
+</mat-toolbar>
+
+<app-user-profile-panel *ngIf="openTab === 0" [(user)]="data.user" [roleName]="data.role.name" (resetPassword)="resetPassword()"></app-user-profile-panel>
+<app-user-songs-panel *ngIf="openTab === 1" [(songs)]="songData.songs" [user]="data.user"></app-user-songs-panel>
+<app-user-playlist-panel *ngIf="openTab === 2" [(playlists)]="songData.playlists" [user]="data.user"></app-user-playlist-panel>
+<app-user-added-songs-panel *ngIf="openTab === 3" [songs]="songData.added" [username]="data.user.username"></app-user-added-songs-panel>
+<app-user-edited-songs-panel *ngIf="openTab === 4" [songs]="songData.edited" [username]="data.user.username"></app-user-edited-songs-panel>
