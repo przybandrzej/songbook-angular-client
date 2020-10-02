@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {CategoryDTO, CategoryResourceService, SongResourceService} from '../../songbook';
+import {CategoryDTO, CategoryResourceService} from '../../songbook';
 
 @Component({
   selector: 'app-categories-browser',
@@ -9,7 +9,7 @@ import {CategoryDTO, CategoryResourceService, SongResourceService} from '../../s
 })
 export class CategoriesBrowserComponent implements OnInit {
 
-  displayedColumns = ['name', 'song count'];
+  displayedColumns = ['name', 'song count', 'actions'];
 
   selectedCategory: CategoryDTO = {
     id: 0,
@@ -18,7 +18,7 @@ export class CategoriesBrowserComponent implements OnInit {
 
   categories: CategoryDTO[] = [];
 
-  constructor(private categoryService: CategoryResourceService, private router: Router, private songService: SongResourceService) {
+  constructor(private categoryService: CategoryResourceService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -26,7 +26,12 @@ export class CategoriesBrowserComponent implements OnInit {
   }
 
   addCategory() {
-    this.categoryService.createUsingPOST1({id: null, name: this.selectedCategory.name}).subscribe(res => this.selectedCategory = res);
+    this.categoryService.createUsingPOST1(this.selectedCategory).subscribe(res => {
+      this.selectedCategory = res;
+      const copy = this.categories.slice();
+      copy.push(res);
+      this.categories = copy;
+    });
   }
 
   close() {
@@ -34,12 +39,18 @@ export class CategoriesBrowserComponent implements OnInit {
   }
 
   getCategorySongCount(element: CategoryDTO) {
-    return 'cannot load resource';
+    return 'not implemented yet';
     // this.songService.getByCategoryUsingGET(element.id).subscribe()
   }
 
   editCategory() {
-    this.categoryService.updateUsingPUT1(this.selectedCategory).subscribe(res => this.selectedCategory = res);
+    this.categoryService.updateUsingPUT1(this.selectedCategory).subscribe(res => {
+      this.selectedCategory = res;
+      const copy = this.categories.slice();
+      const item = copy.filter(it => it.id === res.id)[0];
+      copy.splice(copy.indexOf(item), 1, res);
+      this.categories = copy;
+    });
   }
 
   deselect() {
@@ -50,5 +61,16 @@ export class CategoriesBrowserComponent implements OnInit {
   select(row: CategoryDTO) {
     this.selectedCategory.id = row.id;
     this.selectedCategory.name = row.name;
+  }
+
+  delete(event: MouseEvent, id: number) {
+    event.stopPropagation();
+    this.categoryService.deleteUsingDELETE1(id).subscribe(() => {
+      this.deselect();
+      const copy = this.categories.slice();
+      const item = copy.filter(it => it.id === id)[0];
+      copy.splice(copy.indexOf(item), 1,);
+      this.categories = copy;
+    });
   }
 }
