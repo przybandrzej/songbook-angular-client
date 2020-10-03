@@ -32,7 +32,7 @@ const routes: Routes = [
   {
     path: 'song/:id',
     component: SongDetailsComponent,
-    resolve: {data: SongResolveService}
+    resolve: {data: SongResolveService, user: UserResolveService}
   },
   {
     path: 'edit-song/:id',

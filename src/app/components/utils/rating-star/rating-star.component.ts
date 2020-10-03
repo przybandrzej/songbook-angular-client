@@ -9,9 +9,11 @@ export class RatingStarComponent implements OnInit {
 
   @Input()
   amount = 5;
+  @Input()
+  value: number;
 
   @Output()
-  ratingChange: EventEmitter<RatingChanged> = new EventEmitter<RatingChanged>();
+  valueChange: EventEmitter<RatingChanged> = new EventEmitter<RatingChanged>();
 
   labels: number[] = [];
   selected: number[] = [];
@@ -30,7 +32,7 @@ export class RatingStarComponent implements OnInit {
     for (let index = 1; index <= label; index++) {
       this.selected.push(index);
     }
-    this.ratingChange.emit({value: label});
+    this.valueChange.emit({value: label});
   }
 
 }

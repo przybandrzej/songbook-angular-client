@@ -24,10 +24,11 @@
       <div fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center center">
       <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
         <span>Average: {{data.song.averageRating ? data.song.averageRating : 'Not rated yet'}}</span>
-        <app-rating-star (ratingChange)="updateRating($event)"></app-rating-star>
+        <app-rating-star [value]="songRating.rating" (valueChange)="updateRating($event)"></app-rating-star>
       </div>
       <div fxLayout="column" fxLayoutAlign="center stretch">
-        <button mat-stroked-button color="accent">Add to library</button>
+        <button mat-stroked-button color="accent" *ngIf="!inUserLib" (click)="addToLib()">Add to library</button>
+        <button mat-stroked-button color="accent" *ngIf="inUserLib" (click)="removeFromLib()">Remove from library</button>
         <button mat-stroked-button color="accent">Add to playlist</button>
       </div>
       </div>
