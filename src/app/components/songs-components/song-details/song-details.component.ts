@@ -24,6 +24,7 @@ export class SongDetailsComponent implements OnInit {
   user: UserDTO;
   inUserLib = false;
   songRating: UserSongRatingDTO;
+  maxRating = 5;
 
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
               private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService) {
@@ -62,12 +63,12 @@ export class SongDetailsComponent implements OnInit {
   updateRating(event: RatingChanged) {
     console.log('Rated ' + event.value);
     if (this.songRating.rating) {
-      if (this.songRating.rating !== event.value) {
-        this.songRating.rating = event.value;
+      if (this.songRating.rating !== event.value / this.maxRating) {
+        this.songRating.rating = event.value / this.maxRating;
         this.ratingService.updateUsingPUT7(this.songRating).subscribe(res => this.songRating = res);
       }
     } else {
-      this.songRating.rating = event.value;
+      this.songRating.rating = event.value / this.maxRating;
       this.ratingService.createUsingPOST7(this.songRating).subscribe(res => this.songRating = res);
     }
   }
@@ -80,6 +81,10 @@ export class SongDetailsComponent implements OnInit {
   removeFromLib(): void {
     this.user.songs.splice(this.user.songs.indexOf(this.data.song.id), 1);
     this.authService.saveAccountUsingPOST(this.user).subscribe(() => this.inUserLib = false);
+  }
+
+  getRatingLabelValue(): number {
+    return this.songRating.rating * this.maxRating;
   }
 
 }
