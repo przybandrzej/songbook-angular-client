@@ -1,0 +1,27 @@
+.rate:not(:checked) > div > input {
+  position:absolute;
+  top:-9999px;
+}
+
+.star {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+}
+
+.container:not(.selected) > label {
+  color:#ccc;
+}
+
+.rate:not(.selected) > div > label:before {
+  content: '★ ';
+}
+
+.selected > label {
+  color: #ffc700;
+}
+
+// TODO on hover
