@@ -76,12 +76,18 @@ export class SongEditComponent implements OnInit {
           this.song = res;
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
-            this.coauthorsToAdd.forEach(it => this.allCoauthors.push({coauthor: it, name: this.getCoauthorName(it)}));
+            console.log('add coauthor');
+            console.log(coauthor);
           }
+          console.log('coauthors');
+          console.log(this.coauthorsToAdd);
         });
       }
     });
-    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
+    this.authorService.getAllUsingGET().subscribe(res => {
+      this.authors = res;
+      this.coauthorsToAdd.forEach(it => this.allCoauthors.push({coauthor: it, name: this.getCoauthorName(it)}));
+    });
     this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
   }
 
@@ -108,7 +114,7 @@ export class SongEditComponent implements OnInit {
     }
     this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
     console.log('authors to create ' + authorCreateRequests.length);
-    if(authorCreateRequests.length === 0) {
+    if (authorCreateRequests.length === 0) {
       this.songService.updateUsingPUT4(this.song).subscribe(song => this.goToDetailScreen());
     } else {
       forkJoin(authorCreateRequests).pipe(
@@ -183,11 +189,8 @@ export class SongEditComponent implements OnInit {
   }
 
   getCoauthorName(coauthor: SongCoauthorDTO) {
-    for (const author of this.authors.filter((value, index, array) => value.id === coauthor.authorId)) {
-      if (author !== null && author !== undefined) {
-        return author.name;
-      }
-    }
+    console.log('get author name for author ' + coauthor.authorId);
+    return this.authors.filter(it => it.id === coauthor.authorId)[0].name;
   }
 
   removeTag(tag: TagDTO) {
