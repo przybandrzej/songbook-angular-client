@@ -14,10 +14,24 @@
   </div>
 </mat-toolbar>
 
-<mat-card fxLayoutGap="30px">
+<mat-card fxLayoutGap="30px" fxLayout="column" fxLayoutAlign="start stretch">
   <mat-card-header>
-    <mat-card-title>{{data.song.title}}</mat-card-title>
-    <mat-card-subtitle>{{data.song.author.name}}</mat-card-subtitle>
+    <div class="song-header" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100%">
+      <div>
+        <mat-card-title>{{data.song.title}}</mat-card-title>
+        <mat-card-subtitle>{{data.song.author.name}}</mat-card-subtitle>
+      </div>
+      <div fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center center">
+      <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+        <span>Average: {{data.song.averageRating ? data.song.averageRating : 'Not rated yet'}}</span>
+        <app-rating-star (ratingChange)="updateRating($event)"></app-rating-star>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center stretch">
+        <button mat-stroked-button color="accent">Add to library</button>
+        <button mat-stroked-button color="accent">Add to playlist</button>
+      </div>
+      </div>
+    </div>
   </mat-card-header>
 
   <mat-card fxLayout="row">
@@ -37,12 +51,14 @@
       <mat-card-content fxLayout="column" fxLayoutAlign="space-evenly start">
         <div>Category: {{data.song.category.name}}</div>
         <div>Average rating: {{data.song.averageRating}}</div>
-        <div fxLayout="row">Tags: <div *ngFor="let tag of data.song.tags">#{{tag.name}} </div></div>
+        <div fxLayout="row">Tags:
+          <div *ngFor="let tag of data.song.tags">#{{tag.name}} </div>
+        </div>
         <div *ngIf="data.coauthorsAuthors.length > 0">
-            Coauthors:
-              <div *ngFor="let coauthor of data.coauthorsAuthors">
-                {{coauthor.coauthor.coauthorFunction}}: {{coauthor.author.name}}
-              </div>
+          Coauthors:
+          <div *ngFor="let coauthor of data.coauthorsAuthors">
+            {{coauthor.coauthor.coauthorFunction}}: {{coauthor.author.name}}
+          </div>
         </div>
         <div fxLayout="column" fxLayoutAlign="space-around start">
           <div>

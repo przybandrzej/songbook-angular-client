@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SongDetailsData} from '../../../model/song-details-data';
 import {SongResourceService} from '../../../songbook';
 import {Location} from '@angular/common';
+import {RatingChanged} from '../../utils/rating-star/rating-star.component';
 
 @Component({
   selector: 'app-song-details',
@@ -33,5 +34,10 @@ export class SongDetailsComponent implements OnInit {
 
   close() {
     this.location.back();
+  }
+
+  updateRating(event: RatingChanged) {
+    // if value is different from value set
+    console.log('Rated ' + event.value);
   }
 }
