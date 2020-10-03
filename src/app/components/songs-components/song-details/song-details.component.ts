@@ -66,7 +66,6 @@ export class SongDetailsComponent implements OnInit {
   }
 
   updateRating(event: RatingChanged) {
-    console.log('Rated ' + event.value);
     if (this.songRating.rating) {
       if (this.songRating.rating !== event.value / this.maxRating) {
         this.songRating.rating = event.value / this.maxRating;

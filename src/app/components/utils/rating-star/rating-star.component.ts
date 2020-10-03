@@ -9,14 +9,21 @@ export class RatingStarComponent implements OnInit {
 
   @Input()
   amount = 5;
-  @Input()
-  value: number;
+
+  @Input('value')
+  set setValue(value: number) {
+    this.value = value;
+    for (let index = 0; index < this.value; index++) {
+      this.selected.push(index + 1);
+    }
+  }
 
   @Output()
   valueChange: EventEmitter<RatingChanged> = new EventEmitter<RatingChanged>();
 
   labels: number[] = [];
   selected: number[] = [];
+  value = 0;
 
   constructor() {
   }
