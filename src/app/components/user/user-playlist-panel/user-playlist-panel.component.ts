@@ -73,6 +73,7 @@ export class UserPlaylistPanelComponent implements OnInit {
 
   select(playlist: PlaylistDTO) {
     this.selectedPlaylist = playlist;
+    this.selectedPlaylistSongs = [];
     this.getPlaylistSongs();
   }
 
