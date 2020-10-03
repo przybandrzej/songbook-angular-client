@@ -124,6 +124,10 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
+              <mat-label>Or write new author name</mat-label>
+              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName">
+            </mat-form-field>
+            <mat-form-field>
               <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
                 <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
                   {{fun}}
@@ -136,9 +140,11 @@
 
         <div fxFlex="50%">
           <ul>
-            <li *ngFor="let coauthor of coauthorsToAdd" fxLayout="row">
-              <div fxLayoutAlign="start center">{{coauthor.coauthorFunction}}: {{getCoauthorName(coauthor.authorId)}}</div>
-              <button mat-button color="accent" (click)="removeCoauthor(coauthor)" matTooltip="Remove coauthor">remove</button>
+            <li *ngFor="let coauthor of allCoauthors" fxLayout="row">
+              <div fxLayoutAlign="start center">{{coauthor.coauthor.coauthorFunction}}
+                : {{coauthor.name}}</div>
+              <button mat-button color="accent" (click)="removeCoauthor(coauthor)" matTooltip="Remove coauthor">remove
+              </button>
             </li>
           </ul>
         </div>
@@ -158,7 +164,7 @@
             <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
               <div fxLayoutAlign="start center">#{{tag.name}}</div>
               <mat-icon (click)="removeTag(tag)" matTooltip="Remove tag">cancel</mat-icon>
-              </li>
+            </li>
           </ul>
         </div>
       </div>

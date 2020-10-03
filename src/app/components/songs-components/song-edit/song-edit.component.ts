@@ -5,11 +5,15 @@ import {
   CategoryDTO,
   CategoryResourceService,
   SongCoauthorDTO,
+  SongCoauthorResourceService,
   SongDTO,
   SongResourceService,
   TagDTO
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
+import {forkJoin, Observable, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
+import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
 
 @Component({
   selector: 'app-song-edit',
@@ -51,10 +55,18 @@ export class SongEditComponent implements OnInit {
     coauthorFunction: null
   };
 
+  coauthorsToCreate: {
+    name: string,
+    coauthorFunction: CoauthorFunctionEnum
+  }[] = [];
+
   authorToAdd = '';
+  coauthorToAddName = '';
+  allCoauthors: { coauthor: SongCoauthorDTO, name: string }[] = [];
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
-              private categoryService: CategoryResourceService, private authorService: AuthorResourceService) {
+              private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
+              private coauthorService: SongCoauthorResourceService) {
   }
 
   ngOnInit(): void {
@@ -64,6 +76,7 @@ export class SongEditComponent implements OnInit {
           this.song = res;
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
+            this.coauthorsToAdd.forEach(it => this.allCoauthors.push({coauthor: it, name: this.getCoauthorName(it)}));
           }
         });
       }
@@ -80,43 +93,97 @@ export class SongEditComponent implements OnInit {
     for (const coauthor of this.coauthorsToAdd) {
       this.song.coauthors.push(coauthor);
     }
+    const authorCreateRequests: Observable<AuthorDTO>[] = [];
+    this.coauthorsToCreate = [...new Set(this.coauthorsToCreate)];
+    if (this.coauthorsToCreate.length > 0) {
+      this.coauthorsToCreate.forEach(it => authorCreateRequests.push(this.authorService.createUsingPOST({id: null, name: it.name})));
+    }
+
     this.song.coauthors = [...new Set(this.song.coauthors)];
-    if(this.song.author.id) {
+    if (this.song.author.id) {
       this.song.author = this.authors.filter(it => it.id === this.song.author.id)[0];
     }
     if (this.authorToAdd.length > 0) {
-      this.authorService.createUsingPOST({id: null, name: this.authorToAdd}).subscribe(res => {
-        this.song.author = res;
-        this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-        this.songService.updateUsingPUT4(this.song).subscribe(() => this.goToDetailScreen());
-      });
+      authorCreateRequests.push(this.authorService.createUsingPOST({id: null, name: this.authorToAdd}));
+    }
+    this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
+    console.log('authors to create ' + authorCreateRequests.length);
+    if(authorCreateRequests.length === 0) {
+      this.songService.updateUsingPUT4(this.song).subscribe(song => this.goToDetailScreen());
     } else {
-      this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-      this.songService.updateUsingPUT4(this.song).subscribe(res => this.goToDetailScreen());
+      forkJoin(authorCreateRequests).pipe(
+        mergeMap(authors => {
+          const coauthorsCreateRequests: Observable<SongCoauthorDTO>[] = [];
+          authors.forEach(author => {
+            const found = this.coauthorsToCreate.filter(it => it.name === author.name);
+            if (found.length !== 0) {
+              coauthorsCreateRequests.push(this.coauthorService.createUsingPOST3({
+                authorId: author.id,
+                songId: this.song.id,
+                coauthorFunction: found[0].coauthorFunction
+              }));
+            } else {
+              this.song.author = author;
+            }
+          });
+          console.log(coauthorsCreateRequests.length);
+          if (coauthorsCreateRequests.length > 0) {
+            return forkJoin(coauthorsCreateRequests);
+          } else {
+            return of([]);
+          }
+        }),
+        mergeMap(coauthors => {
+          console.log(coauthors);
+          coauthors.forEach(it => this.song.coauthors.push(it));
+          return this.songService.updateUsingPUT4(this.song);
+        }))
+        .subscribe(song => this.goToDetailScreen());
     }
   }
+
 
   goToDetailScreen() {
     this.router.navigateByUrl('song/' + this.song.id);
   }
 
   addCouathor() {
-    this.coauthorsToAdd.push({
-      songId: this.song.id,
-      authorId: this.coauthorToAdd.authorId,
-      coauthorFunction: this.coauthorToAdd.coauthorFunction
-    });
+    if (this.coauthorToAdd.authorId === -1) {
+      this.coauthorsToCreate.push({
+        name: this.coauthorToAddName,
+        coauthorFunction: this.coauthorToAdd.coauthorFunction
+      });
+      this.allCoauthors.push({
+        coauthor: {authorId: -1, songId: this.song.id, coauthorFunction: this.coauthorToAdd.coauthorFunction},
+        name: this.coauthorToAddName
+      });
+      this.coauthorToAddName = '';
+    } else {
+      const coauthor: SongCoauthorDTO = {
+        songId: this.song.id,
+        authorId: this.coauthorToAdd.authorId,
+        coauthorFunction: this.coauthorToAdd.coauthorFunction
+      };
+      this.coauthorsToAdd.push(coauthor);
+      this.allCoauthors.push({coauthor, name: this.getCoauthorName(coauthor)});
+    }
     this.coauthorToAdd.authorId = -1;
     this.coauthorToAdd.coauthorFunction = null;
   }
 
-  removeCoauthor(coauthorDTO: SongCoauthorDTO) {
-    const index = this.coauthorsToAdd.indexOf(coauthorDTO, 0);
-    this.coauthorsToAdd.splice(index, 1);
+  removeCoauthor(coauthorDTO: any) {
+    this.allCoauthors.splice(this.allCoauthors.indexOf(coauthorDTO), 1);
+    if (coauthorDTO.authorId === -1) {
+      const item = this.coauthorsToCreate.filter(it => it.name === coauthorDTO.name)[0];
+      this.coauthorsToCreate.splice(this.coauthorsToCreate.indexOf(item), 1);
+    } else {
+      const index = this.coauthorsToAdd.indexOf(coauthorDTO, 0);
+      this.coauthorsToAdd.splice(index, 1);
+    }
   }
 
-  getCoauthorName(authorId: number) {
-    for (const author of this.authors.filter((value, index, array) => value.id === authorId)) {
+  getCoauthorName(coauthor: SongCoauthorDTO) {
+    for (const author of this.authors.filter((value, index, array) => value.id === coauthor.authorId)) {
       if (author !== null && author !== undefined) {
         return author.name;
       }
