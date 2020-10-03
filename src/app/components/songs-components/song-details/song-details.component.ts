@@ -15,6 +15,7 @@ import {RatingChanged} from '../../utils/rating-star/rating-star.component';
 import {UserDetailsData} from '../../../model/user-details-data';
 import {MatDialog} from '@angular/material/dialog';
 import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-song-details',
@@ -66,14 +67,21 @@ export class SongDetailsComponent implements OnInit {
   }
 
   updateRating(event: RatingChanged) {
+    const ratingUpdate = this.songService.getByIdUsingGET4(this.data.song.id).pipe(map(song => this.data.song.averageRating = song.averageRating));
     if (this.songRating.rating) {
       if (this.songRating.rating !== event.value / this.maxRating) {
         this.songRating.rating = event.value / this.maxRating;
-        this.ratingService.updateUsingPUT7(this.songRating).subscribe(res => this.songRating = res);
+        this.ratingService.updateUsingPUT7(this.songRating).subscribe(res => {
+          this.songRating = res;
+          ratingUpdate.subscribe();
+        });
       }
     } else {
       this.songRating.rating = event.value / this.maxRating;
-      this.ratingService.createUsingPOST7(this.songRating).subscribe(res => this.songRating = res);
+      this.ratingService.createUsingPOST7(this.songRating).subscribe(res => {
+        this.songRating = res;
+        ratingUpdate.subscribe();
+      });
     }
   }
 
