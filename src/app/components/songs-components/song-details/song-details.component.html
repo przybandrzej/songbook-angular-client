@@ -29,7 +29,7 @@
       <div fxLayout="column" fxLayoutAlign="center stretch">
         <button mat-stroked-button color="accent" *ngIf="!inUserLib" (click)="addToLib()">Add to library</button>
         <button mat-stroked-button color="accent" *ngIf="inUserLib" (click)="removeFromLib()">Remove from library</button>
-        <button mat-stroked-button color="accent">Add to playlist</button>
+        <button mat-stroked-button color="accent" (click)="addToPlaylist()">Add to playlist</button>
       </div>
       </div>
     </div>

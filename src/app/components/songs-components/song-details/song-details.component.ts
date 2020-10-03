@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SongDetailsData} from '../../../model/song-details-data';
 import {
   AuthenticationResourceService,
+  PlaylistDTO,
+  PlaylistResourceService,
   SongResourceService,
   UserDTO,
   UserSongRatingDTO,
@@ -11,6 +13,8 @@ import {
 import {Location} from '@angular/common';
 import {RatingChanged} from '../../utils/rating-star/rating-star.component';
 import {UserDetailsData} from '../../../model/user-details-data';
+import {MatDialog} from '@angular/material/dialog';
+import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
 
 @Component({
   selector: 'app-song-details',
@@ -27,7 +31,8 @@ export class SongDetailsComponent implements OnInit {
   maxRating = 5;
 
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
-              private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService) {
+              private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService,
+              public dialog: MatDialog, private playlistService: PlaylistResourceService) {
   }
 
   ngOnInit(): void {
@@ -85,6 +90,42 @@ export class SongDetailsComponent implements OnInit {
 
   getRatingLabelValue(): number {
     return this.songRating.rating * this.maxRating;
+  }
+
+  addToPlaylist() {
+    this.playlistService.getByOwnerIdUsingGET(this.user.id, true).subscribe(res => this.openDialog(res));
+  }
+
+  private openDialog(playlists: PlaylistDTO[]) {
+    const dialogRef = this.dialog.open<PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult>(PlaylistDialogComponent, {
+      data: {
+        playlists,
+        song: this.data.song
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      result.selected.forEach(playlist => {
+        if (playlist.id <= 0) {
+          playlist.songs.push(this.data.song.id);
+          playlist.ownerId = this.user.id;
+          this.playlistService.createUsingPOST2(playlist).subscribe(() => {
+          });
+        } else {
+          playlist.songs.push(this.data.song.id);
+          this.playlistService.updateUsingPUT2(playlist).subscribe(() => {
+          });
+        }
+      });
+      result.deselected.forEach(playlist => {
+        const item = playlist.songs.filter(it => it === this.data.song.id)[0];
+        playlist.songs.splice(playlist.songs.indexOf(item), 1);
+        this.playlistService.updateUsingPUT2(playlist).subscribe(() => {
+        });
+      });
+    });
   }
 
 }
