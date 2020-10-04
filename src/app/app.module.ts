@@ -73,6 +73,8 @@ import { UserAddedSongsPanelComponent } from './components/user/user-added-songs
 import { UserEditedSongsPanelComponent } from './components/user/user-edited-songs-panel/user-edited-songs-panel.component';
 import { RatingStarComponent } from './components/utils/rating-star/rating-star.component';
 import { PlaylistDialogComponent } from './components/utils/playlist-dialog/playlist-dialog.component';
+import { ActivatedByRolesDirective } from './directives/activated-by-roles.directive';
+import { CanEditSongDirective } from './directives/can-edit-song.directive';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -103,7 +105,9 @@ export function getAPIConfiguration() {
     UserAddedSongsPanelComponent,
     UserEditedSongsPanelComponent,
     RatingStarComponent,
-    PlaylistDialogComponent
+    PlaylistDialogComponent,
+    ActivatedByRolesDirective,
+    CanEditSongDirective
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),
