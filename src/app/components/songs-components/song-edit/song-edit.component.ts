@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
+import {rolesForModerator} from '../../../model/user-roles-combinations';
 
 @Component({
   selector: 'app-song-edit',
@@ -21,6 +22,8 @@ import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
   styleUrls: ['./song-edit.component.scss']
 })
 export class SongEditComponent implements OnInit {
+
+  rolesForModerator = rolesForModerator;
 
   song: SongDTO = {
     author: {
@@ -74,13 +77,10 @@ export class SongEditComponent implements OnInit {
       if (params.keys.length > 0) {
         this.songService.getByIdUsingGET4(+params.get('id')).subscribe(res => {
           this.song = res;
+          console.log('Song is awaiting ' + this.song.isAwaiting);
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
-            console.log('add coauthor');
-            console.log(coauthor);
           }
-          console.log('coauthors');
-          console.log(this.coauthorsToAdd);
         });
       }
     });
@@ -113,7 +113,6 @@ export class SongEditComponent implements OnInit {
       authorCreateRequests.push(this.authorService.createUsingPOST({id: null, name: this.authorToAdd}));
     }
     this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-    console.log('authors to create ' + authorCreateRequests.length);
     if (authorCreateRequests.length === 0) {
       this.songService.updateUsingPUT4(this.song).subscribe(song => this.goToDetailScreen());
     } else {
@@ -189,7 +188,6 @@ export class SongEditComponent implements OnInit {
   }
 
   getCoauthorName(coauthor: SongCoauthorDTO) {
-    console.log('get author name for author ' + coauthor.authorId);
     return this.authors.filter(it => it.id === coauthor.authorId)[0].name;
   }
 
