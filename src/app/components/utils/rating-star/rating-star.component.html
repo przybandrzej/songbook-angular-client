@@ -1,0 +1,6 @@
+<div class="rate" fxLayout="row">
+  <div *ngFor="let label of labels" class="container" [class.selected]="selected.indexOf(label) !== -1">
+    <input type="radio" [id]="'star' + label" name="rate" [value]="label" (click)="onClick(label)"/>
+    <label [for]="'star' + label" [title]="label" class="star">{{label}} {{label === 1 ? 'star' : 'stars'}}</label>
+  </div>
+</div>

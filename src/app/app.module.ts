@@ -71,6 +71,8 @@ import { PasswordResetComponent } from './components/account/password-reset/pass
 import { PasswordResetRequestComponent } from './components/account/password-reset-request/password-reset-request.component';
 import { UserAddedSongsPanelComponent } from './components/user/user-added-songs-panel/user-added-songs-panel.component';
 import { UserEditedSongsPanelComponent } from './components/user/user-edited-songs-panel/user-edited-songs-panel.component';
+import { RatingStarComponent } from './components/utils/rating-star/rating-star.component';
+import { PlaylistDialogComponent } from './components/utils/playlist-dialog/playlist-dialog.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -99,7 +101,9 @@ export function getAPIConfiguration() {
     PasswordResetComponent,
     PasswordResetRequestComponent,
     UserAddedSongsPanelComponent,
-    UserEditedSongsPanelComponent
+    UserEditedSongsPanelComponent,
+    RatingStarComponent,
+    PlaylistDialogComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

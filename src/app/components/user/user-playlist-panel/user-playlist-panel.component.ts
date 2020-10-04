@@ -23,7 +23,7 @@ export class UserPlaylistPanelComponent implements OnInit {
   public columns: string[] = ['name', 'status', 'created', 'songs', 'actions'];
   public selectedPlaylist: PlaylistDTO;
   public selectedPlaylistSongs: SongDTO[] = [];
-  public songsColumns: string[] = ['author', 'title', 'category'];
+  public songsColumns: string[] = ['author', 'title', 'category', 'actions'];
 
   constructor(private playlistService: PlaylistResourceService, private songService: SongResourceService, private router: Router) {
   }
@@ -73,6 +73,7 @@ export class UserPlaylistPanelComponent implements OnInit {
 
   select(playlist: PlaylistDTO) {
     this.selectedPlaylist = playlist;
+    this.selectedPlaylistSongs = [];
     this.getPlaylistSongs();
   }
 
@@ -82,8 +83,8 @@ export class UserPlaylistPanelComponent implements OnInit {
       const index = this.playlists.indexOf(old);
       this.playlists.splice(index, 1, playlist);
       this.playlistsChange.emit(this.playlists);
-      this.selectedPlaylist = playlist;
       this.refreshTable();
+      this.select(playlist);
     });
   }
 
@@ -106,5 +107,12 @@ export class UserPlaylistPanelComponent implements OnInit {
 
   openSongDetails(id: number) {
     this.router.navigateByUrl('song/' + id);
+  }
+
+  removeSong(event: MouseEvent, id: number) {
+    event.stopPropagation();
+    const item = this.selectedPlaylist.songs.filter(it => it === id)[0];
+    this.selectedPlaylist.songs.splice(this.selectedPlaylist.songs.indexOf(item), 1);
+    this.editPlaylist();
   }
 }
