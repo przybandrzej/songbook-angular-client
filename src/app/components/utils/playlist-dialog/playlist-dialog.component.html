@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Add {{data.song.title}} to playlist</h1>
+<div mat-dialog-content>
+  <ul>
+    <li *ngFor="let playlist of data.playlists">
+      <mat-checkbox (change)="onSelect($event, playlist)" [checked]="isChecked(playlist)">
+        {{playlist.name}}
+      </mat-checkbox>
+    </li>
+  </ul>
+
+  <div fxLayout="row" fxLayoutGap="16px">
+    <mat-form-field>
+      <mat-label>Playlist name</mat-label>
+      <input matInput placeholder="write name here..." [(ngModel)]="newPlaylistName">
+    </mat-form-field>
+    <button mat-stroked-button (click)="addPlaylist()">Create</button>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="apply()">Apply</button>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+</div>
