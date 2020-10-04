@@ -33,7 +33,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
   }
 
   private handleError(error: any, request: HttpRequest<any>): ObservableInput<any> {
-    const message = error.message + '. ' + error.error.message;
+    const message = error.error.message;
     if (error.status >= 400 && error.status < 500) {
       if (error.status === 401) {
         this.injector.get(AuthService).setLoggedOut();
