@@ -1,8 +1,10 @@
 <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary">
   <div>
-    <button *ngIf="song.isAwaiting" (click)="approveSong()" mat-mini-fab color="accent" matTooltip="Approve the song">
-      <mat-icon>check_circle</mat-icon>
-    </button>
+    <ng-container *ngIf="song.isAwaiting">
+      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent" matTooltip="Approve the song">
+        <mat-icon>check_circle</mat-icon>
+      </button>
+    </ng-container>
   </div>
   <div fxLayoutGap="15px" fxLayout="row">
     <button mat-mini-fab color="accent" (click)="saveSong()" matTooltip="Save the song">

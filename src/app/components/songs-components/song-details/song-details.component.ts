@@ -7,6 +7,7 @@ import {
   PlaylistResourceService,
   SongResourceService,
   UserDTO,
+  UserRoleResourceService,
   UserSongRatingDTO,
   UserSongRatingResourceService
 } from '../../../songbook';
@@ -15,7 +16,10 @@ import {RatingChanged} from '../../utils/rating-star/rating-star.component';
 import {UserDetailsData} from '../../../model/user-details-data';
 import {MatDialog} from '@angular/material/dialog';
 import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
-import {map} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
+import {rolesForUser} from '../../../model/user-roles-combinations';
+import {of} from 'rxjs';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-song-details',
@@ -25,30 +29,51 @@ import {map} from 'rxjs/operators';
 export class SongDetailsComponent implements OnInit {
 
   data: SongDetailsData;
-  userData: UserDetailsData;
   user: UserDTO;
   inUserLib = false;
   songRating: UserSongRatingDTO;
   maxRating = 5;
+  rolesForUser = rolesForUser;
 
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
               private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService,
-              public dialog: MatDialog, private playlistService: PlaylistResourceService) {
+              public dialog: MatDialog, private playlistService: PlaylistResourceService, private roleService: UserRoleResourceService,
+              private loginService: AuthService) {
   }
 
   ngOnInit(): void {
     this.data = this.route.snapshot.data.data;
-    this.userData = this.route.snapshot.data.user;
-    this.user = this.userData.user;
-    this.inUserLib = this.user.songs.filter(it => it === this.data.song.id).length > 0;
-    this.songRating = {
-      userId: this.user.id,
-      songId: this.data.song.id,
-      rating: null
-    };
-    this.ratingService.getByUserIdAndSongIdUsingGET(this.songRating.songId, this.songRating.userId).subscribe(
-      rating => this.songRating = rating,
-      error => console.log('No rating found'));
+    const getUserDetails = this.authService.getAccountUsingGET().pipe(
+      mergeMap(user => {
+        const data: UserDetailsData = {user: null, role: null};
+        data.user = user;
+        return of(data);
+      }),
+      mergeMap(data => {
+        return this.roleService.getByIdUsingGET7(data.user.userRoleId).pipe(map(role => {
+          data.role = role;
+          return data;
+        }));
+      })
+    );
+    this.loginService.loggedIn.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        getUserDetails.subscribe(userData => {
+          this.user = userData.user;
+          this.inUserLib = this.user.songs.filter(it => it === this.data.song.id).length > 0;
+          this.songRating = {
+            userId: this.user.id,
+            songId: this.data.song.id,
+            rating: null
+          };
+          this.ratingService.getByUserIdAndSongIdUsingGET(this.songRating.songId, this.songRating.userId).subscribe(
+            rating => this.songRating = rating,
+            error => {
+              return;
+            });
+        });
+      }
+    });
   }
 
   editSong() {
@@ -96,6 +121,9 @@ export class SongDetailsComponent implements OnInit {
   }
 
   getRatingLabelValue(): number {
+    if (!this.songRating || !this.songRating.rating) {
+      return 0;
+    }
     return this.songRating.rating * this.maxRating;
   }
 

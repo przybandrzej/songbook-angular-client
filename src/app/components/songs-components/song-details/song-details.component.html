@@ -5,10 +5,10 @@
     </button>
   </div>
   <div fxLayoutAlign="end center" fxLayoutGap="15px" fxFlex="50%">
-    <button mat-mini-fab color="accent" (click)="editSong()" matTooltip="Edit the song">
+    <button *appCanEditSong="data.song" mat-mini-fab color="accent" (click)="editSong()" matTooltip="Edit the song">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-mini-fab color="accent" (click)="deleteSong()" matTooltip="Delete the song">
+    <button *appCanEditSong="data.song" mat-mini-fab color="accent" (click)="deleteSong()" matTooltip="Delete the song">
       <mat-icon>remove_circle_outline</mat-icon>
     </button>
   </div>
@@ -22,15 +22,20 @@
         <mat-card-subtitle>{{data.song.author.name}}</mat-card-subtitle>
       </div>
       <div fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center center">
-      <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
-        <span>Average: {{data.song.averageRating ? data.song.averageRating : 'Not rated yet'}}</span>
-        <app-rating-star [value]="getRatingLabelValue()" (valueChange)="updateRating($event)" [amount]="maxRating"></app-rating-star>
-      </div>
-      <div fxLayout="column" fxLayoutAlign="center stretch">
-        <button mat-stroked-button color="accent" *ngIf="!inUserLib" (click)="addToLib()">Add to library</button>
-        <button mat-stroked-button color="accent" *ngIf="inUserLib" (click)="removeFromLib()">Remove from library</button>
-        <button mat-stroked-button color="accent" (click)="addToPlaylist()">Add to playlist</button>
-      </div>
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+          <span>Average rating: {{data.song.averageRating ? data.song.averageRating : 'Not rated yet'}}</span>
+          <app-rating-star *appActivatedByRoles="rolesForUser" [value]="getRatingLabelValue()"
+                           (valueChange)="updateRating($event)"
+                           [amount]="maxRating"></app-rating-star>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center stretch">
+          <ng-container *appActivatedByRoles="rolesForUser">
+            <button mat-stroked-button color="accent" *ngIf="!inUserLib" (click)="addToLib()">Add to library</button>
+            <button mat-stroked-button color="accent" *ngIf="inUserLib" (click)="removeFromLib()">Remove from library
+            </button>
+            <button mat-stroked-button color="accent" (click)="addToPlaylist()">Add to playlist</button>
+          </ng-container>
+        </div>
       </div>
     </div>
   </mat-card-header>

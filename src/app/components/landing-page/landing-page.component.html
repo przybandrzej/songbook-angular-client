@@ -10,7 +10,7 @@
     </mat-card>
   </div>
 
-  <div fxFlex="50%" fxFlex.lt-md="100%">
+  <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
     <mat-card (click)="showCategories()" style="background-color: lightcoral">
       <mat-card-header>
         <mat-card-title>Categories</mat-card-title>
