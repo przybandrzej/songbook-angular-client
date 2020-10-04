@@ -69,6 +69,7 @@ export class SongDetailsComponent implements OnInit {
           this.ratingService.getByUserIdAndSongIdUsingGET(this.songRating.songId, this.songRating.userId).subscribe(
             rating => this.songRating = rating,
             error => {
+              return;
             });
         });
       }
@@ -120,7 +121,7 @@ export class SongDetailsComponent implements OnInit {
   }
 
   getRatingLabelValue(): number {
-    if (!this.songRating) {
+    if (!this.songRating || !this.songRating.rating) {
       return 0;
     }
     return this.songRating.rating * this.maxRating;
