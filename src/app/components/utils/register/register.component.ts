@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.errors = [];
+    this.isError = false;
     if (this.confirmPassword !== this.form.password) {
       this.isError = true;
       this.errors.push('Passwords don\'t match');
@@ -34,6 +35,9 @@ export class RegisterComponent implements OnInit {
       error => {
         this.isError = true;
         this.errors = error.error.subErrors.map(it => it.message);
+        if (error.error.message.includes('Username') || error.error.message.includes('Email')) {
+          this.errors.unshift(error.error.message);
+        }
       });
   }
 
