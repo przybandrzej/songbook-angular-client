@@ -12,9 +12,12 @@ import {
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
+import {catchError, map, mergeMap} from 'rxjs/operators';
 import {rolesForModerator} from '../../../model/user-roles-combinations';
 import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
+import {FormControl, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {elementEventFullName} from '@angular/compiler/src/view_compiler/view_compiler';
 
 @Component({
   selector: 'app-song-edit',
@@ -22,6 +25,11 @@ import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
   styleUrls: ['./song-edit.component.scss']
 })
 export class SongEditComponent implements OnInit {
+
+  public tagForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public titleForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2), Validators.required]);
+  public authorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public coauthorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
 
   rolesForModerator = rolesForModerator;
 
@@ -77,7 +85,12 @@ export class SongEditComponent implements OnInit {
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
-              private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService) {
+              private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService,
+              private snackBar: MatSnackBar) {
+  }
+
+  public hasError(control: FormControl, errorName: string): boolean {
+    return control.hasError(errorName);
   }
 
   ngOnInit(): void {
@@ -262,4 +275,5 @@ export class SongEditComponent implements OnInit {
     }
     this.tagToAdd.name = '';
   }
+
 }
