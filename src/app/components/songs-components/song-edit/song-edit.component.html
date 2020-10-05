@@ -1,7 +1,8 @@
 <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary">
   <div>
     <ng-container *ngIf="song.isAwaiting">
-      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent" matTooltip="Approve the song">
+      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent"
+              matTooltip="Approve the song">
         <mat-icon>check_circle</mat-icon>
       </button>
     </ng-container>
@@ -161,11 +162,20 @@
         <mat-card-title>Tags</mat-card-title>
       </mat-card-header>
       <div fxLayout="column">
+        <div fxLayout="row">
+          <mat-form-field fxFlex="80%">
+            <mat-label>tag</mat-label>
+            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name">
+          </mat-form-field>
+          <button mat-button fxFlex="20%" color="accent" (click)="addTag()">add</button>
+        </div>
         <div>
           <ul>
-            <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
+            <li *ngFor="let tag of allTags" fxLayout="row" fxLayoutGap="5px">
               <div fxLayoutAlign="start center">#{{tag.name}}</div>
-              <mat-icon (click)="removeTag(tag)" matTooltip="Remove tag">cancel</mat-icon>
+              <button mat-button (click)="removeTag(tag)">
+                <mat-icon matTooltip="Remove tag">cancel</mat-icon>
+              </button>
             </li>
           </ul>
         </div>

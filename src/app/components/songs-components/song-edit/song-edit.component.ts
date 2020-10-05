@@ -8,11 +8,11 @@ import {
   SongCoauthorResourceService,
   SongDTO,
   SongResourceService,
-  TagDTO
+  TagDTO, TagResourceService, UniversalCreateDTO
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
 import {rolesForModerator} from '../../../model/user-roles-combinations';
 import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
 
@@ -65,12 +65,19 @@ export class SongEditComponent implements OnInit {
 
   authorToAdd = '';
   coauthorToAddName = '';
-  // coauthorsToDelete: SongCoauthorDTO[] = [];
   allCoauthors: { coauthor: SongCoauthorDTO, name: string }[] = [];
+
+  tagsToAdd: UniversalCreateDTO[] = [];
+  tagToAdd: UniversalCreateDTO = {
+    id: null,
+    name: ''
+  };
+  tagsToDelete: TagDTO[] = [];
+  allTags: { id: number, name: string }[] = [];
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
-              private coauthorService: SongCoauthorResourceService) {
+              private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService) {
   }
 
   ngOnInit(): void {
@@ -82,6 +89,7 @@ export class SongEditComponent implements OnInit {
           for (const coauthor of this.song.coauthors) {
             this.coauthorsToAdd.push(coauthor);
           }
+          this.allTags = this.song.tags;
         });
       }
     });
@@ -149,12 +157,29 @@ export class SongEditComponent implements OnInit {
       createAuthorRequest = this.authorService.createUsingPOST({id: null, name: this.authorToAdd});
     }
     this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
+
+    const tagsRequests: Observable<any>[] = [];
+    this.tagsToAdd.forEach(it => tagsRequests.push(this.tagService.createUsingPOST5(it)));
+    this.tagsToDelete.forEach(it => tagsRequests.push(this.tagService.deleteUsingDELETE5(it.id)));
+    let coauthorsAndTagsRequest: Observable<any>;
+    if (tagsRequests.length > 0) {
+      if (coauthorsRequests) {
+        coauthorsAndTagsRequest = coauthorsRequests.pipe(map(() => forkJoin(tagsRequests)));
+      } else {
+        coauthorsAndTagsRequest = forkJoin(tagsRequests);
+      }
+    } else {
+      if (coauthorsRequests) {
+        coauthorsAndTagsRequest = coauthorsRequests;
+      }
+    }
+
     if (createAuthorRequest) {
       createAuthorRequest.subscribe(author => {
         this.song.author = author;
         this.songService.updateUsingPUT4(this.song).subscribe(song => {
-          if (coauthorsRequests) {
-            coauthorsRequests.subscribe(() => this.goToDetailScreen());
+          if (coauthorsAndTagsRequest) {
+            coauthorsAndTagsRequest.subscribe(() => this.goToDetailScreen());
           } else {
             this.goToDetailScreen();
           }
@@ -162,8 +187,8 @@ export class SongEditComponent implements OnInit {
       });
     } else {
       this.songService.updateUsingPUT4(this.song).subscribe(song => {
-        if (coauthorsRequests) {
-          coauthorsRequests.subscribe(() => this.goToDetailScreen());
+        if (coauthorsAndTagsRequest) {
+          coauthorsAndTagsRequest.subscribe(() => this.goToDetailScreen());
         } else {
           this.goToDetailScreen();
         }
@@ -215,15 +240,26 @@ export class SongEditComponent implements OnInit {
     return this.authors.filter(it => it.id === coauthor.authorId)[0].name;
   }
 
-  removeTag(tag: TagDTO) {
-    const index = this.song.tags.indexOf(tag);
-    if (index > -1) {
-      this.song.tags.splice(index, 1);
+  removeTag(tag: any) {
+    console.log('Remove tag ' + JSON.stringify(tag));
+    if (tag.id) {
+      this.tagsToDelete.push(tag);
+    } else {
+      this.tagsToAdd.splice(this.tagsToAdd.indexOf(tag), 1);
     }
-    this.saveSong();
+    const item = this.allTags.filter(it => it.id === tag.id && it.name === tag.name)[0];
+    this.allTags.splice(this.allTags.indexOf(item), 1);
   }
 
   approveSong() {
     this.songService.approveSongUsingPUT(this.song).subscribe(res => this.song = res);
+  }
+
+  addTag(): void {
+    if (this.tagToAdd.name.length > 0) {
+      this.tagsToAdd.push(this.tagToAdd);
+      this.allTags.push({id: this.tagToAdd.id, name: this.tagToAdd.name});
+    }
+    this.tagToAdd.name = '';
   }
 }
