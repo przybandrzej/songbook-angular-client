@@ -51,7 +51,6 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
     } else {
       alert(message);
     }
-    this.openSnackBar('Something went wrong!', 'OK', 6000);
     return throwError(error);
   }
 
