@@ -75,8 +75,8 @@ import { RatingStarComponent } from './components/utils/rating-star/rating-star.
 import { PlaylistDialogComponent } from './components/utils/playlist-dialog/playlist-dialog.component';
 import { ActivatedByRolesDirective } from './directives/activated-by-roles.directive';
 import { CanEditSongDirective } from './directives/can-edit-song.directive';
-import { TagInputComponent } from './components/tags/tag-input/tag-input.component';
 import { WarningMessageBoxComponent } from './components/utils/warning-message-box/warning-message-box.component';
+import { SuccessMessageBoxComponent } from './components/utils/success-message-box/success-message-box.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -110,8 +110,8 @@ export function getAPIConfiguration() {
     PlaylistDialogComponent,
     ActivatedByRolesDirective,
     CanEditSongDirective,
-    TagInputComponent,
-    WarningMessageBoxComponent
+    WarningMessageBoxComponent,
+    SuccessMessageBoxComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

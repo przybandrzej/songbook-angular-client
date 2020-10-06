@@ -10,7 +10,11 @@ export class WarningMessageBoxComponent implements OnInit {
   @Input()
   public message = '';
 
-  constructor() { }
+  @Input()
+  public messages: string[] = [];
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
