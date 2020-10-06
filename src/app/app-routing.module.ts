@@ -7,8 +7,8 @@ import {SongEditComponent} from './components/songs-components/song-edit/song-ed
 import {SongAddComponent} from './components/songs-components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
-import {LoginComponent} from './components/utils/login/login.component';
-import {RegisterComponent} from './components/utils/register/register.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import {SongResolveService} from './services/resolve/song-resolve.service';
 import {UserProfileComponent} from './components/user/user-profile/user-profile.component';
 import {UserResolveService} from './services/resolve/user-resolve.service';

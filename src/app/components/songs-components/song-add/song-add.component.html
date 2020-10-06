@@ -19,7 +19,13 @@
         </mat-card-header>
         <mat-card>
           <mat-card-content>
-            <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title">
+            <mat-form-field>
+              <input matInput placeholder="write title here..." [(ngModel)]="song.title"
+                     [formControl]="titleForm">
+              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(titleForm, 'maxlength')">Title should be 2-40 characters long</mat-error>
+              <mat-error *ngIf="hasError(titleForm, 'minlength')">Title should be 2-40 characters long</mat-error>
+            </mat-form-field>
           </mat-card-content>
         </mat-card>
       </mat-card-content>
@@ -60,7 +66,15 @@
       </mat-card>
       <mat-card>
         <mat-card-content fxFlex="100%">
-          <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="song.authorName">
+          <mat-form-field>
+            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="song.authorName"
+                   [formControl]="authorForm">
+            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+            <mat-error *ngIf="hasError(authorForm, 'maxlength')">Author name should be 2-40 characters long
+            </mat-error>
+            <mat-error *ngIf="hasError(authorForm, 'minlength')">Author name should be 2-40 characters long
+            </mat-error>
+          </mat-form-field>
         </mat-card-content>
       </mat-card>
     </mat-card-content>
@@ -107,29 +121,35 @@
       </mat-card-header>
       <div fxLayout="row">
 
-      <mat-card fxFlex="50%">
-        <mat-card-content fxLayout="column" fxLayoutGap="8px">
-          <mat-form-field>
-            <mat-select placeholder="select author..." [(ngModel)]="coauthorToAdd.authorName">
-              <mat-option *ngFor="let author of authors" [value]="author.name">
-                {{author.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Author name</mat-label>
-            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAdd.authorName">
-          </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
-              <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
-                {{fun}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-button color="accent" (click)="addCouathor()">Add coauthor</button>
-        </mat-card-content>
-      </mat-card>
+        <mat-card fxFlex="50%">
+          <mat-card-content fxLayout="column" fxLayoutGap="8px">
+            <mat-form-field>
+              <mat-select placeholder="select author..." [(ngModel)]="coauthorToAdd.authorName">
+                <mat-option *ngFor="let author of authors" [value]="author.name">
+                  {{author.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Author name</mat-label>
+              <input matInput fxFlex="100%" placeholder="write author name here..."
+                     [(ngModel)]="coauthorToAdd.authorName" [formControl]="coauthorForm">
+              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(coauthorForm, 'maxlength')">Author name should be 2-40 characters long
+              </mat-error>
+              <mat-error *ngIf="hasError(coauthorForm, 'minlength')">Author name should be 2-40 characters long
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
+                <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
+                  {{fun}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-button color="accent" (click)="addCouathor()">Add coauthor</button>
+          </mat-card-content>
+        </mat-card>
 
         <div fxFlex="50%">
           <ul>
@@ -155,7 +175,11 @@
         <div fxLayout="row">
           <mat-form-field fxFlex="80%">
             <mat-label>tag</mat-label>
-            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd">
+            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd"
+                   [formControl]="tagForm">
+            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+            <mat-error *ngIf="hasError(tagForm, 'maxlength')">Tag should be 2-40 characters long</mat-error>
+            <mat-error *ngIf="hasError(tagForm, 'minlength')">Tag should be 2-40 characters long</mat-error>
           </mat-form-field>
           <button mat-button fxFlex="20%" color="accent" (click)="addTag()">add</button>
         </div>

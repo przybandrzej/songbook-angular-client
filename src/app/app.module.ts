@@ -64,8 +64,8 @@ import {LeftNavBarComponent} from './components/layouts/left-nav-bar/left-nav-ba
 import {UserFaceMenuComponent} from './components/layouts/user-face-menu/user-face-menu.component';
 import {MainNavbarComponent} from './components/layouts/main-navbar/main-navbar.component';
 import {FooterComponent} from './components/layouts/footer/footer.component';
-import {LoginComponent} from './components/utils/login/login.component';
-import {RegisterComponent} from './components/utils/register/register.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import { ActivateComponent } from './components/account/activate/activate.component';
 import { PasswordResetComponent } from './components/account/password-reset/password-reset.component';
 import { PasswordResetRequestComponent } from './components/account/password-reset-request/password-reset-request.component';
@@ -75,6 +75,9 @@ import { RatingStarComponent } from './components/utils/rating-star/rating-star.
 import { PlaylistDialogComponent } from './components/utils/playlist-dialog/playlist-dialog.component';
 import { ActivatedByRolesDirective } from './directives/activated-by-roles.directive';
 import { CanEditSongDirective } from './directives/can-edit-song.directive';
+import { WarningMessageBoxComponent } from './components/utils/warning-message-box/warning-message-box.component';
+import { SuccessMessageBoxComponent } from './components/utils/success-message-box/success-message-box.component';
+import { ProcessingMessageBoxComponent } from './components/utils/processing-message-box/processing-message-box.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -107,7 +110,10 @@ export function getAPIConfiguration() {
     RatingStarComponent,
     PlaylistDialogComponent,
     ActivatedByRolesDirective,
-    CanEditSongDirective
+    CanEditSongDirective,
+    WarningMessageBoxComponent,
+    SuccessMessageBoxComponent,
+    ProcessingMessageBoxComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

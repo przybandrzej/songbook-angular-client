@@ -1,7 +1,8 @@
 <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary">
   <div>
     <ng-container *ngIf="song.isAwaiting">
-      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent" matTooltip="Approve the song">
+      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent"
+              matTooltip="Approve the song">
         <mat-icon>check_circle</mat-icon>
       </button>
     </ng-container>
@@ -28,7 +29,12 @@
         </mat-card-header>
         <mat-card>
           <mat-card-content>
-            <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title">
+            <mat-form-field>
+              <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title" [formControl]="titleForm">
+              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(titleForm, 'maxlength')">Title should be 2-40 characters long</mat-error>
+              <mat-error *ngIf="hasError(titleForm, 'minlength')">Title should be 2-40 characters long</mat-error>
+            </mat-form-field>
           </mat-card-content>
         </mat-card>
       </mat-card-content>
@@ -69,7 +75,14 @@
       </mat-card>
       <mat-card>
         <mat-card-content fxFlex="100%">
-          <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd">
+          <mat-form-field>
+            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd" [formControl]="authorForm">
+            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+            <mat-error *ngIf="hasError(authorForm, 'maxlength')">Author name should be 2-40 characters long
+            </mat-error>
+            <mat-error *ngIf="hasError(authorForm, 'minlength')">Author name should be 2-40 characters long
+            </mat-error>
+          </mat-form-field>
         </mat-card-content>
       </mat-card>
     </mat-card-content>
@@ -127,7 +140,12 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Or write new author name</mat-label>
-              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName">
+              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName" [formControl]="coauthorForm">
+              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(coauthorForm, 'maxlength')">Author name should be 2-40 characters long
+              </mat-error>
+              <mat-error *ngIf="hasError(coauthorForm, 'minlength')">Author name should be 2-40 characters long
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
@@ -161,11 +179,23 @@
         <mat-card-title>Tags</mat-card-title>
       </mat-card-header>
       <div fxLayout="column">
+        <div fxLayout="row">
+          <mat-form-field fxFlex="80%">
+            <mat-label>Tag</mat-label>
+            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name"[formControl]="tagForm">
+            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+            <mat-error *ngIf="hasError(tagForm, 'maxlength')">Tag should be 2-40 characters long</mat-error>
+            <mat-error *ngIf="hasError(tagForm, 'minlength')">Tag should be 2-40 characters long</mat-error>
+          </mat-form-field>
+          <button mat-button fxFlex="20%" color="accent" (click)="addTag()">add</button>
+        </div>
         <div>
           <ul>
-            <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
+            <li *ngFor="let tag of allTags" fxLayout="row" fxLayoutGap="5px">
               <div fxLayoutAlign="start center">#{{tag.name}}</div>
-              <mat-icon (click)="removeTag(tag)" matTooltip="Remove tag">cancel</mat-icon>
+              <button mat-button (click)="removeTag(tag)">
+                <mat-icon matTooltip="Remove tag">cancel</mat-icon>
+              </button>
             </li>
           </ul>
         </div>
