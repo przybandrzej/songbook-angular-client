@@ -1,1 +1,17 @@
-<p>{{message}}</p>
+<div fxLayout="column" fxFlex="100%" fxLayoutAlign="center center">
+  <div fxFlex="100%">
+    <div fxLayout>
+      <div fxFlex="20%"></div>
+      <mat-card fxLayoutAlign="space-evenly stretch" fxLayout="column">
+        <mat-card-content fxLayout="column">
+          <app-processing-message-box *ngIf="isProcessing" [message]="processingMessage"></app-processing-message-box>
+          <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
+          <app-success-message-box *ngIf="message.length > 0" [messages]="[message]"></app-success-message-box>
+        </mat-card-content>
+        <div fxLayoutAlign="center center">
+          <button mat-raised-button *ngIf="message.length > 0" color="accent" [routerLink]="['/login']">Login</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
