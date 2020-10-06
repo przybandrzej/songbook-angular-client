@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationResourceService, RegisterNewUserForm} from '../../songbook';
 import {Router} from '@angular/router';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +9,13 @@ import {Router} from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
+  public usernameForm: FormControl = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9 _-żźćńółęąśŻŹĆĄŚĘŁÓŃ]{4,15}$')]);
+  public emailForm: FormControl = new FormControl('', [Validators.email, Validators.required]);
+  public firstNameForm: FormControl = new FormControl('', [Validators.pattern('^[a-z A-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,30}$')]);
+  public lastNameForm: FormControl = new FormControl('', [Validators.pattern('^[a-z A-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,30}$')]);
+  public passwordForm: FormControl = new FormControl('', [Validators.required, Validators.pattern('^(.){6,128}$')]);
+  public confirmPasswordForm: FormControl = new FormControl('', [Validators.required]);
 
   form: RegisterNewUserForm = {email: '', password: '', username: ''};
   confirmPassword = '';
@@ -62,4 +70,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  hasError(form: FormControl, errorCode: string) {
+    return form.hasError(errorCode);
+  }
 }
