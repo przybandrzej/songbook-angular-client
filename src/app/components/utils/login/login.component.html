@@ -5,13 +5,16 @@
       <form #UserLogin="ngForm" fxFlex="100%" (ngSubmit)="login()">
         <mat-card fxLayoutAlign="space-evenly stretch" fxLayout="column">
           <mat-card-content fxLayout="column">
+            <div *ngIf="isError" fxLayout="row" class="error-box" fxLayoutGap="15px" fxFlexAlign="center center">
+              <mat-icon>warning</mat-icon>
+              <span>{{errorMessage}}</span>
+            </div>
             <mat-form-field>
               <input name="username" matInput placeholder="Username or email" [(ngModel)]="form.login">
             </mat-form-field>
             <mat-form-field>
               <input name="password" matInput type="password" placeholder="Password" [(ngModel)]="form.password">
             </mat-form-field>
-            <span *ngIf="error">Login or password not valid!</span>
             <mat-checkbox class="example-margin" name="remember me checkbox" [(ngModel)]="form.rememberMe">Remember me
             </mat-checkbox>
             <a [routerLink]="['/password-reset-request']">Forgot password?</a>
