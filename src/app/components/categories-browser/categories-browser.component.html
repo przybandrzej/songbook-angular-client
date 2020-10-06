@@ -24,7 +24,8 @@
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
             <div fxLayoutAlign="end center">
-              <button [style.height]="'100%'" mat-button fxFlex="100%" (click)="delete($event, element.id)">Delete
+              <button [style.height]="'100%'" mat-button fxFlex="100%" (click)="delete($event, element.id)">
+                Delete
               </button>
             </div>
           </td>
@@ -39,7 +40,7 @@
 
     <div fxFlex="50%">
       <mat-card>
-
+        <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
         <div fxLayout="row" fxLayoutGap="30px">
           <mat-card-header fxFlex="50%">
             <mat-card-title>
@@ -63,7 +64,9 @@
         <mat-card-content fxLayout="column">
           <mat-form-field>
             <mat-label>Category name</mat-label>
-            <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="selectedCategory.name">
+            <input matInput fxFlex="100%" placeholder="write name here..." [(ngModel)]="selectedCategory.name" [formControl]="nameForm">
+            <mat-hint align="start">Min 2 and not more than 40 characters long.</mat-hint>
+            <mat-error *ngIf="hasError(nameForm, 'pattern')">Name should be 2-40 characters long</mat-error>
           </mat-form-field>
           <div fxLayoutAlign="end">
             <button *ngIf="selectedCategory.id===0" mat-mini-fab color="accent"

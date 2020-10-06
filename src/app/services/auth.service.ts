@@ -71,23 +71,20 @@ export class AuthService {
     this.router.navigateByUrl('login');
   }
 
-  // todo validate?
-  public requestResetPassword(mail: string): void {
-    this.authService.requestPasswordResetUsingPOST(mail).subscribe();
+  public requestResetPassword(mail: string): Observable<any> {
+    return this.authService.requestPasswordResetUsingPOST(mail);
   }
 
-  // todo validate?
-  public completePasswordReset(passReset: TokenAndPasswordDTO): void {
-    this.authService.finishPasswordResetUsingPOST(passReset).subscribe();
+  public completePasswordReset(passReset: TokenAndPasswordDTO): Observable<any> {
+    return this.authService.finishPasswordResetUsingPOST(passReset);
   }
 
-  // todo validate?
-  public changePassword(passChange: PasswordChangeDTO): void {
-    this.authService.changePasswordUsingPOST(passChange).subscribe();
+  public changePassword(passChange: PasswordChangeDTO): Observable<any> {
+    return this.authService.changePasswordUsingPOST(passChange);
   }
 
-  public activateAccount(activationKey: string): void {
-    this.authService.activateAccountUsingGET(activationKey).subscribe();
+  public activateAccount(activationKey: string): Observable<any> {
+    return this.authService.activateAccountUsingGET(activationKey);
   }
 
   public get loggedIn(): Observable<boolean> {

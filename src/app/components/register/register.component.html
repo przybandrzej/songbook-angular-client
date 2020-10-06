@@ -1,0 +1,75 @@
+<div fxLayout="column">
+
+  <div fxFlex="30%">
+    <div fxLayout>
+      <div fxFlex="30%" fxFlex.lt-lg="0px"></div>
+      <div fxFlex="5%"></div>
+      <form *ngIf="!isCreated" #UserLogin="ngForm" fxFlex="30%" fxFlex.lt-lg="90%" (ngSubmit)="register()">
+        <mat-card fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="30px">
+          <mat-card-content fxLayout="column" fxFlexAlign="center stretch">
+            <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
+            <app-warning-message-box *ngIf="errors.length > 0" [messages]="errors"></app-warning-message-box>
+            <mat-form-field>
+              <input name="username" matInput placeholder="username" [(ngModel)]="form.username"
+                     [formControl]="usernameForm">
+              <mat-hint align="end">Min 4 and not more than 15 characters long. Characters, digits, spaces, _ and -
+              </mat-hint>
+              <mat-error *ngIf="hasError(usernameForm, 'required')">Username is required</mat-error>
+              <mat-error *ngIf="hasError(usernameForm, 'pattern')">Username should be min 4 and not more than 15
+                characters long.
+                Characters, digits, spaces, _ and -
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="email" matInput type="email" placeholder="email" [(ngModel)]="form.email"
+                     [formControl]="emailForm">
+              <mat-error *ngIf="hasError(emailForm, 'email')">Email is wrong</mat-error>
+              <mat-error *ngIf="hasError(emailForm, 'required')">Email is required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="first name" matInput placeholder="First name" [(ngModel)]="form.firstName"
+                     [formControl]="firstNameForm">
+              <mat-hint align="end">Min 2 and not more than 30 characters long</mat-hint>
+              <mat-error *ngIf="hasError(firstNameForm, 'pattern')">First name should be min 2 and not more than 30
+                characters
+                long
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="last name" matInput placeholder="Last name" [(ngModel)]="form.lastName"
+                     [formControl]="lastNameForm">
+              <mat-hint align="end">Min 2 and not more than 30 characters long</mat-hint>
+              <mat-error *ngIf="hasError(lastNameForm, 'pattern')">Last name should be min 2 and not more than 30
+                characters long
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="password" matInput type="password" placeholder="Password" [(ngModel)]="form.password"
+                     [formControl]="passwordForm">
+              <mat-hint align="end">Min 6 and not more than 128 characters long</mat-hint>
+              <mat-error *ngIf="hasError(passwordForm, 'pattern')">Password should be min 6 and not more than 128
+                characters long
+              </mat-error>
+              <mat-error *ngIf="hasError(passwordForm, 'required')">Password is required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="password" matInput type="password" placeholder="Confirm password"
+                     [(ngModel)]="confirmPassword" (change)="validateConfirmPassword()"
+                     [formControl]="confirmPasswordForm">
+              <mat-error *ngIf="hasError(confirmPasswordForm, 'required')">Password is required</mat-error>
+            </mat-form-field>
+          </mat-card-content>
+          <button type="submit" mat-raised-button color="accent">Register</button>
+        </mat-card>
+      </form>
+      <mat-card *ngIf="isCreated">
+        <div fxLayout="column" class="success-box" fxFlexAlign="center center">
+          <app-success-message-box [messages]="[successMessage]"></app-success-message-box>
+          <button mat-raised-button color="accent" (click)="goToLogin()">Login page</button>
+        </div>
+      </mat-card>
+      <div fxFlex="5%"></div>
+      <div fxFlex="30%" fxFlex.lt-lg="0px"></div>
+    </div>
+  </div>
+</div>
