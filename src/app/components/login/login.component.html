@@ -5,10 +5,7 @@
       <form #UserLogin="ngForm" fxFlex="100%" (ngSubmit)="login()">
         <mat-card fxLayoutAlign="space-evenly stretch" fxLayout="column">
           <mat-card-content fxLayout="column">
-            <div *ngIf="isError" fxLayout="row" class="error-box" fxLayoutGap="15px" fxFlexAlign="center center">
-              <mat-icon>warning</mat-icon>
-              <span>{{errorMessage}}</span>
-            </div>
+            <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
             <mat-form-field>
               <input name="username" matInput placeholder="Username or email" [(ngModel)]="form.login">
             </mat-form-field>

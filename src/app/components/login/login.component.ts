@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginForm} from '../../../songbook';
-import {AuthService} from '../../../services/auth.service';
+import {LoginForm} from '../../songbook';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-page',
