@@ -2,7 +2,7 @@
   <div fxFlex="50%" fxFlex.lt-md="100%">
     <mat-card (click)="showSongs()" style="background-color: burlywood">
       <mat-card-header>
-        <mat-card-title>Browse songs</mat-card-title>
+        <mat-card-title i18n="@@browse.songs">Browse songs</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayoutAlign="start">
         <i class="material-icons md-48">library_books</i>
@@ -13,7 +13,7 @@
   <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
     <mat-card (click)="showCategories()" style="background-color: lightcoral">
       <mat-card-header>
-        <mat-card-title>Categories</mat-card-title>
+        <mat-card-title i18n="@@categories">Categories</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayoutAlign="start">
         <i class="material-icons md-48">widgets</i>

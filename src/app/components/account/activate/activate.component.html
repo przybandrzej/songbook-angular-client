@@ -9,7 +9,7 @@
           <app-success-message-box *ngIf="message.length > 0" [messages]="[message]"></app-success-message-box>
         </mat-card-content>
         <div fxLayoutAlign="center center">
-          <button mat-raised-button *ngIf="message.length > 0" color="accent" [routerLink]="['/login']">Login</button>
+          <button mat-raised-button *ngIf="message.length > 0" color="accent" [routerLink]="['/login']" i18n="@@login.button">Login</button>
         </div>
       </mat-card>
     </div>

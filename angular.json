@@ -13,6 +13,11 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "locales": {
+          "pl": "src/i18n/messages.pl.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -23,6 +28,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
+            "localize": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -61,6 +67,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "en": {
+              "localize": ["en-US"],
+              "baseHref": "/en/"
+            },
+            "pl": {
+              "localize": ["pl"],
+              "baseHref": ""
             }
           }
         },
@@ -72,6 +86,12 @@
           "configurations": {
             "production": {
               "browserTarget": "songbook-angular-client:build:production"
+            },
+            "pl": {
+              "browserTarget": "songbook-angular-client:build:pl"
+            },
+            "en": {
+              "browserTarget": "songbook-angular-client:build:en"
             }
           }
         },
