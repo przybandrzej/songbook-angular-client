@@ -59,13 +59,13 @@
               <mat-error *ngIf="hasError(confirmPasswordForm, 'required')">Password is required</mat-error>
             </mat-form-field>
           </mat-card-content>
-          <button type="submit" mat-raised-button color="accent">Register</button>
+          <button type="submit" mat-raised-button color="accent" i18n="@@register">Register</button>
         </mat-card>
       </form>
       <mat-card *ngIf="isCreated">
         <div fxLayout="column" class="success-box" fxFlexAlign="center center">
           <app-success-message-box [messages]="[successMessage]"></app-success-message-box>
-          <button mat-raised-button color="accent" (click)="goToLogin()">Login page</button>
+          <button mat-raised-button color="accent" (click)="goToLogin()" i18n="@@login_page">Login page</button>
         </div>
       </mat-card>
       <div fxFlex="5%"></div>

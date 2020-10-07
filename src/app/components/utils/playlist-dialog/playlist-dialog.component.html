@@ -10,14 +10,14 @@
 
   <div fxLayout="row" fxLayoutGap="16px">
     <mat-form-field>
-      <mat-label>Playlist name</mat-label>
+      <mat-label i18n="@@playlist.name">Playlist name</mat-label>
       <input matInput placeholder="write name here..." [(ngModel)]="newPlaylistName">
     </mat-form-field>
-    <button mat-stroked-button (click)="addPlaylist()">Create</button>
+    <button mat-stroked-button (click)="addPlaylist()" i18n="@@playlist.create">Create</button>
   </div>
 </div>
 
 <div mat-dialog-actions>
-  <button mat-stroked-button (click)="apply()">Apply</button>
-  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-stroked-button (click)="apply()" i18n="@@apply">Apply</button>
+  <button mat-stroked-button (click)="cancel()" i18n="@@cancel">Cancel</button>
 </div>

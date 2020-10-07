@@ -12,12 +12,12 @@
             <mat-form-field>
               <input name="password" matInput type="password" placeholder="Password" [(ngModel)]="form.password">
             </mat-form-field>
-            <mat-checkbox class="example-margin" name="remember me checkbox" [(ngModel)]="form.rememberMe">Remember me
+            <mat-checkbox class="example-margin" name="remember me checkbox" [(ngModel)]="form.rememberMe" i18n="@@remember_me">Remember me
             </mat-checkbox>
-            <a [routerLink]="['/password-reset-request']">Forgot password?</a>
+            <a [routerLink]="['/password-reset-request']" i18n="@@forgot_password">Forgot password?</a>
           </mat-card-content>
           <div fxLayoutAlign="center center">
-            <button type="submit" mat-raised-button color="accent">Login</button>
+            <button type="submit" mat-raised-button color="accent" i18n="@@login">Login</button>
           </div>
         </mat-card>
       </form>

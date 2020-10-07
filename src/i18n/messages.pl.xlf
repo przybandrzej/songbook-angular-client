@@ -1,8 +1,115 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
-    <body>
-
-    </body>
-  </file>
+    <file source-language="en-US" datatype="plaintext" original="ng2.template">
+        <body>
+            <trans-unit id="browse.songs" datatype="html">
+                <source>Browse songs</source>
+                <target>Przeglądaj piosenki</target>
+            </trans-unit>
+            <trans-unit id="categories" datatype="html">
+                <source>Categories</source>
+                <target>Kategorie</target>
+            </trans-unit>
+            <trans-unit id="categories.header.name" datatype="html">
+                <source>Name</source>
+                <target>Nazwa</target>
+            </trans-unit>
+            <trans-unit id="categories.header.song-count" datatype="html">
+                <source>Song count</source>
+                <target>Liczba piosenek</target>
+            </trans-unit>
+            <trans-unit id="categories.button.delete" datatype="html">
+                <source>Delete</source>
+                <target>Usuń</target>
+            </trans-unit>
+            <trans-unit id="categories.category" datatype="html">
+                <source>Category</source>
+                <target>Kategoria</target>
+            </trans-unit>
+            <trans-unit id="categories.create.new" datatype="html">
+                <source>Create new category</source>
+                <target>Stwórz nową kategorię</target>
+            </trans-unit>
+            <trans-unit id="categories.edit" datatype="html">
+                <source>Edit category</source>
+                <target>Edytuj kategorię</target>
+            </trans-unit>
+            <trans-unit id="categories.category.name" datatype="html">
+                <source>Category name</source>
+                <target>Nazwa kategorii</target>
+            </trans-unit>
+            <trans-unit id="login.button" datatype="html">
+                <source>Login</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="reser.button" datatype="html">
+                <source>Reset</source>
+                <target>Zresetuj</target>
+            </trans-unit>
+            <trans-unit id="contact" datatype="html">
+                <source>Contact</source>
+                <target>Kontakt</target>
+            </trans-unit>
+            <trans-unit id="about" datatype="html">
+                <source>About STK</source>
+                <target>O STK</target>
+            </trans-unit>
+            <trans-unit id="logout" datatype="html">
+                <source>Log out</source>
+                <target>Wyloguj</target>
+            </trans-unit>
+            <trans-unit id="login_page" datatype="html">
+                <source>Login page</source>
+                <target>Strona logowania</target>
+            </trans-unit>
+            <trans-unit id="register" datatype="html">
+                <source>Register</source>
+                <target>Zarejestruj</target>
+            </trans-unit>
+            <trans-unit id="forgot_password" datatype="html">
+                <source>Forgot password?</source>
+                <target>Zapomniałeś hasła?</target>
+            </trans-unit>
+            <trans-unit id="remember_me" datatype="html">
+                <source>Remember me</source>
+                <target>Zapamiętaj mnie</target>
+            </trans-unit>
+            <trans-unit id="login" datatype="html">
+                <source>Login</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="log_in" datatype="html">
+                <source>Login</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="profile" datatype="html">
+                <source>Profile</source>
+                <target>Profil</target>
+            </trans-unit>
+            <trans-unit id="songs" datatype="html">
+                <source>Songs</source>
+                <target>Piosenki</target>
+            </trans-unit>
+            <trans-unit id="playlists" datatype="html">
+                <source>Playlists</source>
+                <target>Playlisty</target>
+            </trans-unit>
+            <trans-unit id="added_songs" datatype="html">
+                <source>Added songs</source>
+                <target>Dodane piosenki</target>
+            </trans-unit>
+            <trans-unit id="edited_songs" datatype="html">
+                <source>Edited songs</source>
+                <target>Edytowane piosenki</target>
+            </trans-unit>
+            <trans-unit id="reset_password" datatype="html">
+                <source>Reset password</source>
+                <target>Zresetuj hasło</target>
+            </trans-unit>
+            <trans-unit id="password_reset_sent" datatype="html">
+                <source>Password reset email has been sent</source>
+                <target>Wiadomość z linkiem do zresetowania hasła została wysłana</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

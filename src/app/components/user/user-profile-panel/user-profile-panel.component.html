@@ -49,8 +49,8 @@
       <div>
         <span>Songs in library: {{user.songs.length}}</span>
       </div>
-      <button mat-button (click)="resetPassword()">Reset password</button>
-      <span *ngIf="resetActivated">Password reset email has been sent</span>
+      <button mat-button (click)="resetPassword()" i18n="@@reset_password">Reset password</button>
+      <span *ngIf="resetActivated" i18n="@@password_reset_sent">Password reset email has been sent</span>
     </div>
 
   </mat-card-content>

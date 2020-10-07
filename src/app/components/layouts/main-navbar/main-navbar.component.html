@@ -3,12 +3,12 @@
     <span class="link" (click)="showLandingPage()">{{siteName}}</span>
   </div>
   <div fxLayoutAlign="end center" fxFlex="50%" fxLayout="row" fxLayoutGap="15px">
-    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()">Register</button>
-    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()">Log in</button>
+    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()" i18n="@@register">Register</button>
+    <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()" i18n="@@log_in">Log in</button>
     <div class="link" *ngIf="loggedIn" (click)="expandUserMenu()" fxLayout="row" fxLayoutGap="8px">
       <div>{{username}}</div>
       <div class="avatar-placeholder" [style.background-image]="profileImgUrl"></div>
     </div>
-    <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()">Log out</button>
+    <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()" i18n="@@logout">Log out</button>
   </div>
 </mat-toolbar>

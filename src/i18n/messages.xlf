@@ -16,6 +16,34 @@
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="playlist.name" datatype="html">
+        <source>Playlist name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/utils/playlist-dialog/playlist-dialog.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="playlist.create" datatype="html">
+        <source>Create</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/utils/playlist-dialog/playlist-dialog.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="apply" datatype="html">
+        <source>Apply</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/utils/playlist-dialog/playlist-dialog.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cancel" datatype="html">
+        <source>Cancel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/utils/playlist-dialog/playlist-dialog.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="categories.header.name" datatype="html">
         <source>Name</source>
         <context-group purpose="location">
@@ -85,6 +113,123 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/categories-browser/categories-browser.component.html</context>
           <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="remember_me" datatype="html">
+        <source>Remember me
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgot_password" datatype="html">
+        <source>Forgot password?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="register" datatype="html">
+        <source>Register</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/register/register.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/layouts/main-navbar/main-navbar.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login_page" datatype="html">
+        <source>Login page</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/register/register.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profile" datatype="html">
+        <source>Profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="songs" datatype="html">
+        <source>Songs</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="playlists" datatype="html">
+        <source>Playlists</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="added_songs" datatype="html">
+        <source>Added songs</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="edited_songs" datatype="html">
+        <source>Edited songs</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reset_password" datatype="html">
+        <source>Reset password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile-panel/user-profile-panel.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="password_reset_sent" datatype="html">
+        <source>Password reset email has been sent</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user/user-profile-panel/user-profile-panel.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="log_in" datatype="html">
+        <source>Log in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/layouts/main-navbar/main-navbar.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logout" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/layouts/main-navbar/main-navbar.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="contact" datatype="html">
+        <source>Contact</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/layouts/footer/footer.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="about" datatype="html">
+        <source>About STK</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/layouts/footer/footer.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="login.button" datatype="html">
