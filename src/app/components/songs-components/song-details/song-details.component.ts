@@ -82,8 +82,7 @@ export class SongDetailsComponent implements OnInit {
 
   deleteSong() {
     if (this.data) {
-      this.songService.deleteUsingDELETE4(this.data.song.id).subscribe();
-      this.router.navigateByUrl('songs');
+      this.songService.deleteUsingDELETE4(this.data.song.id).subscribe(() => this.router.navigateByUrl('songs'));
     }
   }
 
