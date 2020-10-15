@@ -11,6 +11,7 @@ import {
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormControl, Validators} from '@angular/forms';
+import {SongDetailsSource} from '../song-details/song-details.component';
 
 @Component({
   selector: 'app-song-add',
@@ -73,7 +74,7 @@ export class SongAddComponent implements OnInit {
       this.song.tags.push(tag);
     }
     this.songService.createUsingPOST4(this.song).subscribe(res => {
-      this.router.navigateByUrl('song/' + res.id);
+      this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
     });
   }
 

@@ -35,6 +35,8 @@ export class SongDetailsComponent implements OnInit {
   maxRating = 5;
   rolesForUser = rolesForUser;
 
+  source: SongDetailsSource;
+
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
               private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService,
               public dialog: MatDialog, private playlistService: PlaylistResourceService, private roleService: UserRoleResourceService,
@@ -42,6 +44,7 @@ export class SongDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.source = +this.route.snapshot.queryParamMap.get('source');
     this.data = this.route.snapshot.data.data;
     const getUserDetails = this.authService.getAccountUsingGET().pipe(
       mergeMap(user => {
@@ -87,7 +90,11 @@ export class SongDetailsComponent implements OnInit {
   }
 
   close() {
-    this.location.back();
+    if (this.source === SongDetailsSource.ADD) {
+      this.router.navigateByUrl('songs');
+    } else {
+      this.location.back();
+    }
   }
 
   updateRating(event: RatingChanged) {
@@ -162,4 +169,8 @@ export class SongDetailsComponent implements OnInit {
     });
   }
 
+}
+
+export enum SongDetailsSource {
+  ADD
 }
