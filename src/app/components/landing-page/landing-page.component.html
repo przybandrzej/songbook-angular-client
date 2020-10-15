@@ -1,7 +1,8 @@
-<div class="container" fxLayout="column" fxLayoutGap="25px" [style.height]="'100%'" fxFlexFill
-     fxLayoutAlign="center stretch">
-  <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="space-around center">
-    <div fxFlex="50%" fxFlex.lt-md="100%">
+<div class="page" fxLayout="row" fxLayoutAlign="start stretch">
+
+  <!-- component for left navbar -->
+  <div class="left-navbar" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="start stretch" fxFlex="25%">
+    <div>
       <mat-card (click)="showSongs()" style="background-color: burlywood">
         <mat-card-header>
           <mat-card-title>Browse songs</mat-card-title>
@@ -11,9 +12,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
-  <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="space-around center">
-    <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
+    <div *appActivatedByRoles="rolesForModerator">
       <mat-card (click)="showCategories()" style="background-color: lightcoral">
         <mat-card-header>
           <mat-card-title>Categories</mat-card-title>
@@ -23,7 +22,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
+    <div *appActivatedByRoles="rolesForModerator">
       <mat-card (click)="showAuthors()" style="background-color: lightcoral">
         <mat-card-header>
           <mat-card-title>Authors</mat-card-title>
@@ -34,4 +33,17 @@
       </mat-card>
     </div>
   </div>
+
+  <div class="landing-page-hello" fxLayout="column" fxLayoutAlign="start start">
+    <div fxLayout="row" fxLayoutGap="40px" fxLayoutAlign="start center">
+      <img src="assets/logo/223x250.png" alt="App logo">
+      <span class="hello-message">Welcome to the STK Songbook application where you can browse our enormous database of songs for playing on a guitar by the fire.</span>
+    </div>
+    <div class="instructions" fxLayout="column" fxLayoutAlign="start start">
+      <span>You can create your own library of songs and playlists (like Spotify). You can rate songs and create new ones or edit some existing.</span>
+      <span>Some of actions are possible only for moderators or admins, but don't worry - you can click everything you see :)</span>
+    </div>
+
+  </div>
+
 </div>
