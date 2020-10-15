@@ -1,23 +1,37 @@
-<div class="container" fxLayout.lt-md="column" fxLayoutGap="25px" [style.height]="'100%'" fxFlexFill fxLayoutAlign="space-around center">
-  <div fxFlex="50%" fxFlex.lt-md="100%">
-    <mat-card (click)="showSongs()" style="background-color: burlywood">
-      <mat-card-header>
-        <mat-card-title>Browse songs</mat-card-title>
-      </mat-card-header>
-      <mat-card-content fxLayoutAlign="start">
-        <i class="material-icons md-48">library_books</i>
-      </mat-card-content>
-    </mat-card>
+<div class="container" fxLayout="column" fxLayoutGap="25px" [style.height]="'100%'" fxFlexFill
+     fxLayoutAlign="center stretch">
+  <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="space-around center">
+    <div fxFlex="50%" fxFlex.lt-md="100%">
+      <mat-card (click)="showSongs()" style="background-color: burlywood">
+        <mat-card-header>
+          <mat-card-title>Browse songs</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="start">
+          <mat-icon>library_books</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-
-  <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
-    <mat-card (click)="showCategories()" style="background-color: lightcoral">
-      <mat-card-header>
-        <mat-card-title>Categories</mat-card-title>
-      </mat-card-header>
-      <mat-card-content fxLayoutAlign="start">
-        <i class="material-icons md-48">widgets</i>
-      </mat-card-content>
-    </mat-card>
+  <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="space-around center">
+    <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
+      <mat-card (click)="showCategories()" style="background-color: lightcoral">
+        <mat-card-header>
+          <mat-card-title>Categories</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="start">
+          <mat-icon>widgets</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex="50%" fxFlex.lt-md="100%" *appActivatedByRoles="rolesForModerator">
+      <mat-card (click)="showAuthors()" style="background-color: lightcoral">
+        <mat-card-header>
+          <mat-card-title>Authors</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="start">
+          <mat-icon>group_work</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

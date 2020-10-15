@@ -78,6 +78,7 @@ import { CanEditSongDirective } from './directives/can-edit-song.directive';
 import { WarningMessageBoxComponent } from './components/utils/warning-message-box/warning-message-box.component';
 import { SuccessMessageBoxComponent } from './components/utils/success-message-box/success-message-box.component';
 import { ProcessingMessageBoxComponent } from './components/utils/processing-message-box/processing-message-box.component';
+import { AuthorsBrowserComponent } from './components/authors-browser/authors-browser.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -113,7 +114,8 @@ export function getAPIConfiguration() {
     CanEditSongDirective,
     WarningMessageBoxComponent,
     SuccessMessageBoxComponent,
-    ProcessingMessageBoxComponent
+    ProcessingMessageBoxComponent,
+    AuthorsBrowserComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),
