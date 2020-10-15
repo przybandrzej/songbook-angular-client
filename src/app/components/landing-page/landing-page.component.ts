@@ -23,4 +23,8 @@ export class LandingPageComponent implements OnInit {
   showCategories() {
     this.router.navigateByUrl('categories');
   }
+
+  showAuthors() {
+    this.router.navigateByUrl('authors');
+  }
 }
