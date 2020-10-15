@@ -1,6 +1,7 @@
 <mat-toolbar fxLayout fxFlex="0 0 auto" class="stick mat-elevation-z6 app-navbar" color="primary" fxLayoutGap="15px">
-  <div fxLayoutAlign="start center" fxFlex="50%">
-    <span class="link" (click)="showLandingPage()">{{siteName}}</span>
+  <div class="link" fxLayoutAlign="start center" fxFlex="50%" (click)="showLandingPage()" fxLayoutGap="15px">
+    <img src="assets/logo/53x60.png" alt="App logo" title="App logo">
+    <span>{{siteName}}</span>
   </div>
   <div fxLayoutAlign="end center" fxFlex="50%" fxLayout="row" fxLayoutGap="15px">
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()">Register</button>

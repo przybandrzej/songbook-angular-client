@@ -79,6 +79,7 @@ import { WarningMessageBoxComponent } from './components/utils/warning-message-b
 import { SuccessMessageBoxComponent } from './components/utils/success-message-box/success-message-box.component';
 import { ProcessingMessageBoxComponent } from './components/utils/processing-message-box/processing-message-box.component';
 import { AuthorsBrowserComponent } from './components/authors-browser/authors-browser.component';
+import { NavTileComponent } from './components/utils/nav-tile/nav-tile.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -115,7 +116,8 @@ export function getAPIConfiguration() {
     WarningMessageBoxComponent,
     SuccessMessageBoxComponent,
     ProcessingMessageBoxComponent,
-    AuthorsBrowserComponent
+    AuthorsBrowserComponent,
+    NavTileComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),
