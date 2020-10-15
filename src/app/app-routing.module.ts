@@ -18,6 +18,7 @@ import {ActivateComponent} from './components/account/activate/activate.componen
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
 import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
+import {AuthorsBrowserComponent} from './components/authors-browser/authors-browser.component';
 
 
 const routes: Routes = [
@@ -77,6 +78,12 @@ const routes: Routes = [
   {
     path: 'password-reset-request',
     component: PasswordResetRequestComponent
+  },
+  {
+    path: 'authors',
+    component: AuthorsBrowserComponent,
+    canActivate: [AuthenticationGuard],
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
   },
   {
     path: '**',
