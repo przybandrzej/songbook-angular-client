@@ -80,6 +80,7 @@ import { SuccessMessageBoxComponent } from './components/utils/success-message-b
 import { ProcessingMessageBoxComponent } from './components/utils/processing-message-box/processing-message-box.component';
 import { AuthorsBrowserComponent } from './components/authors-browser/authors-browser.component';
 import { NavTileComponent } from './components/utils/nav-tile/nav-tile.component';
+import { TagsBrowserComponent } from './components/tags-browser/tags-browser.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -117,7 +118,8 @@ export function getAPIConfiguration() {
     SuccessMessageBoxComponent,
     ProcessingMessageBoxComponent,
     AuthorsBrowserComponent,
-    NavTileComponent
+    NavTileComponent,
+    TagsBrowserComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

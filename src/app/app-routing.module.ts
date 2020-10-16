@@ -19,6 +19,7 @@ import {PasswordResetComponent} from './components/account/password-reset/passwo
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
 import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
 import {AuthorsBrowserComponent} from './components/authors-browser/authors-browser.component';
+import {TagsBrowserComponent} from './components/tags-browser/tags-browser.component';
 
 
 const routes: Routes = [
@@ -82,6 +83,12 @@ const routes: Routes = [
   {
     path: 'authors',
     component: AuthorsBrowserComponent,
+    canActivate: [AuthenticationGuard],
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
+  },
+  {
+    path: 'tags',
+    component: TagsBrowserComponent,
     canActivate: [AuthenticationGuard],
     data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
   },

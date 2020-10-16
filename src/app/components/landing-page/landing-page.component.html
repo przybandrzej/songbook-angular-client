@@ -7,6 +7,8 @@
                   [color]="'lightcoral'" (action)="showCategories()"></app-nav-tile>
     <app-nav-tile *appActivatedByRoles="rolesForModerator" [title]="'Authors'" [icon]="'group_work'"
                   [color]="'lightcoral'" (action)="showAuthors()"></app-nav-tile>
+    <app-nav-tile *appActivatedByRoles="rolesForModerator" [title]="'Tags'" [icon]="'bookmarks'"
+                  [color]="'lightcoral'" (action)="showTags()"></app-nav-tile>
   </div>
 
   <div class="landing-page-hello" fxLayout="column" fxLayoutAlign="start start">
