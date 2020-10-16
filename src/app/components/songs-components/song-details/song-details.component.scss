@@ -1,3 +1,37 @@
 .song-header {
   margin: 0 10% 0 0;
 }
+
+.song-details {
+  margin: 30px 40px;
+}
+
+.song-details-title {
+  font-size: 3em;
+  line-height: 1;
+}
+
+.song-details-author {
+  font-size: 2em;
+  line-height: 1;
+}
+
+.song-details-category {
+  font-size: 1.1em;
+}
+
+.song-details-content {
+  margin-top: 10px;
+}
+
+.button-panel {
+  margin-left: 40px;
+}
+
+.song-lyrics {
+  min-height: 60vh;
+}
+
+.song-extras {
+  margin-top: 10px;
+}
