@@ -76,7 +76,7 @@
       <mat-card>
         <mat-card-content fxFlex="100%">
           <mat-form-field>
-            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd" [formControl]="authorForm">
+            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd.name" [formControl]="authorForm">
             <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
             <mat-error *ngIf="hasError(authorForm, 'maxlength')">Author name should be 2-40 characters long
             </mat-error>
@@ -140,7 +140,8 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Or write new author name</mat-label>
-              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName" [formControl]="coauthorForm">
+              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName"
+                     [formControl]="coauthorForm">
               <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
               <mat-error *ngIf="hasError(coauthorForm, 'maxlength')">Author name should be 2-40 characters long
               </mat-error>
@@ -160,11 +161,11 @@
 
         <div fxFlex="50%">
           <ul>
-            <li *ngFor="let coauthor of allCoauthors" fxLayout="row">
-              <div fxLayoutAlign="start center">{{coauthor.coauthor.coauthorFunction}}
-                : {{coauthor.name}}</div>
-              <button mat-button color="accent" (click)="removeCoauthor(coauthor)" matTooltip="Remove coauthor">remove
-              </button>
+            <li *ngFor="let coauthor of song.coauthors" fxLayout="row">
+              <div fxLayoutAlign="start center">{{coauthor.coauthorFunction}}
+                : {{getCoauthorName(coauthor)}}</div>
+              <button mat-button color="accent" (click)="removeCoauthor(coauthor)"
+                      matTooltip="Remove coauthor">remove</button>
             </li>
           </ul>
         </div>
@@ -182,7 +183,7 @@
         <div fxLayout="row">
           <mat-form-field fxFlex="80%">
             <mat-label>Tag</mat-label>
-            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name"[formControl]="tagForm">
+            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name" [formControl]="tagForm">
             <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
             <mat-error *ngIf="hasError(tagForm, 'maxlength')">Tag should be 2-40 characters long</mat-error>
             <mat-error *ngIf="hasError(tagForm, 'minlength')">Tag should be 2-40 characters long</mat-error>
@@ -191,7 +192,7 @@
         </div>
         <div>
           <ul>
-            <li *ngFor="let tag of allTags" fxLayout="row" fxLayoutGap="5px">
+            <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
               <div fxLayoutAlign="start center">#{{tag.name}}</div>
               <button mat-button (click)="removeTag(tag)">
                 <mat-icon matTooltip="Remove tag">cancel</mat-icon>
