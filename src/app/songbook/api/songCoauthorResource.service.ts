@@ -106,17 +106,27 @@ export class SongCoauthorResourceService {
     /**
      * delete
      * 
-     * @param songCoauthorDTO songCoauthorDTO
+     * @param authorId authorId
+     * @param _function function
+     * @param songId songId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE3(songCoauthorDTO: SongCoauthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE3(authorId: number, _function: string, songId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE3(authorId: number, _function: string, songId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE3(authorId: number, _function: string, songId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE3(authorId: number, _function: string, songId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songCoauthorDTO === null || songCoauthorDTO === undefined) {
-            throw new Error('Required parameter songCoauthorDTO was null or undefined when calling deleteUsingDELETE3.');
+        if (authorId === null || authorId === undefined) {
+            throw new Error('Required parameter authorId was null or undefined when calling deleteUsingDELETE3.');
+        }
+
+        if (_function === null || _function === undefined) {
+            throw new Error('Required parameter _function was null or undefined when calling deleteUsingDELETE3.');
+        }
+
+        if (songId === null || songId === undefined) {
+            throw new Error('Required parameter songId was null or undefined when calling deleteUsingDELETE3.');
         }
 
         let headers = this.defaultHeaders;
@@ -133,12 +143,8 @@ export class SongCoauthorResourceService {
         // to determine the Content-Type header
         const consumes: string[] = [
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/coauthors`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/coauthors/${encodeURIComponent(String(songId))}/${encodeURIComponent(String(authorId))}/${encodeURIComponent(String(_function))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

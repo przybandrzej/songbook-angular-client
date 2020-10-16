@@ -7,8 +7,8 @@ import {SongEditComponent} from './components/songs-components/song-edit/song-ed
 import {SongAddComponent} from './components/songs-components/song-add/song-add.component';
 import {CategoriesBrowserComponent} from './components/categories-browser/categories-browser.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
-import {LoginComponent} from './components/utils/login/login.component';
-import {RegisterComponent} from './components/utils/register/register.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import {SongResolveService} from './services/resolve/song-resolve.service';
 import {UserProfileComponent} from './components/user/user-profile/user-profile.component';
 import {UserResolveService} from './services/resolve/user-resolve.service';
@@ -18,6 +18,8 @@ import {ActivateComponent} from './components/account/activate/activate.componen
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
 import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
+import {AuthorsBrowserComponent} from './components/authors-browser/authors-browser.component';
+import {TagsBrowserComponent} from './components/tags-browser/tags-browser.component';
 
 
 const routes: Routes = [
@@ -77,6 +79,18 @@ const routes: Routes = [
   {
     path: 'password-reset-request',
     component: PasswordResetRequestComponent
+  },
+  {
+    path: 'authors',
+    component: AuthorsBrowserComponent,
+    canActivate: [AuthenticationGuard],
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
+  },
+  {
+    path: 'tags',
+    component: TagsBrowserComponent,
+    canActivate: [AuthenticationGuard],
+    data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
   },
   {
     path: '**',

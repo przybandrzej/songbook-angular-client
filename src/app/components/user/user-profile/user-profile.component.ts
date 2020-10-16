@@ -29,10 +29,6 @@ export class UserProfileComponent implements OnInit {
     this.location.back();
   }
 
-  resetPassword(): void {
-    this.authService.requestResetPassword(this.data.user.email);
-  }
-
 }
 
 export enum UserProfileTabs {

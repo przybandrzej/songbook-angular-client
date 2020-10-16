@@ -1,0 +1,7 @@
+<div fxLayout="row" class="success-box" fxLayoutGap="15px" fxLayoutAlign="start center">
+  <mat-icon>check_circle_outline</mat-icon>
+  <span class="success-text" *ngIf="messages.length === 1">{{messages[0]}}</span>
+  <ul class="success-text" *ngIf="messages.length > 1">
+    <li *ngFor="let msg of messages">{{msg}}</li>
+  </ul>
+</div>

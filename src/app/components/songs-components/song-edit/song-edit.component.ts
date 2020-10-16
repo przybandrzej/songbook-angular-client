@@ -8,13 +8,14 @@ import {
   SongCoauthorResourceService,
   SongDTO,
   SongResourceService,
-  TagDTO
+  TagDTO,
+  TagResourceService,
+  UniversalCreateDTO
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
-import {forkJoin, Observable, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
-import CoauthorFunctionEnum = SongCoauthorDTO.CoauthorFunctionEnum;
+import {Observable} from 'rxjs';
 import {rolesForModerator} from '../../../model/user-roles-combinations';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-song-edit',
@@ -22,6 +23,11 @@ import {rolesForModerator} from '../../../model/user-roles-combinations';
   styleUrls: ['./song-edit.component.scss']
 })
 export class SongEditComponent implements OnInit {
+
+  public tagForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public titleForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2), Validators.required]);
+  public authorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public coauthorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
 
   rolesForModerator = rolesForModerator;
 
@@ -50,44 +56,38 @@ export class SongEditComponent implements OnInit {
 
   authors: AuthorDTO[] = [];
   categories: CategoryDTO[] = [];
-  coauthorsToAdd: SongCoauthorDTO[] = [];
 
   coauthorToAdd: SongCoauthorDTO = {
     authorId: -1,
     songId: -1,
     coauthorFunction: null
   };
-
-  coauthorsToCreate: {
-    name: string,
-    coauthorFunction: CoauthorFunctionEnum
-  }[] = [];
-
-  authorToAdd = '';
   coauthorToAddName = '';
-  allCoauthors: { coauthor: SongCoauthorDTO, name: string }[] = [];
+  authorToAdd: UniversalCreateDTO = {
+    id: null,
+    name: ''
+  };
+  tagToAdd: UniversalCreateDTO = {
+    id: null,
+    name: ''
+  };
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
-              private coauthorService: SongCoauthorResourceService) {
+              private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService) {
+  }
+
+  public hasError(control: FormControl, errorName: string): boolean {
+    return control.hasError(errorName);
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
-        this.songService.getByIdUsingGET4(+params.get('id')).subscribe(res => {
-          this.song = res;
-          console.log('Song is awaiting ' + this.song.isAwaiting);
-          for (const coauthor of this.song.coauthors) {
-            this.coauthorsToAdd.push(coauthor);
-          }
-        });
+        this.songService.getByIdUsingGET4(+params.get('id')).subscribe(res => this.song = res);
       }
     });
-    this.authorService.getAllUsingGET().subscribe(res => {
-      this.authors = res;
-      this.coauthorsToAdd.forEach(it => this.allCoauthors.push({coauthor: it, name: this.getCoauthorName(it)}));
-    });
+    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
     this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
   }
 
@@ -96,57 +96,30 @@ export class SongEditComponent implements OnInit {
   }
 
   saveSong() {
-    for (const coauthor of this.coauthorsToAdd) {
-      this.song.coauthors.push(coauthor);
-    }
-    const authorCreateRequests: Observable<AuthorDTO>[] = [];
-    this.coauthorsToCreate = [...new Set(this.coauthorsToCreate)];
-    if (this.coauthorsToCreate.length > 0) {
-      this.coauthorsToCreate.forEach(it => authorCreateRequests.push(this.authorService.createUsingPOST({id: null, name: it.name})));
-    }
-
-    this.song.coauthors = [...new Set(this.song.coauthors)];
     if (this.song.author.id) {
       this.song.author = this.authors.filter(it => it.id === this.song.author.id)[0];
     }
-    if (this.authorToAdd.length > 0) {
-      authorCreateRequests.push(this.authorService.createUsingPOST({id: null, name: this.authorToAdd}));
+
+    let createAuthorRequest: Observable<AuthorDTO>;
+    if (this.authorToAdd.name.length > 0) {
+      createAuthorRequest = this.authorService.createUsingPOST(this.authorToAdd);
     }
-    this.song.category.name = this.categories.filter((value, index, array) => value.id === this.song.category.id)[0].name;
-    if (authorCreateRequests.length === 0) {
-      this.songService.updateUsingPUT4(this.song).subscribe(song => this.goToDetailScreen());
+    this.song.category.name = this.categories.filter(
+      (value, index, array) => value.id === this.song.category.id)[0].name;
+
+    if (createAuthorRequest) {
+      createAuthorRequest.subscribe(author => {
+        this.song.author = author;
+        this.songService.updateUsingPUT4(this.song).subscribe(song => {
+          this.goToDetailScreen();
+        });
+      });
     } else {
-      forkJoin(authorCreateRequests).pipe(
-        mergeMap(authors => {
-          const coauthorsCreateRequests: Observable<SongCoauthorDTO>[] = [];
-          authors.forEach(author => {
-            const found = this.coauthorsToCreate.filter(it => it.name === author.name);
-            if (found.length !== 0) {
-              coauthorsCreateRequests.push(this.coauthorService.createUsingPOST3({
-                authorId: author.id,
-                songId: this.song.id,
-                coauthorFunction: found[0].coauthorFunction
-              }));
-            } else {
-              this.song.author = author;
-            }
-          });
-          console.log(coauthorsCreateRequests.length);
-          if (coauthorsCreateRequests.length > 0) {
-            return forkJoin(coauthorsCreateRequests);
-          } else {
-            return of([]);
-          }
-        }),
-        mergeMap(coauthors => {
-          console.log(coauthors);
-          coauthors.forEach(it => this.song.coauthors.push(it));
-          return this.songService.updateUsingPUT4(this.song);
-        }))
-        .subscribe(song => this.goToDetailScreen());
+      this.songService.updateUsingPUT4(this.song).subscribe(song => {
+        this.goToDetailScreen();
+      });
     }
   }
-
 
   goToDetailScreen() {
     this.router.navigateByUrl('song/' + this.song.id);
@@ -154,37 +127,33 @@ export class SongEditComponent implements OnInit {
 
   addCouathor() {
     if (this.coauthorToAdd.authorId === -1) {
-      this.coauthorsToCreate.push({
-        name: this.coauthorToAddName,
-        coauthorFunction: this.coauthorToAdd.coauthorFunction
+      this.coauthorToAdd.songId = this.song.id;
+      this.authorService.createUsingPOST({id: null, name: this.coauthorToAddName}).subscribe(author => {
+        this.coauthorToAdd.authorId = author.id;
+        this.authors.push(author);
+        this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
+          this.song.coauthors.push(coauthor);
+          this.coauthorToAdd.authorId = -1;
+          this.coauthorToAdd.coauthorFunction = null;
+          this.coauthorToAddName = '';
+        });
       });
-      this.allCoauthors.push({
-        coauthor: {authorId: -1, songId: this.song.id, coauthorFunction: this.coauthorToAdd.coauthorFunction},
-        name: this.coauthorToAddName
-      });
-      this.coauthorToAddName = '';
     } else {
-      const coauthor: SongCoauthorDTO = {
-        songId: this.song.id,
-        authorId: this.coauthorToAdd.authorId,
-        coauthorFunction: this.coauthorToAdd.coauthorFunction
-      };
-      this.coauthorsToAdd.push(coauthor);
-      this.allCoauthors.push({coauthor, name: this.getCoauthorName(coauthor)});
+      this.coauthorToAdd.songId = this.song.id;
+      this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
+        this.song.coauthors.push(coauthor);
+        this.coauthorToAdd.authorId = -1;
+        this.coauthorToAdd.coauthorFunction = null;
+        this.coauthorToAddName = '';
+      });
     }
-    this.coauthorToAdd.authorId = -1;
-    this.coauthorToAdd.coauthorFunction = null;
   }
 
-  removeCoauthor(coauthorDTO: any) {
-    this.allCoauthors.splice(this.allCoauthors.indexOf(coauthorDTO), 1);
-    if (coauthorDTO.authorId === -1) {
-      const item = this.coauthorsToCreate.filter(it => it.name === coauthorDTO.name)[0];
-      this.coauthorsToCreate.splice(this.coauthorsToCreate.indexOf(item), 1);
-    } else {
-      const index = this.coauthorsToAdd.indexOf(coauthorDTO, 0);
-      this.coauthorsToAdd.splice(index, 1);
-    }
+  removeCoauthor(coauthorDTO: SongCoauthorDTO) {
+    this.coauthorService.deleteUsingDELETE3(coauthorDTO.authorId, coauthorDTO.coauthorFunction, coauthorDTO.songId)
+      .subscribe(() => {
+        this.song.coauthors.splice(this.song.coauthors.indexOf(coauthorDTO), 1);
+      });
   }
 
   getCoauthorName(coauthor: SongCoauthorDTO) {
@@ -192,14 +161,24 @@ export class SongEditComponent implements OnInit {
   }
 
   removeTag(tag: TagDTO) {
-    const index = this.song.tags.indexOf(tag);
-    if (index > -1) {
-      this.song.tags.splice(index, 1);
-    }
-    this.saveSong();
+    this.song.tags.splice(this.song.tags.indexOf(tag), 1);
+    this.songService.updateUsingPUT4(this.song).subscribe(song => this.song = song);
   }
 
   approveSong() {
     this.songService.approveSongUsingPUT(this.song).subscribe(res => this.song = res);
   }
+
+  addTag(): void {
+    if (this.tagToAdd.name.length > 0) {
+      this.tagService.createUsingPOST5(this.tagToAdd).subscribe(tag => {
+        this.song.tags.push(tag);
+        this.songService.updateUsingPUT4(this.song).subscribe(song => {
+          this.song = song;
+        });
+      });
+    }
+    this.tagToAdd.name = '';
+  }
+
 }

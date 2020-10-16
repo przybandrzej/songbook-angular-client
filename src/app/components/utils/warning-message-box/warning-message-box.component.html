@@ -1,0 +1,7 @@
+<div fxLayout="row" class="error-box" fxLayoutGap="15px" fxLayoutAlign="start center">
+  <mat-icon>warning</mat-icon>
+  <span *ngIf="messages.length === 0">{{message}}</span>
+  <ul *ngIf="messages.length > 0">
+    <li *ngFor="let msg of messages">{{msg}}</li>
+  </ul>
+</div>

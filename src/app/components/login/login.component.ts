@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginForm} from '../../../songbook';
-import {AuthService} from '../../../services/auth.service';
+import {LoginForm} from '../../songbook';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -10,7 +10,8 @@ import {AuthService} from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
 
   form: LoginForm = {};
-  error = false;
+  isError = false;
+  errorMessage = '';
 
   constructor(private authService: AuthService) {
   }
@@ -19,7 +20,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.form, undefined, () => this.error = true);
+    this.isError = false;
+    this.authService.login(this.form, undefined, () => {
+      this.isError = true;
+      this.errorMessage = 'Login or password not valid!';
+    });
   }
 
 }

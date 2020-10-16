@@ -10,6 +10,8 @@ import {
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {FormControl, Validators} from '@angular/forms';
+import {SongDetailsSource} from '../song-details/song-details.component';
 
 @Component({
   selector: 'app-song-add',
@@ -17,6 +19,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['./song-add.component.scss']
 })
 export class SongAddComponent implements OnInit {
+
+  public tagForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public titleForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2), Validators.required]);
+  public authorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
+  public coauthorForm: FormControl = new FormControl('', [Validators.maxLength(40), Validators.minLength(2)]);
 
   song: CreateSongDTO = {
     authorName: '',
@@ -46,6 +53,10 @@ export class SongAddComponent implements OnInit {
               private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
   }
 
+  public hasError(form: FormControl, errorName: string): boolean {
+    return form.hasError(errorName);
+  }
+
   ngOnInit(): void {
     this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
     this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
@@ -63,7 +74,7 @@ export class SongAddComponent implements OnInit {
       this.song.tags.push(tag);
     }
     this.songService.createUsingPOST4(this.song).subscribe(res => {
-      this.router.navigateByUrl('song/' + res.id);
+      this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
     });
   }
 
