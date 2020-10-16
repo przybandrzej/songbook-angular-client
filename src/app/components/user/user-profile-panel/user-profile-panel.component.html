@@ -15,9 +15,15 @@
       </div>
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
         <span>Email: {{user.email}}</span>
-        <!-- <button mat-button>
+        <button mat-icon-button (click)="editEmail()" *ngIf="!editableEmail">
           <mat-icon>edit</mat-icon>
-        </button> -->
+        </button>
+        <mat-form-field *ngIf="editableEmail">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="write email here..."
+                 [(ngModel)]="emailToUpdate">
+        </mat-form-field>
+        <button *ngIf="editableEmail" mat-stroked-button (click)="updateEmailName()">Update</button>
       </div>
       <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
         <span>First name: {{user.firstName}}</span>
@@ -29,7 +35,7 @@
           <input matInput placeholder="write name here..."
                  [(ngModel)]="firstNameToUpdate">
         </mat-form-field>
-        <button *ngIf="editableFirstName" mat-button (click)="updateFirstName()">Update</button>
+        <button *ngIf="editableFirstName" mat-stroked-button (click)="updateFirstName()">Update</button>
       </div>
       <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
         <span>Last name: {{user.lastName}}</span>
@@ -41,7 +47,7 @@
           <input matInput placeholder="write name here..."
                  [(ngModel)]="lastNameToUpdate">
         </mat-form-field>
-        <button *ngIf="editableLastName" mat-button (click)="updateLastName()">Update</button>
+        <button *ngIf="editableLastName" mat-stroked-button (click)="updateLastName()">Update</button>
       </div>
       <div>
         <span>Registered: {{user.registrationDate}}</span>
@@ -49,8 +55,13 @@
       <div>
         <span>Songs in library: {{user.songs.length}}</span>
       </div>
-      <button mat-button (click)="resetPassword()">Reset password</button>
+      <button mat-stroked-button (click)="resetPassword()">Reset password</button>
       <span *ngIf="resetActivated">Password reset email has been sent</span>
+    </div>
+
+    <div fxLayoutAlign="center center">
+      <app-warning-message-box *ngIf="errorMessages.length > 0" [messages]="errorMessages"></app-warning-message-box>
+      <app-success-message-box *ngIf="successMessage.length > 0" [messages]="[successMessage]"></app-success-message-box>
     </div>
 
   </mat-card-content>

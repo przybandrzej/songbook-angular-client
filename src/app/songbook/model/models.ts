@@ -3,6 +3,7 @@ export * from './categoryDTO';
 export * from './createCoauthorDTO';
 export * from './createPlaylistDTO';
 export * from './createSongDTO';
+export * from './emailChangeDTO';
 export * from './inputStream';
 export * from './loginForm';
 export * from './modelFile';
