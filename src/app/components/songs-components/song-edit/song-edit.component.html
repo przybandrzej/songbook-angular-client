@@ -1,220 +1,216 @@
-<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" color="primary">
-  <div>
+<div fxLayout="column">
+  <div class="button-panel" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+    <button mat-raised-button color="primary" matTooltip="Go back" (click)="cancel()">Back</button>
+    <button mat-raised-button color="accent" (click)="saveSong()" matTooltip="Save the song">Save</button>
     <ng-container *ngIf="song.isAwaiting">
-      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-mini-fab color="accent"
-              matTooltip="Approve the song">
-        <mat-icon>check_circle</mat-icon>
+      <button *appActivatedByRoles="rolesForModerator" (click)="approveSong()" mat-raised-button color="warn"
+              matTooltip="Approve the song">Approve
       </button>
     </ng-container>
   </div>
-  <div fxLayoutGap="15px" fxLayout="row">
-    <button mat-mini-fab color="accent" (click)="saveSong()" matTooltip="Save the song">
-      <mat-icon>save_outline</mat-icon>
-    </button>
-    <button mat-mini-fab color="accent" (click)="cancel()" matTooltip="Cancel">
-      <mat-icon>cancel</mat-icon>
-    </button>
-  </div>
-</mat-toolbar>
 
-<!-- Title, category and author -->
-<div fxLayout="row">
-  <!-- Title and category -->
-  <div fxLayout="column" fxFlex="50%">
-    <!-- Title card -->
-    <mat-card>
-      <mat-card-content fxLayout="column">
-        <mat-card-header fxLayout="column">
-          <mat-card-title>Title</mat-card-title>
-        </mat-card-header>
+  <!-- Title, category and author -->
+  <div fxLayout="column" class="editor-content">
+    <div fxLayout="row">
+      <!-- Title and category -->
+      <div fxLayout="column" fxFlex="50%">
+        <!-- Title card -->
         <mat-card>
-          <mat-card-content>
-            <mat-form-field>
-              <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title" [formControl]="titleForm">
-              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
-              <mat-error *ngIf="hasError(titleForm, 'maxlength')">Title should be 2-40 characters long</mat-error>
-              <mat-error *ngIf="hasError(titleForm, 'minlength')">Title should be 2-40 characters long</mat-error>
-            </mat-form-field>
+          <mat-card-content fxLayout="column">
+            <mat-card-header fxLayout="column">
+              <mat-card-title>Title</mat-card-title>
+            </mat-card-header>
+            <mat-card>
+              <mat-card-content>
+                <mat-form-field>
+                  <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title"
+                         [formControl]="titleForm">
+                  <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+                  <mat-error *ngIf="hasError(titleForm, 'maxlength')">Title should be 2-40 characters long</mat-error>
+                  <mat-error *ngIf="hasError(titleForm, 'minlength')">Title should be 2-40 characters long</mat-error>
+                </mat-form-field>
+              </mat-card-content>
+            </mat-card>
           </mat-card-content>
         </mat-card>
-      </mat-card-content>
-    </mat-card>
 
-    <!-- Category card -->
-    <mat-card fxLayoutGap="10px">
-      <mat-card-content>
-        <mat-card-header fxLayout="column">
-          <mat-card-title>Category</mat-card-title>
-        </mat-card-header>
-        <mat-card>
-          <mat-select placeholder="select category..." [(ngModel)]="song.category.id">
-            <mat-option *ngFor="let category of categories" [value]="category.id">
-              {{category.name}}
-            </mat-option>
-          </mat-select>
+        <!-- Category card -->
+        <mat-card fxLayoutGap="10px">
+          <mat-card-content>
+            <mat-card-header fxLayout="column">
+              <mat-card-title>Category</mat-card-title>
+            </mat-card-header>
+            <mat-card>
+              <mat-select placeholder="select category..." [(ngModel)]="song.category.id">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                  {{category.name}}
+                </mat-option>
+              </mat-select>
+            </mat-card>
+          </mat-card-content>
         </mat-card>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      </div>
 
-  <!-- Author card -->
-  <mat-card fxFlex="50%">
-    <mat-card-content fxLayout="column" fxLayoutGap="15px">
-      <mat-card-header fxLayout="column">
-        <mat-card-title>Author</mat-card-title>
-        <mat-card-subtitle>Choose from the list or add new author</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card>
-        <mat-card-content fxLayout="column" fxLayoutGap="8px">
-          <mat-select placeholder="select author..." [(ngModel)]="song.author.id">
-            <mat-option *ngFor="let author of authors" [value]="author.id">
-              {{author.name}}
-            </mat-option>
-          </mat-select>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content fxFlex="100%">
-          <mat-form-field>
-            <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd.name" [formControl]="authorForm">
-            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
-            <mat-error *ngIf="hasError(authorForm, 'maxlength')">Author name should be 2-40 characters long
-            </mat-error>
-            <mat-error *ngIf="hasError(authorForm, 'minlength')">Author name should be 2-40 characters long
-            </mat-error>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<!-- Lyrics and guitar tabs -->
-<div fxLayout="row">
-  <!-- lyrics card -->
-  <mat-card fxFlex="50%">
-    <mat-card-content fxLayout="column">
-      <mat-card-header>
-        <mat-card-title>Lyrics</mat-card-title>
-      </mat-card-header>
-      <textarea fxFlex="100%" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="30" [(ngModel)]="song.lyrics"></textarea>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- guitar tabs card -->
-  <mat-card fxFlex="50%">
-    <mat-card-content fxLayout="column">
-      <mat-card-header>
-        <mat-card-title>Guitar tabs</mat-card-title>
-      </mat-card-header>
-      <textarea fxFlex="100%" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="30" [(ngModel)]="song.guitarTabs"></textarea>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<!-- Coauthors Tags and Trivia -->
-<div fxLayout="row">
-  <!-- Coauthors card -->
-  <mat-card fxFlex="40%">
-    <mat-card-content fxLayout="column" fxLayoutGap="15px">
-      <mat-card-header fxLayout="column">
-        <mat-card-title>Coauthors</mat-card-title>
-        <mat-card-subtitle>Choose from the list or add new coauthor</mat-card-subtitle>
-      </mat-card-header>
-      <div fxLayout="row">
-
-        <mat-card fxFlex="50%">
-          <mat-card-content fxLayout="column" fxLayoutGap="8px">
-            <mat-form-field>
-              <mat-select placeholder="select author..." [(ngModel)]="coauthorToAdd.authorId">
+      <!-- Author card -->
+      <mat-card fxFlex="50%">
+        <mat-card-content fxLayout="column" fxLayoutGap="15px">
+          <mat-card-header fxLayout="column">
+            <mat-card-title>Author</mat-card-title>
+            <mat-card-subtitle>Choose from the list or add new author</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card>
+            <mat-card-content fxLayout="column" fxLayoutGap="8px">
+              <mat-select placeholder="select author..." [(ngModel)]="song.author.id">
                 <mat-option *ngFor="let author of authors" [value]="author.id">
                   {{author.name}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Or write new author name</mat-label>
-              <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName"
-                     [formControl]="coauthorForm">
-              <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
-              <mat-error *ngIf="hasError(coauthorForm, 'maxlength')">Author name should be 2-40 characters long
-              </mat-error>
-              <mat-error *ngIf="hasError(coauthorForm, 'minlength')">Author name should be 2-40 characters long
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
-                <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
-                  {{fun}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-button color="accent" (click)="addCouathor()" matTooltip="Add coauthor">Add coauthor</button>
-          </mat-card-content>
-        </mat-card>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content fxFlex="100%">
+              <mat-form-field>
+                <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd.name"
+                       [formControl]="authorForm">
+                <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+                <mat-error *ngIf="hasError(authorForm, 'maxlength')">Author name should be 2-40 characters long
+                </mat-error>
+                <mat-error *ngIf="hasError(authorForm, 'minlength')">Author name should be 2-40 characters long
+                </mat-error>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-        <div fxFlex="50%">
-          <ul>
-            <li *ngFor="let coauthor of song.coauthors" fxLayout="row">
-              <div fxLayoutAlign="start center">{{coauthor.coauthorFunction}}
-                : {{getCoauthorName(coauthor)}}</div>
-              <button mat-button color="accent" (click)="removeCoauthor(coauthor)"
-                      matTooltip="Remove coauthor">remove</button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <!-- Lyrics and guitar tabs -->
+    <div fxLayout="row">
+      <!-- lyrics card -->
+      <mat-card fxFlex="50%">
+        <mat-card-content fxLayout="column">
+          <mat-card-header>
+            <mat-card-title>Lyrics</mat-card-title>
+          </mat-card-header>
+          <textarea fxFlex="100%" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="30" [(ngModel)]="song.lyrics"></textarea>
+        </mat-card-content>
+      </mat-card>
 
-  <!-- Tags card -->
-  <mat-card fxFlex="20%">
-    <mat-card-content fxLayout="column" fxLayoutGap="15px">
-      <mat-card-header fxLayout="column">
-        <mat-card-title>Tags</mat-card-title>
-      </mat-card-header>
-      <div fxLayout="column">
-        <div fxLayout="row">
-          <mat-form-field fxFlex="80%">
-            <mat-label>Tag</mat-label>
-            <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name" [formControl]="tagForm">
-            <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
-            <mat-error *ngIf="hasError(tagForm, 'maxlength')">Tag should be 2-40 characters long</mat-error>
-            <mat-error *ngIf="hasError(tagForm, 'minlength')">Tag should be 2-40 characters long</mat-error>
-          </mat-form-field>
-          <button mat-button fxFlex="20%" color="accent" (click)="addTag()">add</button>
-        </div>
-        <div>
-          <ul>
-            <li *ngFor="let tag of song.tags" fxLayout="row" fxLayoutGap="5px">
-              <div fxLayoutAlign="start center">#{{tag.name}}</div>
-              <button mat-button (click)="removeTag(tag)">
-                <mat-icon matTooltip="Remove tag">cancel</mat-icon>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <!-- guitar tabs card -->
+      <mat-card fxFlex="50%">
+        <mat-card-content fxLayout="column">
+          <mat-card-header>
+            <mat-card-title>Guitar tabs</mat-card-title>
+          </mat-card-header>
+          <textarea fxFlex="100%" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="30" [(ngModel)]="song.guitarTabs"></textarea>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-  <!-- Trivia card -->
-  <mat-card fxFlex="40%">
-    <mat-card-content fxLayout="column">
-      <mat-card-header>
-        <mat-card-title>Trivia</mat-card-title>
-        <mat-card-subtitle>You can write something about the song here</mat-card-subtitle>
-      </mat-card-header>
-      <textarea fxFlex="100%" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="10" [(ngModel)]="song.trivia"></textarea>
-    </mat-card-content>
-  </mat-card>
+    <!-- Coauthors Tags and Trivia -->
+    <div fxLayout="row">
+      <!-- Coauthors card -->
+      <mat-card fxFlex="40%">
+        <mat-card-content fxLayout="column" fxLayoutGap="15px">
+          <mat-card-header fxLayout="column">
+            <mat-card-title>Coauthors</mat-card-title>
+            <mat-card-subtitle>Choose from the list or add new coauthor</mat-card-subtitle>
+          </mat-card-header>
+          <div fxLayout="row">
+            <mat-card fxFlex="50%">
+              <mat-card-content fxLayout="column" fxLayoutGap="8px">
+                <mat-form-field>
+                  <mat-select placeholder="select author..." [(ngModel)]="coauthorToAdd.authorId">
+                    <mat-option *ngFor="let author of authors" [value]="author.id">
+                      {{author.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Or write new author name</mat-label>
+                  <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="coauthorToAddName"
+                         [formControl]="coauthorForm">
+                  <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+                  <mat-error *ngIf="hasError(coauthorForm, 'maxlength')">Author name should be 2-40 characters long
+                  </mat-error>
+                  <mat-error *ngIf="hasError(coauthorForm, 'minlength')">Author name should be 2-40 characters long
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="select function..." [(ngModel)]="coauthorToAdd.coauthorFunction">
+                    <mat-option *ngFor="let fun of coauthorFunctions" [value]="fun">
+                      {{fun}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button color="accent" (click)="addCouathor()" matTooltip="Add coauthor">Add coauthor
+                </button>
+              </mat-card-content>
+            </mat-card>
+
+            <div fxFlex="50%" class="coauthors-list">
+              <div fxLayout="column" fxLayoutAlign="start stretch" *ngIf="authors.length > 0">
+                <div *ngFor="let coauthor of song.coauthors" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <mat-chip selected color="warn" fxLayoutAlign="center center" fxFlex="grow">
+                    <span>{{coauthor.coauthorFunction}}: {{getCoauthorName(coauthor)}}</span>
+                  </mat-chip>
+                  <button mat-stroked-button color="accent" (click)="removeCoauthor(coauthor)"
+                          matTooltip="Remove coauthor" fxLayoutAlign="center center">remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Tags card -->
+      <mat-card fxFlex="20%">
+        <mat-card-content fxLayout="column" fxLayoutGap="15px">
+          <mat-card-header fxLayout="column">
+            <mat-card-title>Tags</mat-card-title>
+          </mat-card-header>
+          <div fxLayout="column">
+            <div fxLayout="row">
+              <mat-form-field fxFlex="80%">
+                <mat-label>Tag</mat-label>
+                <input matInput fxFlex="100%" placeholder="write tag name here..." [(ngModel)]="tagToAdd.name"
+                       [formControl]="tagForm">
+                <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
+                <mat-error *ngIf="hasError(tagForm, 'maxlength')">Tag should be 2-40 characters long</mat-error>
+                <mat-error *ngIf="hasError(tagForm, 'minlength')">Tag should be 2-40 characters long</mat-error>
+              </mat-form-field>
+              <button mat-button fxFlex="20%" color="accent" (click)="addTag()">add</button>
+            </div>
+            <mat-chip-list fxLayout="row" class="tag-list">
+              <mat-chip *ngFor="let tag of song.tags" [selectable]="false"
+                        [removable]="true" (removed)="removeTag(tag)">
+                {{tag.name}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Trivia card -->
+      <mat-card fxFlex="40%">
+        <mat-card-content fxLayout="column">
+          <mat-card-header>
+            <mat-card-title>Trivia</mat-card-title>
+            <mat-card-subtitle>You can write something about the song here</mat-card-subtitle>
+          </mat-card-header>
+          <textarea fxFlex="100%" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="10" [(ngModel)]="song.trivia"></textarea>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

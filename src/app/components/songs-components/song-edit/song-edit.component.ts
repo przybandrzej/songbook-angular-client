@@ -130,19 +130,23 @@ export class SongEditComponent implements OnInit {
       this.coauthorToAdd.songId = this.song.id;
       this.authorService.createUsingPOST({id: null, name: this.coauthorToAddName}).subscribe(author => {
         this.coauthorToAdd.authorId = author.id;
+        this.authors.push(author);
         this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
           this.song.coauthors.push(coauthor);
+          this.coauthorToAdd.authorId = -1;
+          this.coauthorToAdd.coauthorFunction = null;
+          this.coauthorToAddName = '';
         });
       });
-      this.coauthorToAddName = '';
     } else {
       this.coauthorToAdd.songId = this.song.id;
       this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
         this.song.coauthors.push(coauthor);
+        this.coauthorToAdd.authorId = -1;
+        this.coauthorToAdd.coauthorFunction = null;
+        this.coauthorToAddName = '';
       });
     }
-    this.coauthorToAdd.authorId = -1;
-    this.coauthorToAdd.coauthorFunction = null;
   }
 
   removeCoauthor(coauthorDTO: SongCoauthorDTO) {
