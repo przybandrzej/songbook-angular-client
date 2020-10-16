@@ -22,7 +22,7 @@
             </mat-card-header>
             <mat-card>
               <mat-card-content>
-                <mat-form-field>
+                <mat-form-field fxFlex="grow">
                   <input matInput fxFlex="100%" placeholder="write title here..." [(ngModel)]="song.title"
                          [formControl]="titleForm">
                   <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
@@ -69,7 +69,7 @@
           </mat-card>
           <mat-card>
             <mat-card-content fxFlex="100%">
-              <mat-form-field>
+              <mat-form-field fxFlex="grow">
                 <input matInput fxFlex="100%" placeholder="write author name here..." [(ngModel)]="authorToAdd.name"
                        [formControl]="authorForm">
                 <mat-hint align="end">Min 2 and not more than 40 characters long.</mat-hint>
