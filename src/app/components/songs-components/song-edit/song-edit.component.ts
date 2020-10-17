@@ -161,8 +161,7 @@ export class SongEditComponent implements OnInit {
   }
 
   removeTag(tag: TagDTO) {
-    this.song.tags.splice(this.song.tags.indexOf(tag), 1);
-    this.songService.updateUsingPUT4(this.song).subscribe(song => this.song = song);
+    this.songService.removeTagFromSongUsingPATCH(this.song.id, tag.id).subscribe(song => this.song = song);
   }
 
   approveSong() {
@@ -171,12 +170,10 @@ export class SongEditComponent implements OnInit {
 
   addTag(): void {
     if (this.tagToAdd.name.length > 0) {
-      this.tagService.createUsingPOST5(this.tagToAdd).subscribe(tag => {
-        this.song.tags.push(tag);
-        this.songService.updateUsingPUT4(this.song).subscribe(song => {
+      this.songService.addTagToSongUsingPATCH(this.song.id, this.tagToAdd.name).subscribe(
+        song => {
           this.song = song;
         });
-      });
     }
     this.tagToAdd.name = '';
   }

@@ -106,17 +106,22 @@ export class UserSongRatingResourceService {
     /**
      * delete
      * 
-     * @param dto dto
+     * @param songId songId
+     * @param userId userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE8(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE8(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE8(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE8(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE8(songId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling deleteUsingDELETE8.');
+        if (songId === null || songId === undefined) {
+            throw new Error('Required parameter songId was null or undefined when calling deleteUsingDELETE8.');
+        }
+
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling deleteUsingDELETE8.');
         }
 
         let headers = this.defaultHeaders;
@@ -133,12 +138,8 @@ export class UserSongRatingResourceService {
         // to determine the Content-Type header
         const consumes: string[] = [
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/ratings`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/ratings/${encodeURIComponent(String(userId))}/${encodeURIComponent(String(songId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

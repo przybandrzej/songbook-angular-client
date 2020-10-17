@@ -61,6 +61,102 @@ export class SongResourceService {
 
 
     /**
+     * addTagToSong
+     * 
+     * @param id id
+     * @param tagName tagName
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public addTagToSongUsingPATCH(id: number, tagName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addTagToSongUsingPATCH.');
+        }
+
+        if (tagName === null || tagName === undefined) {
+            throw new Error('Required parameter tagName was null or undefined when calling addTagToSongUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag/${encodeURIComponent(String(tagName))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * addTagsToSongBulk
+     * 
+     * @param id id
+     * @param tagNames tagNames
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addTagsToSongBulkUsingPATCH.');
+        }
+
+        if (tagNames === null || tagNames === undefined) {
+            throw new Error('Required parameter tagNames was null or undefined when calling addTagsToSongBulkUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag-bulk/${encodeURIComponent(String(tagNames))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * approveSong
      * 
      * @param songDTO songDTO
@@ -929,6 +1025,102 @@ export class SongResourceService {
 
         return this.httpClient.post<SongDTO>(`${this.basePath}/api/songs/upload`,
             convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removeTagFromSong
+     * 
+     * @param id id
+     * @param tagId tagId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeTagFromSongUsingPATCH(id: number, tagId: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public removeTagFromSongUsingPATCH(id: number, tagId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public removeTagFromSongUsingPATCH(id: number, tagId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public removeTagFromSongUsingPATCH(id: number, tagId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removeTagFromSongUsingPATCH.');
+        }
+
+        if (tagId === null || tagId === undefined) {
+            throw new Error('Required parameter tagId was null or undefined when calling removeTagFromSongUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/remove-tag/${encodeURIComponent(String(tagId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removeTagsFromSongBulk
+     * 
+     * @param id id
+     * @param tagIds tagIds
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeTagsFromSongBulkUsingPATCH(id: number, tagIds: string, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public removeTagsFromSongBulkUsingPATCH(id: number, tagIds: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public removeTagsFromSongBulkUsingPATCH(id: number, tagIds: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public removeTagsFromSongBulkUsingPATCH(id: number, tagIds: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removeTagsFromSongBulkUsingPATCH.');
+        }
+
+        if (tagIds === null || tagIds === undefined) {
+            throw new Error('Required parameter tagIds was null or undefined when calling removeTagsFromSongBulkUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/remove-tag-bulk/${encodeURIComponent(String(tagIds))}`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
