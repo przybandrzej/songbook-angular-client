@@ -20,6 +20,7 @@ import {PasswordResetRequestComponent} from './components/account/password-reset
 import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
 import {AuthorsBrowserComponent} from './components/authors-browser/authors-browser.component';
 import {TagsBrowserComponent} from './components/tags-browser/tags-browser.component';
+import {AdminPanelComponent} from './components/admin/admin-panel/admin-panel.component';
 
 
 const routes: Routes = [
@@ -91,6 +92,12 @@ const routes: Routes = [
     component: TagsBrowserComponent,
     canActivate: [AuthenticationGuard],
     data: {roles: [Role.Admin, Role.Moderator, Role.Superuser]}
+  },
+  {
+    path: 'admin',
+    component: AdminPanelComponent,
+    canActivate: [AuthenticationGuard],
+    data: {roles: [Role.Admin, Role.Superuser]}
   },
   {
     path: '**',

@@ -81,6 +81,7 @@ import { ProcessingMessageBoxComponent } from './components/utils/processing-mes
 import { AuthorsBrowserComponent } from './components/authors-browser/authors-browser.component';
 import { NavTileComponent } from './components/utils/nav-tile/nav-tile.component';
 import { TagsBrowserComponent } from './components/tags-browser/tags-browser.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -119,7 +120,8 @@ export function getAPIConfiguration() {
     ProcessingMessageBoxComponent,
     AuthorsBrowserComponent,
     NavTileComponent,
-    TagsBrowserComponent
+    TagsBrowserComponent,
+    AdminPanelComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

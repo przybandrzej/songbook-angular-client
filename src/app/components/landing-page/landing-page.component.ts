@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {rolesForModerator} from '../../model/user-roles-combinations';
+import {rolesForAdmin, rolesForModerator} from '../../model/user-roles-combinations';
 
 @Component({
   selector: 'app-landing-page',
@@ -10,6 +10,7 @@ import {rolesForModerator} from '../../model/user-roles-combinations';
 export class LandingPageComponent implements OnInit {
 
   rolesForModerator = rolesForModerator;
+  rolesForAdmin = rolesForAdmin;
 
   constructor(private router: Router) { }
 
@@ -30,5 +31,9 @@ export class LandingPageComponent implements OnInit {
 
   showTags() {
     this.router.navigateByUrl('tags');
+  }
+
+  openAdminPanel() {
+    this.router.navigateByUrl('admin');
   }
 }

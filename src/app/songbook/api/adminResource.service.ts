@@ -57,6 +57,54 @@ export class AdminResourceService {
 
 
     /**
+     * updateUserRole
+     * 
+     * @param roleId roleId
+     * @param userId userId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
+    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
+    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
+    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (roleId === null || roleId === undefined) {
+            throw new Error('Required parameter roleId was null or undefined when calling updateUserRoleUsingPATCH.');
+        }
+
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling updateUserRoleUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<UserDTO>(`${this.basePath}/api/admin/update-role/${encodeURIComponent(String(userId))}/${encodeURIComponent(String(roleId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * updateUser
      * 
      * @param userDTO userDTO

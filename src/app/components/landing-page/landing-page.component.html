@@ -9,6 +9,8 @@
                   [color]="'lightcoral'" (action)="showAuthors()"></app-nav-tile>
     <app-nav-tile *appActivatedByRoles="rolesForModerator" [title]="'Tags'" [icon]="'bookmarks'"
                   [color]="'lightcoral'" (action)="showTags()"></app-nav-tile>
+    <app-nav-tile *appActivatedByRoles="rolesForAdmin" [title]="'Admin panel'" [icon]="'admin_panel_settings'"
+                  [color]="'#ff4d4d'" (action)="openAdminPanel()"></app-nav-tile>
   </div>
 
   <div class="landing-page-hello" fxLayout="column" fxLayoutAlign="start start">
