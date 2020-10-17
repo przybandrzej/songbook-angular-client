@@ -3,11 +3,11 @@
     <button mat-raised-button color="primary" matTooltip="Close" (click)="close()">Close</button>
   </div>
 
-  <div class="content" fxLayout="row">
+  <div class="content" fxLayout="row" fxLayoutAlign="space-between start">
     <div fxLayout="column" fxFlex="40%" cdkScrollable>
       <mat-card *ngFor="let user of users" (click)="select(user)" class="user-card">
         <mat-card-header>
-          <div mat-card-avatar class="user-avatar-image" [style.backgroud-image]="user.imageUrl"></div>
+          <img mat-card-avatar class="user-avatar-image" [src]="user.imageUrl" alt="user avatar">
           <mat-card-title>{{user.username}}</mat-card-title>
           <mat-card-subtitle
             *ngIf="user.firstName || user.lastName">{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
@@ -31,7 +31,7 @@
           <div fxLayout="column" fxFlex="grow" fxLayoutAlign="center stretch">
             <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
             <mat-card-header fxLayout="row" fxLayoutAlign="start start">
-              <div mat-card-avatar class="user-avatar-image" [style.backgroud-image]="selectedUser.imageUrl"></div>
+              <img mat-card-avatar class="user-avatar-image" [src]="selectedUser.imageUrl" alt="user avatar">
               <div fxLayout="column">
                 <mat-card-title>
                   {{selectedUser.username}}
@@ -71,8 +71,6 @@
               </button>
             </div>
           </div>
-
-
         </mat-card-content>
       </mat-card>
     </div>
