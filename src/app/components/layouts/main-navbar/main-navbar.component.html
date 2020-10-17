@@ -7,8 +7,8 @@
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()">Register</button>
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()">Log in</button>
     <div class="link" *ngIf="loggedIn" (click)="expandUserMenu()" fxLayout="row" fxLayoutGap="8px">
+      <img class="avatar-placeholder" [src]="profileImgUrl" alt="">
       <div>{{username}}</div>
-      <div class="avatar-placeholder" [style.background-image]="profileImgUrl"></div>
     </div>
     <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()">Log out</button>
   </div>

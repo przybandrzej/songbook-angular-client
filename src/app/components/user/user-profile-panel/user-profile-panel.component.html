@@ -6,7 +6,7 @@
   <mat-card-content fxLayoutAlign="start start" fxLayoutGap="10px" fxLayout="row">
 
     <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="10px">
-      <img [style.background-image]="user.imageUrl" [alt]="'User avatar'">
+      <img class="avatar-placeholder" [src]="user.imageUrl" alt="user avatar">
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
         <span>Username: {{user.username}}</span>
         <!-- <button mat-button>
