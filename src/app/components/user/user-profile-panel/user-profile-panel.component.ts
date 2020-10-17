@@ -1,6 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthenticationResourceService, UserDTO} from '../../../songbook';
 import {AuthService} from '../../../services/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  UserAvatarDialogResult,
+  UserAvatarDialogResultEnum,
+  UserAvatarUpdateDialogComponent
+} from '../user-avatar-update-dialog/user-avatar-update-dialog.component';
 
 @Component({
   selector: 'app-user-profile-panel',
@@ -27,7 +33,7 @@ export class UserProfilePanelComponent implements OnInit {
   public errorMessages: string[] = [];
   public successMessage = '';
 
-  constructor(private authService: AuthenticationResourceService, private loginService: AuthService) {
+  constructor(private authService: AuthenticationResourceService, private loginService: AuthService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -85,5 +91,23 @@ export class UserProfilePanelComponent implements OnInit {
         this.errorMessages = [error.error.message];
       }
       });
+  }
+
+  changeUserProfile() {
+    const dialogRef = this.dialog.open<UserAvatarUpdateDialogComponent, UserDTO, UserAvatarDialogResult>(UserAvatarUpdateDialogComponent, {
+      data: this.user
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      if(result.action === UserAvatarDialogResultEnum.APPLY) {
+        this.user.imageUrl = result.newUrl;
+        this.authService.saveAccountUsingPOST(this.user).subscribe(user => {
+          this.user = user;
+          this.userChange.emit(this.user);
+        });
+      }
+    });
   }
 }

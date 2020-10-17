@@ -1,0 +1,18 @@
+<div class="dialog" fxLayout="column" fxLayoutAlign="start center">
+  <h1 mat-dialog-title>{{data.username}} avatar</h1>
+  <div mat-dialog-content>
+    <img class="big-image" [src]="fileUrl" alt="user avatar">
+
+    <div fxLayout="row" fxLayoutGap="16px" class="upload-image-input">
+      <mat-form-field fxFlex="grow">
+        <mat-label>Upload image</mat-label>
+        <input matInput [(ngModel)]="fileUrl">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-stroked-button (click)="apply()">Apply</button>
+    <button mat-stroked-button (click)="cancel()">Cancel</button>
+  </div>
+</div>

@@ -82,6 +82,7 @@ import { AuthorsBrowserComponent } from './components/authors-browser/authors-br
 import { NavTileComponent } from './components/utils/nav-tile/nav-tile.component';
 import { TagsBrowserComponent } from './components/tags-browser/tags-browser.component';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
+import { UserAvatarUpdateDialogComponent } from './components/user/user-avatar-update-dialog/user-avatar-update-dialog.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -121,7 +122,8 @@ export function getAPIConfiguration() {
     AuthorsBrowserComponent,
     NavTileComponent,
     TagsBrowserComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    UserAvatarUpdateDialogComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),
