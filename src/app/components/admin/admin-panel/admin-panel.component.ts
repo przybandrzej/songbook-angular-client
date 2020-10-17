@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AdminResourceService, UserDTO, UserResourceService, UserRoleDTO, UserRoleResourceService} from '../../../songbook';
 import {Role} from '../../../model/user-role';
+import {FormControl, Validators} from '@angular/forms';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-admin-panel',
@@ -10,11 +12,12 @@ import {Role} from '../../../model/user-role';
 })
 export class AdminPanelComponent implements OnInit {
 
+  roleControl: FormControl = new FormControl('', [Validators.required]);
+
   users: UserDTO[] = [];
   isError = false;
   errorMessage: string;
   selectedUser: UserDTO;
-  roleControl: any;
   availableRoles: UserRoleDTO[] = [];
   allRoles: UserRoleDTO[] = [];
   superuserRole: UserRoleDTO;
@@ -47,53 +50,48 @@ export class AdminPanelComponent implements OnInit {
     return 'not implemented yet';
   }
 
-  delete(event: MouseEvent, id: number) {
+  delete(event: MouseEvent) {
     event.stopPropagation();
-    this.userService.deleteUsingDELETE6(id).subscribe(() => {
-      this.users.splice(this.users.indexOf(this.users.filter(it => it.id === id)[0]), 1);
-      this.users = this.users.slice();
-    });
-  }
-
-  changeRole(event: MouseEvent, user: UserDTO) {
-
-  }
-
-  getUserRoleName(user: UserDTO) {
-    return this.allRoles.filter(it => it.id === user.userRoleId)[0]?.name;
-  }
-
-  getUserRoleColor(user: UserDTO): string {
-    const role = this.allRoles.filter(it => it.id === user.userRoleId)[0];
-    if (role) {
-      if (role.name === Role.Superuser) {
-        return '#ffcc00';
-      } else if (role.name === Role.Admin) {
-        return '#ff0000';
-      } else if (role.name === Role.Moderator) {
-        return '#ff66ff';
-      } else if (role.name === Role.User) {
-        return '#00cc44';
-      }
+    if (this.selectedUser.userRoleId === this.superuserRole.id) {
+      this.isError = true;
+      this.errorMessage = 'Cannot delete superuser';
     }
-    return undefined;
+    this.userService.deleteUsingDELETE6(this.selectedUser.id).subscribe(() => {
+      this.users.splice(this.users.indexOf(this.users.filter(it => it.id === this.selectedUser.id)[0]), 1);
+      this.deselect();
+    });
   }
 
   select(user: UserDTO) {
     this.selectedUser = user;
+    this.isError = false;
+    this.errorMessage = '';
+    this.roleControl.setValue(this.selectedUser.userRoleId);
   }
 
   deselect() {
     this.selectedUser = null;
+    this.isError = false;
+    this.errorMessage = '';
   }
 
-  updateUser() {
-    this.adminService.updateUserRoleUsingPATCH(this.selectedUser.userRoleId, this.selectedUser.id).subscribe(user => {
+  changeRole(event: MatSelectChange) {
+    this.adminService.updateUserRoleUsingPATCH(event.value, this.selectedUser.id).subscribe(user => {
       const index = this.users.indexOf(this.selectedUser);
-      const copy = this.users.slice();
       this.selectedUser = user;
-      copy.splice(index, 1, this.selectedUser);
-      this.users = copy;
+      this.users.splice(index, 1, this.selectedUser);
+    });
+  }
+
+  activateUser(event: MouseEvent) {
+    event.stopPropagation();
+    if (this.selectedUser.activated) {
+      return;
+    }
+    this.adminService.activateUserUsingPATCH(this.selectedUser.id).subscribe(user => {
+      const index = this.users.indexOf(this.selectedUser);
+      this.selectedUser = user;
+      this.users.splice(index, 1, this.selectedUser);
     });
   }
 }

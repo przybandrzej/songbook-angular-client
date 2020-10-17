@@ -4,8 +4,8 @@
   </div>
 
   <div class="content" fxLayout="row">
-    <div fxLayout="column" fxFlex="40%">
-      <mat-card *ngFor="let user of users" (click)="select(user)">
+    <div fxLayout="column" fxFlex="40%" cdkScrollable>
+      <mat-card *ngFor="let user of users" (click)="select(user)" class="user-card">
         <mat-card-header>
           <div mat-card-avatar class="user-avatar-image" [style.backgroud-image]="user.imageUrl"></div>
           <mat-card-title>{{user.username}}</mat-card-title>
@@ -15,10 +15,10 @@
         </mat-card-header>
         <mat-card-content>
           <mat-chip-list>
-            <mat-chip *ngIf="user.userRoleId === superuserRole.id" [style.background-color]="'#ffcc00'" selected>{{superuserRole.name}}</mat-chip>
-            <mat-chip *ngIf="user.userRoleId === adminRole.id" [style.background-color]="'#ff0000'" selected>{{adminRole.name}}</mat-chip>
-            <mat-chip *ngIf="user.userRoleId === moderatorRole.id" [style.background-color]="'#ff66ff'" selected>{{moderatorRole.name}}</mat-chip>
-            <mat-chip *ngIf="user.userRoleId === userRole.id" [style.background-color]="'#00cc44'" selected>{{userRole.name}}</mat-chip>
+            <mat-chip *ngIf="user.userRoleId === superuserRole?.id" [style.background-color]="'#ffcc00'" selected>{{superuserRole.name}}</mat-chip>
+            <mat-chip *ngIf="user.userRoleId === adminRole?.id" [style.background-color]="'#ff0000'" selected>{{adminRole.name}}</mat-chip>
+            <mat-chip *ngIf="user.userRoleId === moderatorRole?.id" [style.background-color]="'#ff66ff'" selected>{{moderatorRole.name}}</mat-chip>
+            <mat-chip *ngIf="user.userRoleId === userRole?.id" [style.background-color]="'#00cc44'" selected>{{userRole.name}}</mat-chip>
             <mat-chip *ngIf="!user.activated" color="warn" selected>Not activated</mat-chip>
           </mat-chip-list>
         </mat-card-content>
@@ -28,21 +28,23 @@
     <div fxFlex="40%">
       <mat-card *ngIf="selectedUser" fxLayout="column" fxLayoutAlign="start stretch">
         <div fxLayout="row">
-          <div fxLayout="column" fxFlex="50%">
+          <div fxLayout="column" fxFlex="grow" fxLayoutAlign="center stretch">
             <app-warning-message-box *ngIf="isError" [message]="errorMessage"></app-warning-message-box>
-            <mat-card-header fxFlex="50%" fxLayout="row">
-              <div fxFlex="50%">
+            <mat-card-header fxLayout="row" fxLayoutAlign="start start">
+              <div mat-card-avatar class="user-avatar-image" [style.backgroud-image]="selectedUser.imageUrl"></div>
+              <div fxLayout="column">
                 <mat-card-title>
-                  User
+                  {{selectedUser.username}}
                 </mat-card-title>
                 <mat-card-subtitle>
-                  {{selectedUser.username}}
+                  {{selectedUser.email}}
                 </mat-card-subtitle>
               </div>
-              <mat-chip *ngIf="!selectedUser.activated" color="warn">Not activated</mat-chip>
+              <mat-chip fxLayoutAlign="center center" *ngIf="!selectedUser.activated"
+                        color="warn" selected [style.margin-left]="'10px'">Not activated</mat-chip>
             </mat-card-header>
           </div>
-          <div fxLayoutAlign="start end" fxFlex="50%">
+          <div fxLayoutAlign="end start">
             <button *ngIf="selectedUser" mat-mini-fab color="accent" (click)="deselect()">
               <mat-icon>cancel</mat-icon>
             </button>
@@ -50,16 +52,26 @@
         </div>
 
         <mat-card-content fxLayout="column">
-          <mat-form-field appearance="fill" *ngIf="selectedUser.userRoleId !== superuserRole.id">
-            <mat-label>User's role</mat-label>
-            <mat-select [formControl]="roleControl" required [(value)]="selectedUser.userRoleId"
-                        (valueChange)="updateUser()">
-              <mat-option *ngFor="let role of availableRoles" [value]="role.id">
-                {{role.name}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="roleControl.hasError('required')">Please choose a role</mat-error>
-          </mat-form-field>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-form-field appearance="fill" fxFlex="50%" *ngIf="selectedUser.userRoleId !== superuserRole.id">
+              <mat-label>User's role</mat-label>
+              <mat-select [formControl]="roleControl" required (selectionChange)="changeRole($event)">
+                <mat-option *ngFor="let role of availableRoles" [value]="role.id">
+                  {{role.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="roleControl.hasError('required')">Please choose a role</mat-error>
+            </mat-form-field>
+            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="center center">
+              <button *ngIf="selectedUser.userRoleId !== superuserRole.id" mat-stroked-button color="warn" (click)="delete($event)">
+                Delete user
+              </button>
+              <button *ngIf="!selectedUser.activated" mat-stroked-button color="accent" (click)="activateUser($event)">
+                Activate user
+              </button>
+            </div>
+          </div>
+
 
         </mat-card-content>
       </mat-card>
