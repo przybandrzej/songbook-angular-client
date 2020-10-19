@@ -13,6 +13,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormControl, Validators} from '@angular/forms';
 import {SongDetailsSource} from '../song-details/song-details.component';
+import {MatDialog} from '@angular/material/dialog';
+import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
+import {
+  SongInstructionsDialogComponent,
+  SongInstructionsType
+} from '../../utils/song-instructions-dialog/song-instructions-dialog.component';
 
 @Component({
   selector: 'app-song-add',
@@ -54,7 +60,7 @@ export class SongAddComponent implements OnInit {
   errors: string[] = [];
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
-              private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
+              private authorService: AuthorResourceService, private categoryService: CategoryResourceService, public dialog: MatDialog) {
   }
 
   public hasError(form: FormControl, errorName: string): boolean {
@@ -110,6 +116,11 @@ export class SongAddComponent implements OnInit {
   }
 
   openInstructions() {
-
+    const dialogRef = this.dialog.open<SongInstructionsDialogComponent, SongInstructionsType, void>(SongInstructionsDialogComponent, {
+      data: SongInstructionsType.ADD
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      return;
+    });
   }
 }

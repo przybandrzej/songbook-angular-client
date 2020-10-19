@@ -1,0 +1,38 @@
+<div fxLayoutAlign="start center" fxLayout="column">
+  <h1 mat-dialog-title>Song adding instructions</h1>
+  <div mat-dialog-content>
+    <span>Required:</span>
+    <ul>
+      <li>
+        <strong>Add title</strong>
+      </li>
+      <li>
+        <strong>Select category</strong>
+      </li>
+      <li>
+        <strong>Select an author for the list or write name if author does not exist</strong>
+      </li>
+      <li>
+        <strong>Write lyrics of the song</strong>
+      </li>
+      <li>
+        <strong>Write guitar cords</strong>
+      </li>
+    </ul>
+    <span>Optional:</span>
+    <ul>
+      <li>
+        Add tags to song
+      </li>
+      <li>
+        Add coauthors of the song (if any exists)
+      </li>
+      <li>
+        Write some trivia about the song
+      </li>
+    </ul>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-stroked-button (click)="close()">OK</button>
+  </div>
+</div>
