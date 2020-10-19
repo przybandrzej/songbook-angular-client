@@ -72,6 +72,11 @@ export class SongEditComponent implements OnInit {
     name: ''
   };
 
+  errors: string[] = [];
+  tagErrors: string[] = [];
+  coauthorErrors: string[] = [];
+  songErrors: string[] = [];
+
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
               private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService) {
@@ -96,6 +101,8 @@ export class SongEditComponent implements OnInit {
   }
 
   saveSong() {
+    this.songErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
+    this.songErrors = [];
     if (this.song.author.id) {
       this.song.author = this.authors.filter(it => it.id === this.song.author.id)[0];
     }
@@ -109,15 +116,42 @@ export class SongEditComponent implements OnInit {
 
     if (createAuthorRequest) {
       createAuthorRequest.subscribe(author => {
-        this.song.author = author;
-        this.songService.updateUsingPUT4(this.song).subscribe(song => {
-          this.goToDetailScreen();
+          this.song.author = author;
+          this.songService.updateUsingPUT4(this.song).subscribe(song => {
+              this.goToDetailScreen();
+            },
+            error => {
+              if (error.error.subErrors) {
+                this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+                this.songErrors.forEach(it => this.errors.push(it));
+              } else {
+                this.songErrors = [error.error.message];
+                this.songErrors.forEach(it => this.errors.push(it));
+              }
+            });
+        },
+        error => {
+          if (error.error.subErrors) {
+            this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+            this.songErrors.forEach(it => this.errors.push(it));
+          } else {
+            this.songErrors = [error.error.message];
+            this.songErrors.forEach(it => this.errors.push(it));
+          }
         });
-      });
     } else {
       this.songService.updateUsingPUT4(this.song).subscribe(song => {
-        this.goToDetailScreen();
-      });
+          this.goToDetailScreen();
+        },
+        error => {
+          if (error.error.subErrors) {
+            this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+            this.songErrors.forEach(it => this.errors.push(it));
+          } else {
+            this.songErrors = [error.error.message];
+            this.songErrors.forEach(it => this.errors.push(it));
+          }
+        });
     }
   }
 
@@ -126,26 +160,55 @@ export class SongEditComponent implements OnInit {
   }
 
   addCouathor() {
+    this.coauthorErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
+    this.coauthorErrors = [];
     if (this.coauthorToAdd.authorId === -1) {
       this.coauthorToAdd.songId = this.song.id;
       this.authorService.createUsingPOST({id: null, name: this.coauthorToAddName}).subscribe(author => {
-        this.coauthorToAdd.authorId = author.id;
-        this.authors.push(author);
-        this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
+          this.coauthorToAdd.authorId = author.id;
+          this.authors.push(author);
+          this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
+              this.song.coauthors.push(coauthor);
+              this.coauthorToAdd.authorId = -1;
+              this.coauthorToAdd.coauthorFunction = null;
+              this.coauthorToAddName = '';
+            },
+            error => {
+              if (error.error.subErrors) {
+                this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+                this.coauthorErrors.forEach(it => this.errors.push(it));
+              } else {
+                this.coauthorErrors = [error.error.message];
+                this.coauthorErrors.forEach(it => this.errors.push(it));
+              }
+            });
+        },
+        error => {
+          if (error.error.subErrors) {
+            this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+            this.coauthorErrors.forEach(it => this.errors.push(it));
+          } else {
+            this.coauthorErrors = [error.error.message];
+            this.coauthorErrors.forEach(it => this.errors.push(it));
+          }
+        });
+    } else {
+      this.coauthorToAdd.songId = this.song.id;
+      this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
           this.song.coauthors.push(coauthor);
           this.coauthorToAdd.authorId = -1;
           this.coauthorToAdd.coauthorFunction = null;
           this.coauthorToAddName = '';
+        },
+        error => {
+          if (error.error.subErrors) {
+            this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+            this.coauthorErrors.forEach(it => this.errors.push(it));
+          } else {
+            this.coauthorErrors = [error.error.message];
+            this.coauthorErrors.forEach(it => this.errors.push(it));
+          }
         });
-      });
-    } else {
-      this.coauthorToAdd.songId = this.song.id;
-      this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
-        this.song.coauthors.push(coauthor);
-        this.coauthorToAdd.authorId = -1;
-        this.coauthorToAdd.coauthorFunction = null;
-        this.coauthorToAddName = '';
-      });
     }
   }
 
@@ -169,10 +232,21 @@ export class SongEditComponent implements OnInit {
   }
 
   addTag(): void {
+    this.tagErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
+    this.tagErrors = [];
     if (this.tagToAdd.name.length > 0) {
-      this.songService.addTagToSongUsingPATCH(this.song.id, this.tagToAdd.name).subscribe(
+      this.songService.addTagToSongUsingPATCH(this.song.id, this.tagToAdd).subscribe(
         song => {
           this.song = song;
+        },
+        error => {
+          if (error.error.subErrors) {
+            this.tagErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+            this.tagErrors.forEach(it => this.errors.push(it));
+          } else {
+            this.tagErrors = [error.error.message];
+            this.tagErrors.forEach(it => this.errors.push(it));
+          }
         });
     }
     this.tagToAdd.name = '';

@@ -5,13 +5,20 @@ import {
   CategoryDTO,
   CategoryResourceService,
   CreateCoauthorDTO,
-  CreateSongDTO, SongCoauthorDTO,
+  CreateSongDTO,
+  SongCoauthorDTO,
   SongResourceService
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormControl, Validators} from '@angular/forms';
 import {SongDetailsSource} from '../song-details/song-details.component';
+import {MatDialog} from '@angular/material/dialog';
+import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
+import {
+  SongInstructionsDialogComponent,
+  SongInstructionsType
+} from '../../utils/song-instructions-dialog/song-instructions-dialog.component';
 
 @Component({
   selector: 'app-song-add',
@@ -49,8 +56,11 @@ export class SongAddComponent implements OnInit {
   };
   tagToAdd = '';
 
+  isError = false;
+  errors: string[] = [];
+
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
-              private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
+              private authorService: AuthorResourceService, private categoryService: CategoryResourceService, public dialog: MatDialog) {
   }
 
   public hasError(form: FormControl, errorName: string): boolean {
@@ -67,6 +77,8 @@ export class SongAddComponent implements OnInit {
   }
 
   saveSong() {
+    this.isError = false;
+    this.errors = [];
     for (const coauthor of this.coauthorsToAdd) {
       this.song.coauthors.push(coauthor);
     }
@@ -74,8 +86,12 @@ export class SongAddComponent implements OnInit {
       this.song.tags.push(tag);
     }
     this.songService.createUsingPOST4(this.song).subscribe(res => {
-      this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
-    });
+        this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
+      },
+      error => {
+        this.isError = true;
+        this.errors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+      });
   }
 
   addCouathor() {
@@ -97,5 +113,14 @@ export class SongAddComponent implements OnInit {
   removeTag(tagName: string) {
     const index = this.tagsToAdd.indexOf(tagName, 0);
     this.tagsToAdd.splice(index, 1);
+  }
+
+  openInstructions() {
+    const dialogRef = this.dialog.open<SongInstructionsDialogComponent, SongInstructionsType, void>(SongInstructionsDialogComponent, {
+      data: SongInstructionsType.ADD
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      return;
+    });
   }
 }

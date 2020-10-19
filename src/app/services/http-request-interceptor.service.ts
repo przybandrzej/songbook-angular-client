@@ -3,7 +3,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable, ObservableInput, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {catchError, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Location} from '@angular/common';
 import {AuthService} from './auth.service';
 
@@ -27,7 +27,8 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
 
   private callHttp(requestWithToken: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(requestWithToken).pipe(tap(
-      () => {},
+      () => {
+      },
       (err: any) => {
         this.handleError(err, requestWithToken);
       }));
@@ -43,6 +44,12 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
         return;
       } else if (error.status === 400) {
         if (request.url.includes('register') && request.method.includes('POST')) {
+          return;
+        } else if (request.url.includes('api/songs') && (request.method.includes('POST') || request.method.includes('PUT') || request.method.includes('PATCH'))) {
+          return;
+        } else if (request.url.includes('api/authors') && (request.method.includes('POST') || request.method.includes('PUT'))) {
+          return;
+        } else if (request.url.includes('api/coauthors') && (request.method.includes('POST') || request.method.includes('PUT'))) {
           return;
         }
       }
