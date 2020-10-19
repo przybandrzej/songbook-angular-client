@@ -9,6 +9,8 @@
     </ng-container>
   </div>
 
+  <app-warning-message-box class="editor-content error-box" *ngIf="errors.length > 0" [messages]="errors"></app-warning-message-box>
+
   <!-- Title, category and author -->
   <div fxLayout="column" class="editor-content">
     <div fxLayout="row">

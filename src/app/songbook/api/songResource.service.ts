@@ -21,6 +21,7 @@ import { Observable }                                        from 'rxjs';
 import { CreateSongDTO } from '../model/createSongDTO';
 import { PlaylistDTO } from '../model/playlistDTO';
 import { SongDTO } from '../model/songDTO';
+import { UniversalCreateDTO } from '../model/universalCreateDTO';
 import { UserDTO } from '../model/userDTO';
 import { UserSongRatingDTO } from '../model/userSongRatingDTO';
 
@@ -64,21 +65,21 @@ export class SongResourceService {
      * addTagToSong
      * 
      * @param id id
-     * @param tagName tagName
+     * @param tag tag
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
-    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
-    public addTagToSongUsingPATCH(id: number, tagName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
-    public addTagToSongUsingPATCH(id: number, tagName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addTagToSongUsingPATCH(id: number, tag: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public addTagToSongUsingPATCH(id: number, tag: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public addTagToSongUsingPATCH(id: number, tag: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public addTagToSongUsingPATCH(id: number, tag: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling addTagToSongUsingPATCH.');
         }
 
-        if (tagName === null || tagName === undefined) {
-            throw new Error('Required parameter tagName was null or undefined when calling addTagToSongUsingPATCH.');
+        if (tag === null || tag === undefined) {
+            throw new Error('Required parameter tag was null or undefined when calling addTagToSongUsingPATCH.');
         }
 
         let headers = this.defaultHeaders;
@@ -96,9 +97,13 @@ export class SongResourceService {
         const consumes: string[] = [
             'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag/${encodeURIComponent(String(tagName))}`,
-            null,
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag`,
+            tag,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -112,21 +117,21 @@ export class SongResourceService {
      * addTagsToSongBulk
      * 
      * @param id id
-     * @param tagNames tagNames
+     * @param tags tags
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
-    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
-    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
-    public addTagsToSongBulkUsingPATCH(id: number, tagNames: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addTagsToSongBulkUsingPATCH(id: number, tags: Array<UniversalCreateDTO>, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public addTagsToSongBulkUsingPATCH(id: number, tags: Array<UniversalCreateDTO>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public addTagsToSongBulkUsingPATCH(id: number, tags: Array<UniversalCreateDTO>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public addTagsToSongBulkUsingPATCH(id: number, tags: Array<UniversalCreateDTO>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling addTagsToSongBulkUsingPATCH.');
         }
 
-        if (tagNames === null || tagNames === undefined) {
-            throw new Error('Required parameter tagNames was null or undefined when calling addTagsToSongBulkUsingPATCH.');
+        if (tags === null || tags === undefined) {
+            throw new Error('Required parameter tags was null or undefined when calling addTagsToSongBulkUsingPATCH.');
         }
 
         let headers = this.defaultHeaders;
@@ -144,9 +149,13 @@ export class SongResourceService {
         const consumes: string[] = [
             'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag-bulk/${encodeURIComponent(String(tagNames))}`,
-            null,
+        return this.httpClient.patch<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/add-tag-bulk`,
+            tags,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -45,7 +45,11 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
       } else if (error.status === 400) {
         if (request.url.includes('register') && request.method.includes('POST')) {
           return;
-        } else if (request.url.includes('api/songs') && request.method.includes('POST')) {
+        } else if (request.url.includes('api/songs') && (request.method.includes('POST') || request.method.includes('PUT') || request.method.includes('PATCH'))) {
+          return;
+        } else if (request.url.includes('api/authors') && (request.method.includes('POST') || request.method.includes('PUT'))) {
+          return;
+        } else if (request.url.includes('api/coauthors') && (request.method.includes('POST') || request.method.includes('PUT'))) {
           return;
         }
       }
