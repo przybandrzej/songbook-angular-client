@@ -2,7 +2,12 @@
   <div class="button-panel" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
     <button mat-raised-button color="primary" matTooltip="Go back" (click)="cancel()">Cancel</button>
     <button mat-raised-button color="accent" (click)="saveSong()" matTooltip="Save the song">Save</button>
+    <button mat-icon-button color="primary" matTooltip="See instructions" (click)="openInstructions()">
+      <mat-icon>help_outline</mat-icon>
+    </button>
   </div>
+
+  <app-warning-message-box class="editor-content" *ngIf="isError" [messages]="errors"></app-warning-message-box>
 
   <div class="editor-content">
     <!-- Title, category and author -->

@@ -5,7 +5,8 @@ import {
   CategoryDTO,
   CategoryResourceService,
   CreateCoauthorDTO,
-  CreateSongDTO, SongCoauthorDTO,
+  CreateSongDTO,
+  SongCoauthorDTO,
   SongResourceService
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -49,6 +50,9 @@ export class SongAddComponent implements OnInit {
   };
   tagToAdd = '';
 
+  isError = false;
+  errors: string[] = [];
+
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router, snackBar: MatSnackBar,
               private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
   }
@@ -67,6 +71,8 @@ export class SongAddComponent implements OnInit {
   }
 
   saveSong() {
+    this.isError = false;
+    this.errors = [];
     for (const coauthor of this.coauthorsToAdd) {
       this.song.coauthors.push(coauthor);
     }
@@ -74,8 +80,12 @@ export class SongAddComponent implements OnInit {
       this.song.tags.push(tag);
     }
     this.songService.createUsingPOST4(this.song).subscribe(res => {
-      this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
-    });
+        this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
+      },
+      error => {
+        this.isError = true;
+        this.errors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+      });
   }
 
   addCouathor() {
@@ -97,5 +107,9 @@ export class SongAddComponent implements OnInit {
   removeTag(tagName: string) {
     const index = this.tagsToAdd.indexOf(tagName, 0);
     this.tagsToAdd.splice(index, 1);
+  }
+
+  openInstructions() {
+
   }
 }
