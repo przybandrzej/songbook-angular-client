@@ -228,7 +228,7 @@ export class SongEditComponent implements OnInit {
   }
 
   approveSong() {
-    this.songService.approveSongUsingPUT(this.song).subscribe(res => this.song = res);
+    this.songService.approveSongUsingPUT(this.song.id).subscribe(res => this.song = res);
   }
 
   addTag(): void {

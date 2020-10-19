@@ -59,6 +59,54 @@ export class UserResourceService {
 
 
     /**
+     * addSongToLibrary
+     * 
+     * @param id id
+     * @param songId songId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addSongToLibraryUsingPATCH(id: number, songId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public addSongToLibraryUsingPATCH(id: number, songId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public addSongToLibraryUsingPATCH(id: number, songId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public addSongToLibraryUsingPATCH(id: number, songId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addSongToLibraryUsingPATCH.');
+        }
+
+        if (songId === null || songId === undefined) {
+            throw new Error('Required parameter songId was null or undefined when calling addSongToLibraryUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/add-song/${encodeURIComponent(String(songId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * delete
      * 
      * @param id id
@@ -257,6 +305,54 @@ export class UserResourceService {
         ];
 
         return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/ratings`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removeSongFromLibrary
+     * 
+     * @param id id
+     * @param songId songId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeSongFromLibraryUsingPATCH(id: number, songId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public removeSongFromLibraryUsingPATCH(id: number, songId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public removeSongFromLibraryUsingPATCH(id: number, songId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public removeSongFromLibraryUsingPATCH(id: number, songId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removeSongFromLibraryUsingPATCH.');
+        }
+
+        if (songId === null || songId === undefined) {
+            throw new Error('Required parameter songId was null or undefined when calling removeSongFromLibraryUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/remove-song/${encodeURIComponent(String(songId))}`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

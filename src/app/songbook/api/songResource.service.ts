@@ -168,17 +168,17 @@ export class SongResourceService {
     /**
      * approveSong
      * 
-     * @param songDTO songDTO
+     * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public approveSongUsingPUT(songDTO: SongDTO, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
-    public approveSongUsingPUT(songDTO: SongDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
-    public approveSongUsingPUT(songDTO: SongDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
-    public approveSongUsingPUT(songDTO: SongDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public approveSongUsingPUT(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public approveSongUsingPUT(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public approveSongUsingPUT(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public approveSongUsingPUT(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songDTO === null || songDTO === undefined) {
-            throw new Error('Required parameter songDTO was null or undefined when calling approveSongUsingPUT.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling approveSongUsingPUT.');
         }
 
         let headers = this.defaultHeaders;
@@ -196,13 +196,9 @@ export class SongResourceService {
         const consumes: string[] = [
             'application/json'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.put<SongDTO>(`${this.basePath}/api/songs/approve`,
-            songDTO,
+        return this.httpClient.put<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/approve`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

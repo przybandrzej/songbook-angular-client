@@ -6,7 +6,7 @@ import {
   PlaylistDTO,
   PlaylistResourceService,
   SongResourceService,
-  UserDTO,
+  UserDTO, UserResourceService,
   UserRoleResourceService,
   UserSongRatingDTO,
   UserSongRatingResourceService
@@ -40,7 +40,7 @@ export class SongDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
               private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService,
               public dialog: MatDialog, private playlistService: PlaylistResourceService, private roleService: UserRoleResourceService,
-              private loginService: AuthService) {
+              private loginService: AuthService, private userService: UserResourceService) {
   }
 
   ngOnInit(): void {
@@ -117,13 +117,11 @@ export class SongDetailsComponent implements OnInit {
   }
 
   addToLib(): void {
-    this.user.songs.push(this.data.song.id);
-    this.authService.saveAccountUsingPOST(this.user).subscribe(() => this.inUserLib = true);
+    this.userService.addSongToLibraryUsingPATCH(this.user.id, this.data.song.id).subscribe(() => this.inUserLib = true);
   }
 
   removeFromLib(): void {
-    this.user.songs.splice(this.user.songs.indexOf(this.data.song.id), 1);
-    this.authService.saveAccountUsingPOST(this.user).subscribe(() => this.inUserLib = false);
+    this.userService.removeSongFromLibraryUsingPATCH(this.user.id, this.data.song.id).subscribe(() => this.inUserLib = false);
   }
 
   getRatingLabelValue(): number {
@@ -155,15 +153,12 @@ export class SongDetailsComponent implements OnInit {
           this.playlistService.createUsingPOST2(playlist).subscribe(() => {
           });
         } else {
-          playlist.songs.push(this.data.song.id);
-          this.playlistService.updateUsingPUT2(playlist).subscribe(() => {
+          this.playlistService.addSongUsingPATCH(playlist.id, this.data.song.id).subscribe(() => {
           });
         }
       });
       result.deselected.forEach(playlist => {
-        const item = playlist.songs.filter(it => it === this.data.song.id)[0];
-        playlist.songs.splice(playlist.songs.indexOf(item), 1);
-        this.playlistService.updateUsingPUT2(playlist).subscribe(() => {
+        this.playlistService.removeSongUsingPATCH(playlist.id, this.data.song.id).subscribe(() => {
         });
       });
     });
