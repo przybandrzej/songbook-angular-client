@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, ObservableInput, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -22,7 +22,10 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
 
   private addToken(req: HttpRequest<any>): HttpRequest<any> {
     const token = AuthService.getToken();
-    return req.clone({headers: req.headers.set('Authorization', 'Bearer ' + token)});
+    if (!token) {
+      return req;
+    }
+    return req.clone({headers: req.headers.append('Authorization', 'Bearer ' + token)});
   }
 
   private callHttp(requestWithToken: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
