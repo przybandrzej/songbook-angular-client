@@ -11,7 +11,7 @@ import {
   UserSongRatingDTO,
   UserSongRatingResourceService
 } from '../../../songbook';
-import {Location} from '@angular/common';
+import {formatDate, Location} from '@angular/common';
 import {RatingChanged} from '../../utils/rating-star/rating-star.component';
 import {UserDetailsData} from '../../../model/user-details-data';
 import {MatDialog} from '@angular/material/dialog';
@@ -164,6 +164,9 @@ export class SongDetailsComponent implements OnInit {
     });
   }
 
+  formatDate(timestamp: Date) {
+    return formatDate(timestamp, 'd. M y, h:mm:ss', 'PL');
+  }
 }
 
 export enum SongDetailsSource {

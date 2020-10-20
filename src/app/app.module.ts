@@ -84,6 +84,7 @@ import { TagsBrowserComponent } from './components/tags-browser/tags-browser.com
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { UserAvatarUpdateDialogComponent } from './components/user/user-avatar-update-dialog/user-avatar-update-dialog.component';
 import { SongInstructionsDialogComponent } from './components/utils/song-instructions-dialog/song-instructions-dialog.component';
+import {AppDatePipe} from './utils/app-date-pipe';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -125,7 +126,8 @@ export function getAPIConfiguration() {
     TagsBrowserComponent,
     AdminPanelComponent,
     UserAvatarUpdateDialogComponent,
-    SongInstructionsDialogComponent
+    SongInstructionsDialogComponent,
+    AppDatePipe
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

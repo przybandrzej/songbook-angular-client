@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
   version: 'DEV',
-  applicationName: 'STK Songbook'
+  applicationName: 'STK Songbook',
+  date_time_format: 'd-M-y, H:mm:ss'
 };
 
 /*

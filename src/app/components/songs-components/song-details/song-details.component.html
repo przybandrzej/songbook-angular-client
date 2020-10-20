@@ -71,14 +71,14 @@
           </div>
         </div>
         <div fxFlex="25%">
-          <span>Added by: {{data.addedByUser.username}} {{data.song.addedBy.timestamp}}</span>
+          <span>Added by: {{data.addedByUser.username}} {{data.song.addedBy.timestamp | dateFormatPipe}}</span>
         </div>
         <mat-expansion-panel fxFlex="25%">
           <mat-expansion-panel-header>
             <mat-panel-title>Edits:</mat-panel-title>
           </mat-expansion-panel-header>
           <div *ngFor="let edit of data.editsUsers">
-            <span>{{edit.user.username}} - {{edit.edit.timestamp}}</span>
+            <span>{{edit.user.username}} - {{edit.edit.timestamp | dateFormatPipe}}</span>
             <mat-divider></mat-divider>
           </div>
         </mat-expansion-panel>

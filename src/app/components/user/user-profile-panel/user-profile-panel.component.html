@@ -53,7 +53,7 @@
         <button *ngIf="editableLastName" mat-stroked-button (click)="updateLastName()">Update</button>
       </div>
       <div>
-        <span>Registered: {{user.registrationDate}}</span>
+        <span>Registered: {{user.registrationDate | dateFormatPipe}}</span>
       </div>
       <div>
         <span>Songs in library: {{user.songs.length}}</span>
