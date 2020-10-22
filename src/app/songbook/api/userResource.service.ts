@@ -18,7 +18,11 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { CreatePlaylistDTO } from '../model/createPlaylistDTO';
 import { PlaylistDTO } from '../model/playlistDTO';
+import { SongAddDTO } from '../model/songAddDTO';
+import { SongDTO } from '../model/songDTO';
+import { SongEditDTO } from '../model/songEditDTO';
 import { UserDTO } from '../model/userDTO';
 import { UserSongRatingDTO } from '../model/userSongRatingDTO';
 
@@ -57,6 +61,110 @@ export class UserResourceService {
         return false;
     }
 
+
+    /**
+     * addPlaylist
+     * 
+     * @param id id
+     * @param playlistDTO playlistDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addPlaylistUsingPATCH(id: number, playlistDTO: CreatePlaylistDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public addPlaylistUsingPATCH(id: number, playlistDTO: CreatePlaylistDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public addPlaylistUsingPATCH(id: number, playlistDTO: CreatePlaylistDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public addPlaylistUsingPATCH(id: number, playlistDTO: CreatePlaylistDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addPlaylistUsingPATCH.');
+        }
+
+        if (playlistDTO === null || playlistDTO === undefined) {
+            throw new Error('Required parameter playlistDTO was null or undefined when calling addPlaylistUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/add-playlist`,
+            playlistDTO,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * addRating
+     * 
+     * @param id id
+     * @param ratingDTO ratingDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addRatingUsingPATCH(id: number, ratingDTO: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public addRatingUsingPATCH(id: number, ratingDTO: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public addRatingUsingPATCH(id: number, ratingDTO: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public addRatingUsingPATCH(id: number, ratingDTO: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addRatingUsingPATCH.');
+        }
+
+        if (ratingDTO === null || ratingDTO === undefined) {
+            throw new Error('Required parameter ratingDTO was null or undefined when calling addRatingUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/add-rating`,
+            ratingDTO,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * addSongToLibrary
@@ -107,19 +215,19 @@ export class UserResourceService {
     }
 
     /**
-     * delete
+     * deleteUser
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE6(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUserUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUserUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUserUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUserUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE6.');
+            throw new Error('Required parameter id was null or undefined when calling deleteUserUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -137,7 +245,48 @@ export class UserResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getAddedSongsByUserId
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAddedSongsByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongAddDTO>>;
+    public getAddedSongsByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongAddDTO>>>;
+    public getAddedSongsByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongAddDTO>>>;
+    public getAddedSongsByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getAddedSongsByUserIdUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongAddDTO>>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/added-songs`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -154,10 +303,10 @@ export class UserResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET6(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
-    public getAllUsingGET6(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
-    public getAllUsingGET6(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
-    public getAllUsingGET6(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllUsingGET3(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
+    public getAllUsingGET3(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
+    public getAllUsingGET3(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
+    public getAllUsingGET3(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -198,13 +347,13 @@ export class UserResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET6(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public getByIdUsingGET6(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public getByIdUsingGET6(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public getByIdUsingGET6(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET3(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
+    public getByIdUsingGET3(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
+    public getByIdUsingGET3(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
+    public getByIdUsingGET3(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET6.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET3.');
         }
 
         let headers = this.defaultHeaders;
@@ -222,7 +371,48 @@ export class UserResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<UserDTO>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<UserDTO>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getEditedSongsByUserId
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEditedSongsByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongEditDTO>>;
+    public getEditedSongsByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongEditDTO>>>;
+    public getEditedSongsByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongEditDTO>>>;
+    public getEditedSongsByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getEditedSongsByUserIdUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongEditDTO>>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/edited-songs`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -263,7 +453,7 @@ export class UserResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/playlists`,
+        return this.httpClient.get<Array<PlaylistDTO>>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/playlists`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -304,7 +494,190 @@ export class UserResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/users/id/${encodeURIComponent(String(id))}/ratings`,
+        return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/ratings`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getRatingsOfSongByUserId
+     * 
+     * @param id id
+     * @param songId songId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getRatingsOfSongByUserIdUsingGET(id: number, songId: number, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public getRatingsOfSongByUserIdUsingGET(id: number, songId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public getRatingsOfSongByUserIdUsingGET(id: number, songId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public getRatingsOfSongByUserIdUsingGET(id: number, songId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getRatingsOfSongByUserIdUsingGET.');
+        }
+
+        if (songId === null || songId === undefined) {
+            throw new Error('Required parameter songId was null or undefined when calling getRatingsOfSongByUserIdUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<UserSongRatingDTO>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/ratings/${encodeURIComponent(String(songId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongsByUserId
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSongsByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getSongsByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getSongsByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getSongsByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getSongsByUserIdUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/songs`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removePlaylist
+     * 
+     * @param id id
+     * @param playlistId playlistId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removePlaylistUsingPATCH(id: number, playlistId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public removePlaylistUsingPATCH(id: number, playlistId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public removePlaylistUsingPATCH(id: number, playlistId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public removePlaylistUsingPATCH(id: number, playlistId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removePlaylistUsingPATCH.');
+        }
+
+        if (playlistId === null || playlistId === undefined) {
+            throw new Error('Required parameter playlistId was null or undefined when calling removePlaylistUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/remove-playlist/${encodeURIComponent(String(playlistId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * removeRating
+     * 
+     * @param id id
+     * @param ratingId ratingId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeRatingUsingPATCH(id: number, ratingId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public removeRatingUsingPATCH(id: number, ratingId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public removeRatingUsingPATCH(id: number, ratingId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public removeRatingUsingPATCH(id: number, ratingId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removeRatingUsingPATCH.');
+        }
+
+        if (ratingId === null || ratingId === undefined) {
+            throw new Error('Required parameter ratingId was null or undefined when calling removeRatingUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/remove-rating/${encodeURIComponent(String(ratingId))}`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -353,6 +726,53 @@ export class UserResourceService {
 
         return this.httpClient.patch<any>(`${this.basePath}/api/users/${encodeURIComponent(String(id))}/remove-song/${encodeURIComponent(String(songId))}`,
             null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * updateUser
+     * 
+     * @param userDTO userDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateUserUsingPUT(userDTO: UserDTO, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
+    public updateUserUsingPUT(userDTO: UserDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
+    public updateUserUsingPUT(userDTO: UserDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
+    public updateUserUsingPUT(userDTO: UserDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userDTO === null || userDTO === undefined) {
+            throw new Error('Required parameter userDTO was null or undefined when calling updateUserUsingPUT.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.put<UserDTO>(`${this.basePath}/api/users`,
+            userDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

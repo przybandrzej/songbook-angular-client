@@ -19,7 +19,6 @@ export interface UserDTO {
     imageUrl?: string;
     lastName?: string;
     registrationDate?: Date;
-    songs: Array<number>;
     userRoleId: number;
     username: string;
 }

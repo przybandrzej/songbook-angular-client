@@ -8,6 +8,8 @@ import { AuthenticationResourceService } from './api/authenticationResource.serv
 import { AuthorResourceService } from './api/authorResource.service';
 import { AwaitingSongResourceService } from './api/awaitingSongResource.service';
 import { CategoryResourceService } from './api/categoryResource.service';
+import { GuitarCordResourceService } from './api/guitarCordResource.service';
+import { LineResourceService } from './api/lineResource.service';
 import { PlaylistResourceService } from './api/playlistResource.service';
 import { SongCoauthorResourceService } from './api/songCoauthorResource.service';
 import { SongResourceService } from './api/songResource.service';
@@ -15,6 +17,7 @@ import { TagResourceService } from './api/tagResource.service';
 import { UserResourceService } from './api/userResource.service';
 import { UserRoleResourceService } from './api/userRoleResource.service';
 import { UserSongRatingResourceService } from './api/userSongRatingResource.service';
+import { VerseResourceService } from './api/verseResource.service';
 
 @NgModule({
   imports:      [],
@@ -26,13 +29,16 @@ import { UserSongRatingResourceService } from './api/userSongRatingResource.serv
     AuthorResourceService,
     AwaitingSongResourceService,
     CategoryResourceService,
+    GuitarCordResourceService,
+    LineResourceService,
     PlaylistResourceService,
     SongCoauthorResourceService,
     SongResourceService,
     TagResourceService,
     UserResourceService,
     UserRoleResourceService,
-    UserSongRatingResourceService ]
+    UserSongRatingResourceService,
+    VerseResourceService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

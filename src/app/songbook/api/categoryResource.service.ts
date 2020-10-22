@@ -59,19 +59,19 @@ export class CategoryResourceService {
 
 
     /**
-     * create
+     * createCategory
      * 
      * @param categoryDto categoryDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public createUsingPOST1(categoryDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createCategoryUsingPOST(categoryDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
+    public createCategoryUsingPOST(categoryDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
+    public createCategoryUsingPOST(categoryDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
+    public createCategoryUsingPOST(categoryDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (categoryDto === null || categoryDto === undefined) {
-            throw new Error('Required parameter categoryDto was null or undefined when calling createUsingPOST1.');
+            throw new Error('Required parameter categoryDto was null or undefined when calling createCategoryUsingPOST.');
         }
 
         let headers = this.defaultHeaders;
@@ -106,19 +106,19 @@ export class CategoryResourceService {
     }
 
     /**
-     * delete
+     * deleteCategory
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE1(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteCategoryUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteCategoryUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteCategoryUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteCategoryUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE1.');
+            throw new Error('Required parameter id was null or undefined when calling deleteCategoryUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -136,7 +136,7 @@ export class CategoryResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/categories/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -147,15 +147,15 @@ export class CategoryResourceService {
     }
 
     /**
-     * getAll
+     * getAllCategories
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET2(observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
-    public getAllUsingGET2(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
-    public getAllUsingGET2(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
-    public getAllUsingGET2(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllCategoriesUsingGET(observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
+    public getAllCategoriesUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
+    public getAllCategoriesUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
+    public getAllCategoriesUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -183,19 +183,19 @@ export class CategoryResourceService {
     }
 
     /**
-     * getById
+     * getCategoryById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET2(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public getByIdUsingGET2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public getByIdUsingGET2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public getByIdUsingGET2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCategoryByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
+    public getCategoryByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
+    public getCategoryByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
+    public getCategoryByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET2.');
+            throw new Error('Required parameter id was null or undefined when calling getCategoryByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -213,7 +213,7 @@ export class CategoryResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<CategoryDTO>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<CategoryDTO>(`${this.basePath}/api/categories/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -224,19 +224,19 @@ export class CategoryResourceService {
     }
 
     /**
-     * getByName
+     * getCategoryByName
      * 
      * @param name name
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByNameUsingGET(name: string, observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
-    public getByNameUsingGET(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
-    public getByNameUsingGET(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
-    public getByNameUsingGET(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCategoryByNameUsingGET(name: string, observe?: 'body', reportProgress?: boolean): Observable<Array<CategoryDTO>>;
+    public getCategoryByNameUsingGET(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CategoryDTO>>>;
+    public getCategoryByNameUsingGET(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CategoryDTO>>>;
+    public getCategoryByNameUsingGET(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getByNameUsingGET.');
+            throw new Error('Required parameter name was null or undefined when calling getCategoryByNameUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -295,7 +295,7 @@ export class CategoryResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/categories/id/${encodeURIComponent(String(id))}/songs`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/categories/${encodeURIComponent(String(id))}/songs`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -306,19 +306,19 @@ export class CategoryResourceService {
     }
 
     /**
-     * update
+     * updateCategory
      * 
      * @param categoryDto categoryDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
-    public updateUsingPUT1(categoryDto: CategoryDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateCategoryUsingPUT(categoryDto: CategoryDTO, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
+    public updateCategoryUsingPUT(categoryDto: CategoryDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
+    public updateCategoryUsingPUT(categoryDto: CategoryDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
+    public updateCategoryUsingPUT(categoryDto: CategoryDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (categoryDto === null || categoryDto === undefined) {
-            throw new Error('Required parameter categoryDto was null or undefined when calling updateUsingPUT1.');
+            throw new Error('Required parameter categoryDto was null or undefined when calling updateCategoryUsingPUT.');
         }
 
         let headers = this.defaultHeaders;

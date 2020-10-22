@@ -18,16 +18,16 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { SongDTO } from '../model/songDTO';
-import { TagDTO } from '../model/tagDTO';
-import { UniversalCreateDTO } from '../model/universalCreateDTO';
+import { CreateLineDTO } from '../model/createLineDTO';
+import { LineDTO } from '../model/lineDTO';
+import { VerseDTO } from '../model/verseDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class TagResourceService {
+export class VerseResourceService {
 
     protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -59,19 +59,24 @@ export class TagResourceService {
 
 
     /**
-     * createTag
+     * addLine
      * 
-     * @param tagDto tagDto
+     * @param id id
+     * @param line line
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTagUsingPOST(tagDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
-    public createTagUsingPOST(tagDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
-    public createTagUsingPOST(tagDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
-    public createTagUsingPOST(tagDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addLineUsingPATCH(id: number, line: CreateLineDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public addLineUsingPATCH(id: number, line: CreateLineDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public addLineUsingPATCH(id: number, line: CreateLineDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public addLineUsingPATCH(id: number, line: CreateLineDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (tagDto === null || tagDto === undefined) {
-            throw new Error('Required parameter tagDto was null or undefined when calling createTagUsingPOST.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addLineUsingPATCH.');
+        }
+
+        if (line === null || line === undefined) {
+            throw new Error('Required parameter line was null or undefined when calling addLineUsingPATCH.');
         }
 
         let headers = this.defaultHeaders;
@@ -94,8 +99,8 @@ export class TagResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<TagDTO>(`${this.basePath}/api/tags`,
-            tagDto,
+        return this.httpClient.patch<any>(`${this.basePath}/api/verses/${encodeURIComponent(String(id))}/add-line`,
+            line,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -106,19 +111,55 @@ export class TagResourceService {
     }
 
     /**
-     * deleteTag
+     * getAllVerses
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllVersesUsingGET(observe?: 'body', reportProgress?: boolean): Observable<Array<VerseDTO>>;
+    public getAllVersesUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<VerseDTO>>>;
+    public getAllVersesUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<VerseDTO>>>;
+    public getAllVersesUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<VerseDTO>>(`${this.basePath}/api/verses`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getVerseById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteTagUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteTagUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteTagUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteTagUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getVerseByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<VerseDTO>;
+    public getVerseByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<VerseDTO>>;
+    public getVerseByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<VerseDTO>>;
+    public getVerseByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteTagUsingDELETE.');
+            throw new Error('Required parameter id was null or undefined when calling getVerseByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -136,7 +177,7 @@ export class TagResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/tags/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<VerseDTO>(`${this.basePath}/api/verses/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -147,63 +188,19 @@ export class TagResourceService {
     }
 
     /**
-     * getAll
-     * 
-     * @param limit limit
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAllUsingGET2(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<TagDTO>>;
-    public getAllUsingGET2(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TagDTO>>>;
-    public getAllUsingGET2(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TagDTO>>>;
-    public getAllUsingGET2(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (limit !== undefined && limit !== null) {
-            queryParameters = queryParameters.set('limit', <any>limit);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<TagDTO>>(`${this.basePath}/api/tags`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getById
+     * getVerseLines
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET2(id: number, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
-    public getByIdUsingGET2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
-    public getByIdUsingGET2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
-    public getByIdUsingGET2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getVerseLinesUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<LineDTO>>;
+    public getVerseLinesUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<LineDTO>>>;
+    public getVerseLinesUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<LineDTO>>>;
+    public getVerseLinesUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET2.');
+            throw new Error('Required parameter id was null or undefined when calling getVerseLinesUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -221,7 +218,7 @@ export class TagResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<TagDTO>(`${this.basePath}/api/tags/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<Array<LineDTO>>(`${this.basePath}/api/verses/${encodeURIComponent(String(id))}/lines`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -232,60 +229,24 @@ export class TagResourceService {
     }
 
     /**
-     * getByName
-     * 
-     * @param name name
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getByNameUsingGET(name: string, observe?: 'body', reportProgress?: boolean): Observable<Array<TagDTO>>;
-    public getByNameUsingGET(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TagDTO>>>;
-    public getByNameUsingGET(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TagDTO>>>;
-    public getByNameUsingGET(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getByNameUsingGET.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<TagDTO>>(`${this.basePath}/api/tags/name/${encodeURIComponent(String(name))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getSongsByTag
+     * removeLine
      * 
      * @param id id
+     * @param lineId lineId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSongsByTagUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getSongsByTagUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getSongsByTagUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getSongsByTagUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public removeLineUsingPATCH(id: number, lineId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public removeLineUsingPATCH(id: number, lineId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public removeLineUsingPATCH(id: number, lineId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public removeLineUsingPATCH(id: number, lineId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getSongsByTagUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling removeLineUsingPATCH.');
+        }
+
+        if (lineId === null || lineId === undefined) {
+            throw new Error('Required parameter lineId was null or undefined when calling removeLineUsingPATCH.');
         }
 
         let headers = this.defaultHeaders;
@@ -301,9 +262,11 @@ export class TagResourceService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json'
         ];
 
-        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/tags/${encodeURIComponent(String(id))}/songs`,
+        return this.httpClient.patch<any>(`${this.basePath}/api/verses/${encodeURIComponent(String(id))}/remove-line/${encodeURIComponent(String(lineId))}`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -314,19 +277,19 @@ export class TagResourceService {
     }
 
     /**
-     * updateTag
+     * updateVerse
      * 
-     * @param tagDto tagDto
+     * @param verseDTO verseDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateTagUsingPUT(tagDto: TagDTO, observe?: 'body', reportProgress?: boolean): Observable<TagDTO>;
-    public updateTagUsingPUT(tagDto: TagDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TagDTO>>;
-    public updateTagUsingPUT(tagDto: TagDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TagDTO>>;
-    public updateTagUsingPUT(tagDto: TagDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateVerseUsingPUT(verseDTO: VerseDTO, observe?: 'body', reportProgress?: boolean): Observable<VerseDTO>;
+    public updateVerseUsingPUT(verseDTO: VerseDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<VerseDTO>>;
+    public updateVerseUsingPUT(verseDTO: VerseDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<VerseDTO>>;
+    public updateVerseUsingPUT(verseDTO: VerseDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (tagDto === null || tagDto === undefined) {
-            throw new Error('Required parameter tagDto was null or undefined when calling updateTagUsingPUT.');
+        if (verseDTO === null || verseDTO === undefined) {
+            throw new Error('Required parameter verseDTO was null or undefined when calling updateVerseUsingPUT.');
         }
 
         let headers = this.defaultHeaders;
@@ -349,8 +312,8 @@ export class TagResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<TagDTO>(`${this.basePath}/api/tags`,
-            tagDto,
+        return this.httpClient.put<VerseDTO>(`${this.basePath}/api/verses`,
+            verseDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

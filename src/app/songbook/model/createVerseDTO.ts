@@ -9,12 +9,17 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { URL } from './uRL';
+import { CreateLineDTO } from './createLineDTO';
 
 
-export interface AuthorDTO { 
-    biographyUrl?: URL;
-    id: number;
-    name: string;
-    photoResource?: string;
+/**
+ * Class representing a DTO for creating verses of songs.
+ */
+export interface CreateVerseDTO { 
+    chorus?: boolean;
+    /**
+     * Order of the verse in the song
+     */
+    order?: number;
+    lines?: Array<CreateLineDTO>;
 }

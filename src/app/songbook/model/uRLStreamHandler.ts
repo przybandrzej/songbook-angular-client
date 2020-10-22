@@ -9,12 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { URL } from './uRL';
 
 
-export interface AuthorDTO { 
-    biographyUrl?: URL;
-    id: number;
-    name: string;
-    photoResource?: string;
+export interface URLStreamHandler { 
 }

@@ -59,19 +59,19 @@ export class AuthorResourceService {
 
 
     /**
-     * create
+     * createAuthor
      * 
      * @param authorDto authorDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
-    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
-    public createUsingPOST(authorDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
-    public createUsingPOST(authorDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createAuthorUsingPOST(authorDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public createAuthorUsingPOST(authorDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public createAuthorUsingPOST(authorDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public createAuthorUsingPOST(authorDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (authorDto === null || authorDto === undefined) {
-            throw new Error('Required parameter authorDto was null or undefined when calling createUsingPOST.');
+            throw new Error('Required parameter authorDto was null or undefined when calling createAuthorUsingPOST.');
         }
 
         let headers = this.defaultHeaders;
@@ -106,19 +106,19 @@ export class AuthorResourceService {
     }
 
     /**
-     * delete
+     * deleteAuthor
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteAuthorUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteAuthorUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteAuthorUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteAuthorUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE.');
+            throw new Error('Required parameter id was null or undefined when calling deleteAuthorUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -136,7 +136,7 @@ export class AuthorResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/authors/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -147,16 +147,16 @@ export class AuthorResourceService {
     }
 
     /**
-     * getAll
+     * getAllAuthors
      * 
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
-    public getAllUsingGET(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
-    public getAllUsingGET(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
-    public getAllUsingGET(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllAuthorsUsingGET(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
+    public getAllAuthorsUsingGET(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
+    public getAllAuthorsUsingGET(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
+    public getAllAuthorsUsingGET(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -191,19 +191,19 @@ export class AuthorResourceService {
     }
 
     /**
-     * getById
+     * getAuthorById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
-    public getByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
-    public getByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
-    public getByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAuthorByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public getAuthorByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public getAuthorByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public getAuthorByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getAuthorByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -221,7 +221,7 @@ export class AuthorResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<AuthorDTO>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<AuthorDTO>(`${this.basePath}/api/authors/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -232,20 +232,20 @@ export class AuthorResourceService {
     }
 
     /**
-     * getByNameFragment
+     * getAuthorByNameFragment
      * 
      * @param name name
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
-    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
-    public getByNameFragmentUsingGET(name: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
-    public getByNameFragmentUsingGET(name: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAuthorByNameFragmentUsingGET(name: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AuthorDTO>>;
+    public getAuthorByNameFragmentUsingGET(name: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AuthorDTO>>>;
+    public getAuthorByNameFragmentUsingGET(name: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AuthorDTO>>>;
+    public getAuthorByNameFragmentUsingGET(name: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getByNameFragmentUsingGET.');
+            throw new Error('Required parameter name was null or undefined when calling getAuthorByNameFragmentUsingGET.');
         }
 
 
@@ -311,7 +311,7 @@ export class AuthorResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/authors/id/${encodeURIComponent(String(id))}/songs`,
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/authors/${encodeURIComponent(String(id))}/songs`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -322,19 +322,19 @@ export class AuthorResourceService {
     }
 
     /**
-     * update
+     * updateAuthor
      * 
      * @param authorDto authorDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
-    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
-    public updateUsingPUT(authorDto: AuthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
-    public updateUsingPUT(authorDto: AuthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateAuthorUsingPUT(authorDto: AuthorDTO, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public updateAuthorUsingPUT(authorDto: AuthorDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public updateAuthorUsingPUT(authorDto: AuthorDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public updateAuthorUsingPUT(authorDto: AuthorDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (authorDto === null || authorDto === undefined) {
-            throw new Error('Required parameter authorDto was null or undefined when calling updateUsingPUT.');
+            throw new Error('Required parameter authorDto was null or undefined when calling updateAuthorUsingPUT.');
         }
 
         let headers = this.defaultHeaders;

@@ -59,19 +59,19 @@ export class UserRoleResourceService {
 
 
     /**
-     * create
+     * createRole
      * 
      * @param userRoleDto userRoleDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
-    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
-    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
-    public createUsingPOST6(userRoleDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createRoleUsingPOST(userRoleDto: UniversalCreateDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public createRoleUsingPOST(userRoleDto: UniversalCreateDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public createRoleUsingPOST(userRoleDto: UniversalCreateDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public createRoleUsingPOST(userRoleDto: UniversalCreateDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (userRoleDto === null || userRoleDto === undefined) {
-            throw new Error('Required parameter userRoleDto was null or undefined when calling createUsingPOST6.');
+            throw new Error('Required parameter userRoleDto was null or undefined when calling createRoleUsingPOST.');
         }
 
         let headers = this.defaultHeaders;
@@ -112,13 +112,13 @@ export class UserRoleResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE7(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE7(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE7(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE7(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE7.');
+            throw new Error('Required parameter id was null or undefined when calling deleteUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -136,7 +136,7 @@ export class UserRoleResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/user_roles/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -152,10 +152,10 @@ export class UserRoleResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET7(observe?: 'body', reportProgress?: boolean): Observable<Array<UserRoleDTO>>;
-    public getAllUsingGET7(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserRoleDTO>>>;
-    public getAllUsingGET7(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserRoleDTO>>>;
-    public getAllUsingGET7(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllUsingGET4(observe?: 'body', reportProgress?: boolean): Observable<Array<UserRoleDTO>>;
+    public getAllUsingGET4(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserRoleDTO>>>;
+    public getAllUsingGET4(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserRoleDTO>>>;
+    public getAllUsingGET4(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -189,13 +189,13 @@ export class UserRoleResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET7(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
-    public getByIdUsingGET7(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
-    public getByIdUsingGET7(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
-    public getByIdUsingGET7(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getByIdUsingGET4(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public getByIdUsingGET4(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public getByIdUsingGET4(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public getByIdUsingGET4(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET7.');
+            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET4.');
         }
 
         let headers = this.defaultHeaders;
@@ -213,7 +213,7 @@ export class UserRoleResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<UserRoleDTO>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<UserRoleDTO>(`${this.basePath}/api/user_roles/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -265,19 +265,19 @@ export class UserRoleResourceService {
     }
 
     /**
-     * getUsersByUserRoleId
+     * getUserRoleUsers
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
-    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
-    public getUsersByUserRoleIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
-    public getUsersByUserRoleIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUserRoleUsersUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserDTO>>;
+    public getUserRoleUsersUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDTO>>>;
+    public getUserRoleUsersUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDTO>>>;
+    public getUserRoleUsersUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getUsersByUserRoleIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getUserRoleUsersUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -295,7 +295,7 @@ export class UserRoleResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<UserDTO>>(`${this.basePath}/api/user_roles/id/${encodeURIComponent(String(id))}/users`,
+        return this.httpClient.get<Array<UserDTO>>(`${this.basePath}/api/user_roles/${encodeURIComponent(String(id))}/users`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -306,19 +306,19 @@ export class UserRoleResourceService {
     }
 
     /**
-     * update
+     * updateRole
      * 
      * @param userRoleDto userRoleDto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT6(userRoleDto: UserRoleDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
-    public updateUsingPUT6(userRoleDto: UserRoleDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
-    public updateUsingPUT6(userRoleDto: UserRoleDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
-    public updateUsingPUT6(userRoleDto: UserRoleDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateRoleUsingPUT(userRoleDto: UserRoleDTO, observe?: 'body', reportProgress?: boolean): Observable<UserRoleDTO>;
+    public updateRoleUsingPUT(userRoleDto: UserRoleDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserRoleDTO>>;
+    public updateRoleUsingPUT(userRoleDto: UserRoleDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserRoleDTO>>;
+    public updateRoleUsingPUT(userRoleDto: UserRoleDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (userRoleDto === null || userRoleDto === undefined) {
-            throw new Error('Required parameter userRoleDto was null or undefined when calling updateUsingPUT6.');
+            throw new Error('Required parameter userRoleDto was null or undefined when calling updateRoleUsingPUT.');
         }
 
         let headers = this.defaultHeaders;

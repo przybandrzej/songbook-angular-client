@@ -57,19 +57,19 @@ export class UserSongRatingResourceService {
 
 
     /**
-     * create
+     * createRating
      * 
      * @param dto dto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUsingPOST7(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
-    public createUsingPOST7(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
-    public createUsingPOST7(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
-    public createUsingPOST7(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createRatingUsingPOST(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public createRatingUsingPOST(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public createRatingUsingPOST(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public createRatingUsingPOST(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling createUsingPOST7.');
+            throw new Error('Required parameter dto was null or undefined when calling createRatingUsingPOST.');
         }
 
         let headers = this.defaultHeaders;
@@ -104,24 +104,19 @@ export class UserSongRatingResourceService {
     }
 
     /**
-     * delete
+     * deleteRating
      * 
-     * @param songId songId
-     * @param userId userId
+     * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUsingDELETE8(songId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUsingDELETE8(songId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteRatingUsingDELETE(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteRatingUsingDELETE(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteRatingUsingDELETE(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteRatingUsingDELETE(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (songId === null || songId === undefined) {
-            throw new Error('Required parameter songId was null or undefined when calling deleteUsingDELETE8.');
-        }
-
-        if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling deleteUsingDELETE8.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling deleteRatingUsingDELETE.');
         }
 
         let headers = this.defaultHeaders;
@@ -139,7 +134,7 @@ export class UserSongRatingResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/ratings/${encodeURIComponent(String(userId))}/${encodeURIComponent(String(songId))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/ratings/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -150,7 +145,7 @@ export class UserSongRatingResourceService {
     }
 
     /**
-     * getAll
+     * getAllRatings
      * 
      * @param equal equal
      * @param greaterThanEqual greaterThanEqual
@@ -158,10 +153,10 @@ export class UserSongRatingResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET8(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserSongRatingDTO>>;
-    public getAllUsingGET8(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSongRatingDTO>>>;
-    public getAllUsingGET8(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSongRatingDTO>>>;
-    public getAllUsingGET8(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllRatingsUsingGET(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserSongRatingDTO>>;
+    public getAllRatingsUsingGET(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSongRatingDTO>>>;
+    public getAllRatingsUsingGET(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSongRatingDTO>>>;
+    public getAllRatingsUsingGET(equal?: number, greaterThanEqual?: number, lessThanEqual?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
 
@@ -204,19 +199,19 @@ export class UserSongRatingResourceService {
     }
 
     /**
-     * getBySongId
+     * getRatingById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBySongIdUsingGET1(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserSongRatingDTO>>;
-    public getBySongIdUsingGET1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSongRatingDTO>>>;
-    public getBySongIdUsingGET1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSongRatingDTO>>>;
-    public getBySongIdUsingGET1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getRatingByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public getRatingByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public getRatingByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public getRatingByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getBySongIdUsingGET1.');
+            throw new Error('Required parameter id was null or undefined when calling getRatingByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -234,7 +229,7 @@ export class UserSongRatingResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/ratings/song/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<UserSongRatingDTO>(`${this.basePath}/api/ratings/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -245,24 +240,24 @@ export class UserSongRatingResourceService {
     }
 
     /**
-     * getByUserIdAndSongId
+     * getRatingByUserIdAndSongId
      * 
      * @param songId songId
      * @param userId userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
-    public getByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
-    public getByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
-    public getByUserIdAndSongIdUsingGET(songId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getRatingByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public getRatingByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public getRatingByUserIdAndSongIdUsingGET(songId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public getRatingByUserIdAndSongIdUsingGET(songId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (songId === null || songId === undefined) {
-            throw new Error('Required parameter songId was null or undefined when calling getByUserIdAndSongIdUsingGET.');
+            throw new Error('Required parameter songId was null or undefined when calling getRatingByUserIdAndSongIdUsingGET.');
         }
 
         if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling getByUserIdAndSongIdUsingGET.');
+            throw new Error('Required parameter userId was null or undefined when calling getRatingByUserIdAndSongIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -291,60 +286,19 @@ export class UserSongRatingResourceService {
     }
 
     /**
-     * getByUserId
-     * 
-     * @param id id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getByUserIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserSongRatingDTO>>;
-    public getByUserIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSongRatingDTO>>>;
-    public getByUserIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSongRatingDTO>>>;
-    public getByUserIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByUserIdUsingGET.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<UserSongRatingDTO>>(`${this.basePath}/api/ratings/user/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * update
+     * updateRating
      * 
      * @param dto dto
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
-    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
-    public updateUsingPUT7(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
-    public updateUsingPUT7(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateRatingUsingPUT(dto: UserSongRatingDTO, observe?: 'body', reportProgress?: boolean): Observable<UserSongRatingDTO>;
+    public updateRatingUsingPUT(dto: UserSongRatingDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSongRatingDTO>>;
+    public updateRatingUsingPUT(dto: UserSongRatingDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSongRatingDTO>>;
+    public updateRatingUsingPUT(dto: UserSongRatingDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (dto === null || dto === undefined) {
-            throw new Error('Required parameter dto was null or undefined when calling updateUsingPUT7.');
+            throw new Error('Required parameter dto was null or undefined when calling updateRatingUsingPUT.');
         }
 
         let headers = this.defaultHeaders;

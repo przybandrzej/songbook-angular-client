@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CreateCoauthorDTO } from './createCoauthorDTO';
+import { CreateVerseDTO } from './createVerseDTO';
 
 
 /**
@@ -25,9 +26,8 @@ export interface CreateSongDTO {
      */
     categoryId: number;
     title: string;
-    coauthors: Array<CreateCoauthorDTO>;
-    lyrics: string;
-    guitarTabs: string;
+    coauthors?: Array<CreateCoauthorDTO>;
+    verses?: Array<CreateVerseDTO>;
     trivia?: string;
     tags: Array<string>;
 }

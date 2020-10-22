@@ -14,6 +14,7 @@
 export interface SongCoauthorDTO { 
     authorId: number;
     coauthorFunction: SongCoauthorDTO.CoauthorFunctionEnum;
+    id: number;
     songId: number;
 }
 export namespace SongCoauthorDTO {

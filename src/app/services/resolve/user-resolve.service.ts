@@ -27,7 +27,7 @@ export class UserResolveService implements Resolve<UserDetailsData> {
         return of(this.data);
       }),
       mergeMap(data => {
-        return this.roleService.getByIdUsingGET7(data.user.userRoleId).pipe(map(role => {
+        return this.roleService.getByIdUsingGET4(data.user.userRoleId).pipe(map(role => {
           this.data.role = role;
           return this.data;
         }));

@@ -9,12 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { URL } from './uRL';
 
 
-export interface AuthorDTO { 
-    biographyUrl?: URL;
-    id: number;
-    name: string;
-    photoResource?: string;
+/**
+ * Class representing a DTO for creating guitar cords for lines of the songs.
+ */
+export interface CreateGuitarCordDTO { 
+    /**
+     * Content of the cord in the song
+     */
+    content?: string;
+    /**
+     * Position in the line of the cord.
+     */
+    position?: number;
 }

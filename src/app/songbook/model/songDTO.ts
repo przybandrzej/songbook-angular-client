@@ -9,26 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { AuthorDTO } from './authorDTO';
-import { CategoryDTO } from './categoryDTO';
-import { SongAddDTO } from './songAddDTO';
-import { SongCoauthorDTO } from './songCoauthorDTO';
-import { SongEditDTO } from './songEditDTO';
-import { TagDTO } from './tagDTO';
 
 
 export interface SongDTO { 
-    addedBy?: SongAddDTO;
-    author?: AuthorDTO;
+    addedBy?: number;
+    authorId: number;
     averageRating?: number;
-    category?: CategoryDTO;
-    coauthors: Array<SongCoauthorDTO>;
-    edits: Array<SongEditDTO>;
-    guitarTabs?: string;
+    categoryId: number;
     id: number;
     isAwaiting?: boolean;
-    lyrics?: string;
-    tags: Array<TagDTO>;
     title: string;
     trivia?: string;
 }

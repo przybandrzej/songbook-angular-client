@@ -17,5 +17,4 @@ export interface PlaylistDTO {
     isPrivate: boolean;
     name: string;
     ownerId: number;
-    songs: Array<number>;
 }

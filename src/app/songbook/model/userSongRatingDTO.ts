@@ -12,6 +12,7 @@
 
 
 export interface UserSongRatingDTO { 
+    id: number;
     rating: number;
     songId: number;
     userId: number;

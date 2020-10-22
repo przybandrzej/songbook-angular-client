@@ -18,14 +18,14 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { UserDTO } from '../model/userDTO';
+import { GuitarCordDTO } from '../model/guitarCordDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class AdminResourceService {
+export class GuitarCordResourceService {
 
     protected basePath = 'https://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -57,20 +57,15 @@ export class AdminResourceService {
 
 
     /**
-     * activateUser
+     * getAllGuitarCords
      * 
-     * @param userId userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public activateUserUsingPATCH(userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public activateUserUsingPATCH(userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public activateUserUsingPATCH(userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public activateUserUsingPATCH(userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling activateUserUsingPATCH.');
-        }
+    public getAllGuitarCordsUsingGET(observe?: 'body', reportProgress?: boolean): Observable<Array<GuitarCordDTO>>;
+    public getAllGuitarCordsUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<GuitarCordDTO>>>;
+    public getAllGuitarCordsUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<GuitarCordDTO>>>;
+    public getAllGuitarCordsUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -85,11 +80,9 @@ export class AdminResourceService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
         ];
 
-        return this.httpClient.patch<UserDTO>(`${this.basePath}/api/admin/${encodeURIComponent(String(userId))}/activate-user`,
-            null,
+        return this.httpClient.get<Array<GuitarCordDTO>>(`${this.basePath}/api/guitar-cords`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -100,24 +93,60 @@ export class AdminResourceService {
     }
 
     /**
-     * updateUserRole
+     * getGuitarCordById
      * 
-     * @param roleId roleId
-     * @param userId userId
+     * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserDTO>;
-    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDTO>>;
-    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDTO>>;
-    public updateUserRoleUsingPATCH(roleId: number, userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getGuitarCordByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<GuitarCordDTO>;
+    public getGuitarCordByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GuitarCordDTO>>;
+    public getGuitarCordByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GuitarCordDTO>>;
+    public getGuitarCordByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (roleId === null || roleId === undefined) {
-            throw new Error('Required parameter roleId was null or undefined when calling updateUserRoleUsingPATCH.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getGuitarCordByIdUsingGET.');
         }
 
-        if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling updateUserRoleUsingPATCH.');
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<GuitarCordDTO>(`${this.basePath}/api/guitar-cords/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * updateGuitarCord
+     * 
+     * @param guitarCordDTO guitarCordDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateGuitarCordUsingPUT(guitarCordDTO: GuitarCordDTO, observe?: 'body', reportProgress?: boolean): Observable<GuitarCordDTO>;
+    public updateGuitarCordUsingPUT(guitarCordDTO: GuitarCordDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GuitarCordDTO>>;
+    public updateGuitarCordUsingPUT(guitarCordDTO: GuitarCordDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GuitarCordDTO>>;
+    public updateGuitarCordUsingPUT(guitarCordDTO: GuitarCordDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (guitarCordDTO === null || guitarCordDTO === undefined) {
+            throw new Error('Required parameter guitarCordDTO was null or undefined when calling updateGuitarCordUsingPUT.');
         }
 
         let headers = this.defaultHeaders;
@@ -135,9 +164,13 @@ export class AdminResourceService {
         const consumes: string[] = [
             'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.patch<UserDTO>(`${this.basePath}/api/admin/${encodeURIComponent(String(userId))}/update-role/${encodeURIComponent(String(roleId))}`,
-            null,
+        return this.httpClient.put<GuitarCordDTO>(`${this.basePath}/api/guitar-cords`,
+            guitarCordDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
