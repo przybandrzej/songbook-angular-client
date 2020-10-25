@@ -18,6 +18,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { AuthorDTO } from '../model/authorDTO';
+import { CategoryDTO } from '../model/categoryDTO';
 import { CreateCoauthorDTO } from '../model/createCoauthorDTO';
 import { CreateSongDTO } from '../model/createSongDTO';
 import { CreateVerseDTO } from '../model/createVerseDTO';
@@ -408,17 +410,17 @@ export class SongResourceService {
     }
 
     /**
-     * getAll
+     * getAllSongs
      * 
      * @param includeAwaiting include_awaiting
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET1(includeAwaiting?: boolean, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getAllUsingGET1(includeAwaiting?: boolean, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getAllUsingGET1(includeAwaiting?: boolean, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getAllUsingGET1(includeAwaiting?: boolean, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllSongsUsingGET(includeAwaiting?: boolean, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getAllSongsUsingGET(includeAwaiting?: boolean, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getAllSongsUsingGET(includeAwaiting?: boolean, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getAllSongsUsingGET(includeAwaiting?: boolean, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
 
@@ -446,96 +448,6 @@ export class SongResourceService {
         ];
 
         return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/songs`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getById
-     * 
-     * @param id id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getByIdUsingGET1(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
-    public getByIdUsingGET1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
-    public getByIdUsingGET1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
-    public getByIdUsingGET1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET1.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getByTitleFragment
-     * 
-     * @param title title
-     * @param limit limit
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getByTitleFragmentUsingGET1(title: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getByTitleFragmentUsingGET1(title: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getByTitleFragmentUsingGET1(title: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getByTitleFragmentUsingGET1(title: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (title === null || title === undefined) {
-            throw new Error('Required parameter title was null or undefined when calling getByTitleFragmentUsingGET1.');
-        }
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (limit !== undefined && limit !== null) {
-            queryParameters = queryParameters.set('limit', <any>limit);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/songs/title/${encodeURIComponent(String(title))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -578,6 +490,178 @@ export class SongResourceService {
         ];
 
         return this.httpClient.get<SongAddDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/added-by`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongAuthor
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSongAuthorUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<AuthorDTO>;
+    public getSongAuthorUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AuthorDTO>>;
+    public getSongAuthorUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AuthorDTO>>;
+    public getSongAuthorUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getSongAuthorUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<AuthorDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/author`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongById
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSongByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public getSongByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public getSongByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public getSongByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getSongByIdUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SongDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongByTitleFragment
+     * 
+     * @param title title
+     * @param limit limit
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getSongByTitleFragmentUsingGET(title: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (title === null || title === undefined) {
+            throw new Error('Required parameter title was null or undefined when calling getSongByTitleFragmentUsingGET.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SongDTO>>(`${this.basePath}/api/songs/title/${encodeURIComponent(String(title))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getSongCategory
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSongCategoryUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<CategoryDTO>;
+    public getSongCategoryUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryDTO>>;
+    public getSongCategoryUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryDTO>>;
+    public getSongCategoryUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getSongCategoryUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<CategoryDTO>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/category`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1117,6 +1201,102 @@ export class SongResourceService {
         ];
 
         return this.httpClient.patch<any>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/remove-verse/${encodeURIComponent(String(verseId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * setAuthor
+     * 
+     * @param authorId authorId
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setAuthorUsingPATCH(authorId: number, id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public setAuthorUsingPATCH(authorId: number, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public setAuthorUsingPATCH(authorId: number, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public setAuthorUsingPATCH(authorId: number, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (authorId === null || authorId === undefined) {
+            throw new Error('Required parameter authorId was null or undefined when calling setAuthorUsingPATCH.');
+        }
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling setAuthorUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/set-author/${encodeURIComponent(String(authorId))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * setCategory
+     * 
+     * @param categoryId categoryId
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setCategoryUsingPATCH(categoryId: number, id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public setCategoryUsingPATCH(categoryId: number, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public setCategoryUsingPATCH(categoryId: number, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public setCategoryUsingPATCH(categoryId: number, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (categoryId === null || categoryId === undefined) {
+            throw new Error('Required parameter categoryId was null or undefined when calling setCategoryUsingPATCH.');
+        }
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling setCategoryUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/songs/${encodeURIComponent(String(id))}/set-category/${encodeURIComponent(String(categoryId))}`,
             null,
             {
                 withCredentials: this.configuration.withCredentials,

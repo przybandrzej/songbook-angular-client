@@ -30,8 +30,8 @@ export class AdminPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAllUsingGET6().subscribe(res => this.users = res);
-    this.roleService.getAllUsingGET7().subscribe(res => {
+    this.userService.getAllUsersUsingGET().subscribe(res => this.users = res);
+    this.roleService.getAllRolesUsingGET().subscribe(res => {
       this.allRoles = res;
       this.availableRoles = res.slice();
       this.superuserRole = this.allRoles.filter(it => it.name === Role.Superuser)[0];
@@ -46,17 +46,14 @@ export class AdminPanelComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  getUserSongCount(id: number) {
-    return 'not implemented yet';
-  }
-
   delete(event: MouseEvent) {
+    // todo display confirm dialog
     event.stopPropagation();
     if (this.selectedUser.userRoleId === this.superuserRole.id) {
       this.isError = true;
       this.errorMessage = 'Cannot delete superuser';
     }
-    this.userService.deleteUsingDELETE6(this.selectedUser.id).subscribe(() => {
+    this.userService.deleteUserUsingDELETE(this.selectedUser.id).subscribe(() => {
       this.users.splice(this.users.indexOf(this.users.filter(it => it.id === this.selectedUser.id)[0]), 1);
       this.deselect();
     });

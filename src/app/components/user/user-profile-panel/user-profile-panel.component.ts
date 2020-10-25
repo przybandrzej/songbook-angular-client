@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AuthenticationResourceService, UserDTO} from '../../../songbook';
+import {AuthenticationResourceService, UserDTO, UserResourceService} from '../../../songbook';
 import {AuthService} from '../../../services/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {
@@ -7,6 +7,8 @@ import {
   UserAvatarDialogResultEnum,
   UserAvatarUpdateDialogComponent
 } from '../user-avatar-update-dialog/user-avatar-update-dialog.component';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile-panel',
@@ -29,14 +31,17 @@ export class UserProfilePanelComponent implements OnInit {
   public lastNameToUpdate = '';
   public editableEmail = false;
   public emailToUpdate = '';
+  public userSongsCount: Observable<number>;
 
   public errorMessages: string[] = [];
   public successMessage = '';
 
-  constructor(private authService: AuthenticationResourceService, private loginService: AuthService, public dialog: MatDialog) {
+  constructor(private authService: AuthenticationResourceService, private loginService: AuthService, public dialog: MatDialog,
+              private userService: UserResourceService) {
   }
 
   ngOnInit(): void {
+    this.userSongsCount = this.userService.getSongsByUserIdUsingGET(this.user.id).pipe(map(songs => songs.length));
   }
 
   resetPassword() {
@@ -56,19 +61,17 @@ export class UserProfilePanelComponent implements OnInit {
   }
 
   updateFirstName() {
-    this.user.firstName = this.firstNameToUpdate;
     this.editableFirstName = false;
-    this.authService.saveAccountUsingPOST(this.user).subscribe(user => {
-      this.user = user;
+    this.authService.changeFirstNameUsingPATCH({name: this.firstNameToUpdate}).subscribe(() => {
+      this.user.firstName = this.firstNameToUpdate;
       this.userChange.emit(this.user);
     });
   }
 
   updateLastName() {
-    this.user.lastName = this.lastNameToUpdate;
     this.editableLastName = false;
-    this.authService.saveAccountUsingPOST(this.user).subscribe(user => {
-      this.user = user;
+    this.authService.changeLastNameUsingPATCH({name: this.lastNameToUpdate}).subscribe(() => {
+      this.user.lastName = this.lastNameToUpdate;
       this.userChange.emit(this.user);
     });
   }
@@ -85,15 +88,15 @@ export class UserProfilePanelComponent implements OnInit {
         this.userChange.emit(this.user);
       },
       error => {
-      if(error.error.subErrors) {
-        this.errorMessages = error.error.subErrors.map(it => it.message);
-      } else {
-        this.errorMessages = [error.error.message];
-      }
+        if (error.error.subErrors) {
+          this.errorMessages = error.error.subErrors.map(it => it.message);
+        } else {
+          this.errorMessages = [error.error.message];
+        }
       });
   }
 
-  changeUserProfile() {
+  changeUserAvatar() {
     const dialogRef = this.dialog.open<UserAvatarUpdateDialogComponent, UserDTO, UserAvatarDialogResult>(UserAvatarUpdateDialogComponent, {
       data: this.user
     });
@@ -101,13 +104,13 @@ export class UserProfilePanelComponent implements OnInit {
       if (!result) {
         return;
       }
-      if(result.action === UserAvatarDialogResultEnum.APPLY) {
-        this.user.imageUrl = result.newUrl;
-        this.authService.saveAccountUsingPOST(this.user).subscribe(user => {
-          this.user = user;
+      if (result.action === UserAvatarDialogResultEnum.APPLY) {
+        this.authService.changeImageUrlUsingPATCH(result.newUrl).subscribe(() => {
+          this.user.imageUrl = result.newUrl;
           this.userChange.emit(this.user);
         });
       }
     });
   }
+
 }

@@ -12,6 +12,7 @@ export * from './inputStream';
 export * from './lineDTO';
 export * from './loginForm';
 export * from './modelFile';
+export * from './nameChangeDTO';
 export * from './passwordChangeDTO';
 export * from './playlistDTO';
 export * from './registerNewUserForm';

@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 
 import { EmailChangeDTO } from '../model/emailChangeDTO';
 import { LoginForm } from '../model/loginForm';
+import { NameChangeDTO } from '../model/nameChangeDTO';
 import { PasswordChangeDTO } from '../model/passwordChangeDTO';
 import { RegisterNewUserForm } from '../model/registerNewUserForm';
 import { TokenAndPasswordDTO } from '../model/tokenAndPasswordDTO';
@@ -194,6 +195,143 @@ export class AuthenticationResourceService {
 
         return this.httpClient.patch<any>(`${this.basePath}/api/account/change-email`,
             emailChangeDTO,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * changeFirstName
+     * 
+     * @param nameChangeDTO nameChangeDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeFirstNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public changeFirstNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public changeFirstNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public changeFirstNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (nameChangeDTO === null || nameChangeDTO === undefined) {
+            throw new Error('Required parameter nameChangeDTO was null or undefined when calling changeFirstNameUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/account/change-first-name`,
+            nameChangeDTO,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * changeImageUrl
+     * 
+     * @param url url
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeImageUrlUsingPATCH(url: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public changeImageUrlUsingPATCH(url: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public changeImageUrlUsingPATCH(url: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public changeImageUrlUsingPATCH(url: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (url === null || url === undefined) {
+            throw new Error('Required parameter url was null or undefined when calling changeImageUrlUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/account/change-image/${encodeURIComponent(String(url))}`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * changeLastName
+     * 
+     * @param nameChangeDTO nameChangeDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeLastNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public changeLastNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public changeLastNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public changeLastNameUsingPATCH(nameChangeDTO: NameChangeDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (nameChangeDTO === null || nameChangeDTO === undefined) {
+            throw new Error('Required parameter nameChangeDTO was null or undefined when calling changeLastNameUsingPATCH.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.patch<any>(`${this.basePath}/api/account/change-last-name`,
+            nameChangeDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

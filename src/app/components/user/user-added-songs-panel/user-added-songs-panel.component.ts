@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SongDTO} from '../../../songbook';
+import {UserDTO} from '../../../songbook';
 import {Router} from '@angular/router';
+import {SongDetailsData} from '../../../model/song-details-data';
+import {SongDetailsService} from '../../../services/song-details.service';
 
 @Component({
   selector: 'app-user-added-songs-panel',
@@ -9,18 +11,18 @@ import {Router} from '@angular/router';
 })
 export class UserAddedSongsPanelComponent implements OnInit {
 
-  @Input()
-  public songs: SongDTO[];
+  public songs: SongDetailsData[] = [];
 
   @Input()
-  public username: string;
+  public user: UserDTO;
 
   public columns: string[] = ['author', 'title', 'average rating', 'category', 'approved'];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private songDetailsService: SongDetailsService) {
   }
 
   ngOnInit(): void {
+    this.songDetailsService.getLoggedUserSongsData().subscribe(res => this.songs = res);
   }
 
   openSongDetails(id: number) {

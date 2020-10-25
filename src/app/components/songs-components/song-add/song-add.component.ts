@@ -14,7 +14,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormControl, Validators} from '@angular/forms';
 import {SongDetailsSource} from '../song-details/song-details.component';
 import {MatDialog} from '@angular/material/dialog';
-import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
 import {
   SongInstructionsDialogComponent,
   SongInstructionsType
@@ -36,8 +35,7 @@ export class SongAddComponent implements OnInit {
     authorName: '',
     categoryId: 0,
     coauthors: [],
-    guitarTabs: '',
-    lyrics: '',
+    verses: [],
     tags: [],
     title: '',
     trivia: ''
@@ -68,8 +66,8 @@ export class SongAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
-    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
+    this.authorService.getAllAuthorsUsingGET().subscribe(res => this.authors = res);
+    this.categoryService.getAllCategoriesUsingGET().subscribe(res => this.categories = res);
   }
 
   cancel() {
@@ -85,7 +83,9 @@ export class SongAddComponent implements OnInit {
     for (const tag of this.tagsToAdd) {
       this.song.tags.push(tag);
     }
-    this.songService.createUsingPOST4(this.song).subscribe(res => {
+    this.song.verses = [];
+    console.log(this.song);
+    this.songService.createSongUsingPOST(this.song).subscribe(res => {
         this.router.navigateByUrl('song/' + res.id + '?source=' + SongDetailsSource.ADD);
       },
       error => {

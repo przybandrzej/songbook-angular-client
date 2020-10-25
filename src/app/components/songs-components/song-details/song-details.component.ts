@@ -2,24 +2,20 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SongDetailsData} from '../../../model/song-details-data';
 import {
-  AuthenticationResourceService,
-  PlaylistDTO,
+  CreatePlaylistDTO,
   PlaylistResourceService,
   SongResourceService,
-  UserDTO, UserResourceService,
-  UserRoleResourceService,
   UserSongRatingDTO,
   UserSongRatingResourceService
 } from '../../../songbook';
-import {formatDate, Location} from '@angular/common';
+import {Location} from '@angular/common';
 import {RatingChanged} from '../../utils/rating-star/rating-star.component';
-import {UserDetailsData} from '../../../model/user-details-data';
 import {MatDialog} from '@angular/material/dialog';
 import {PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult} from '../../utils/playlist-dialog/playlist-dialog.component';
-import {map, mergeMap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {rolesForUser} from '../../../model/user-roles-combinations';
-import {of} from 'rxjs';
-import {AuthService} from '../../../services/auth.service';
+import {SongDetailsService} from '../../../services/song-details.service';
+import {PlaylistData} from '../../../model/playlist-data';
 
 @Component({
   selector: 'app-song-details',
@@ -29,54 +25,23 @@ import {AuthService} from '../../../services/auth.service';
 export class SongDetailsComponent implements OnInit {
 
   data: SongDetailsData;
-  user: UserDTO;
   inUserLib = false;
   songRating: UserSongRatingDTO;
   maxRating = 5;
   rolesForUser = rolesForUser;
-
   source: SongDetailsSource;
 
   constructor(private route: ActivatedRoute, private router: Router, private songService: SongResourceService, private location: Location,
-              private authService: AuthenticationResourceService, private ratingService: UserSongRatingResourceService,
-              public dialog: MatDialog, private playlistService: PlaylistResourceService, private roleService: UserRoleResourceService,
-              private loginService: AuthService, private userService: UserResourceService) {
+              private ratingService: UserSongRatingResourceService,
+              public dialog: MatDialog, private playlistService: PlaylistResourceService,
+              private songDetailsService: SongDetailsService) {
   }
 
   ngOnInit(): void {
     this.source = +this.route.snapshot.queryParamMap.get('source');
     this.data = this.route.snapshot.data.data;
-    const getUserDetails = this.authService.getAccountUsingGET().pipe(
-      mergeMap(user => {
-        const data: UserDetailsData = {user: null, role: null};
-        data.user = user;
-        return of(data);
-      }),
-      mergeMap(data => {
-        return this.roleService.getByIdUsingGET7(data.user.userRoleId).pipe(map(role => {
-          data.role = role;
-          return data;
-        }));
-      })
-    );
-    this.loginService.loggedIn.subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        getUserDetails.subscribe(userData => {
-          this.user = userData.user;
-          this.inUserLib = this.user.songs.filter(it => it === this.data.song.id).length > 0;
-          this.songRating = {
-            userId: this.user.id,
-            songId: this.data.song.id,
-            rating: null
-          };
-          this.ratingService.getByUserIdAndSongIdUsingGET(this.songRating.songId, this.songRating.userId).subscribe(
-            rating => this.songRating = rating,
-            error => {
-              return;
-            });
-        });
-      }
-    });
+    this.songDetailsService.getLoggedUserRatingForSong(this.data.song.id).subscribe(rating => this.songRating = rating);
+    this.songDetailsService.isSongInLoggedUserLibrary(this.data.song.id).subscribe(is => this.inUserLib = is);
   }
 
   editSong() {
@@ -85,7 +50,8 @@ export class SongDetailsComponent implements OnInit {
 
   deleteSong() {
     if (this.data) {
-      this.songService.deleteUsingDELETE4(this.data.song.id).subscribe(() => this.router.navigateByUrl('songs'));
+      // todo display confirm dialog
+      this.songService.deleteSongUsingDELETE(this.data.song.id).subscribe(() => this.router.navigateByUrl('songs'));
     }
   }
 
@@ -98,18 +64,18 @@ export class SongDetailsComponent implements OnInit {
   }
 
   updateRating(event: RatingChanged) {
-    const ratingUpdate = this.songService.getByIdUsingGET4(this.data.song.id).pipe(map(song => this.data.song.averageRating = song.averageRating));
+    const ratingUpdate = this.songService.getSongByIdUsingGET(this.data.song.id).pipe(map(song => this.data.song.averageRating = song.averageRating));
     if (this.songRating.rating) {
       if (this.songRating.rating !== event.value / this.maxRating) {
         this.songRating.rating = event.value / this.maxRating;
-        this.ratingService.updateUsingPUT7(this.songRating).subscribe(res => {
+        this.ratingService.updateRatingUsingPUT(this.songRating).subscribe(res => {
           this.songRating = res;
           ratingUpdate.subscribe();
         });
       }
     } else {
       this.songRating.rating = event.value / this.maxRating;
-      this.ratingService.createUsingPOST7(this.songRating).subscribe(res => {
+      this.songDetailsService.rateSong(this.songRating).subscribe(res => {
         this.songRating = res;
         ratingUpdate.subscribe();
       });
@@ -117,11 +83,11 @@ export class SongDetailsComponent implements OnInit {
   }
 
   addToLib(): void {
-    this.userService.addSongToLibraryUsingPATCH(this.user.id, this.data.song.id).subscribe(() => this.inUserLib = true);
+    this.songDetailsService.addSongToLib(this.data.song.id).subscribe(() => this.inUserLib = true);
   }
 
   removeFromLib(): void {
-    this.userService.removeSongFromLibraryUsingPATCH(this.user.id, this.data.song.id).subscribe(() => this.inUserLib = false);
+    this.songDetailsService.removeSongFromLib(this.data.song.id).subscribe(() => this.inUserLib = false);
   }
 
   getRatingLabelValue(): number {
@@ -132,10 +98,10 @@ export class SongDetailsComponent implements OnInit {
   }
 
   addToPlaylist() {
-    this.playlistService.getByOwnerIdUsingGET(this.user.id, true).subscribe(res => this.openDialog(res));
+    this.songDetailsService.getLoggedUserPlaylistsWithSongs().subscribe(res => this.openDialog(res));
   }
 
-  private openDialog(playlists: PlaylistDTO[]) {
+  private openDialog(playlists: PlaylistData[]) {
     const dialogRef = this.dialog.open<PlaylistDialogComponent, PlaylistDialogData, PlaylistDialogResult>(PlaylistDialogComponent, {
       data: {
         playlists,
@@ -148,25 +114,23 @@ export class SongDetailsComponent implements OnInit {
       }
       result.selected.forEach(playlist => {
         if (playlist.id <= 0) {
-          playlist.songs.push(this.data.song.id);
-          playlist.ownerId = this.user.id;
-          this.playlistService.createUsingPOST2(playlist).subscribe(() => {
-          });
+          const create: CreatePlaylistDTO = {
+            isPrivate: playlist.isPrivate,
+            name: playlist.name,
+            ownerId: -1,
+            songs: [this.data.song.id]
+          };
+          this.songDetailsService.createPlaylistForLoggedUser(create).subscribe();
         } else {
-          this.playlistService.addSongUsingPATCH(playlist.id, this.data.song.id).subscribe(() => {
-          });
+          this.playlistService.addSongToPlaylistUsingPATCH(playlist.id, this.data.song.id).subscribe();
         }
       });
       result.deselected.forEach(playlist => {
-        this.playlistService.removeSongUsingPATCH(playlist.id, this.data.song.id).subscribe(() => {
-        });
+        this.playlistService.removeSongFromPlaylistUsingPATCH(playlist.id, this.data.song.id).subscribe();
       });
     });
   }
 
-  formatDate(timestamp: Date) {
-    return formatDate(timestamp, 'd. M y, h:mm:ss', 'PL');
-  }
 }
 
 export enum SongDetailsSource {

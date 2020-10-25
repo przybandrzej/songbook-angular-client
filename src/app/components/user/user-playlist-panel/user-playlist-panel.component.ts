@@ -1,7 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PlaylistDTO, PlaylistResourceService, SongDTO, SongResourceService, UserDTO} from '../../../songbook';
+import {Component, Input, OnInit} from '@angular/core';
+import {
+  CreatePlaylistDTO,
+  PlaylistDTO,
+  PlaylistResourceService,
+  SongDTO,
+  SongResourceService,
+  UserDTO,
+  UserResourceService
+} from '../../../songbook';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {forkJoin, Observable} from 'rxjs';
 import {Router} from '@angular/router';
 
 @Component({
@@ -11,24 +18,22 @@ import {Router} from '@angular/router';
 })
 export class UserPlaylistPanelComponent implements OnInit {
 
-  @Input()
-  public playlists: PlaylistDTO[];
+  public playlists: PlaylistDTO[] = [];
 
   @Input()
   public user: UserDTO;
-
-  @Output()
-  public playlistsChange: EventEmitter<PlaylistDTO[]> = new EventEmitter<PlaylistDTO[]>();
 
   public columns: string[] = ['name', 'status', 'created', 'songs', 'actions'];
   public selectedPlaylist: PlaylistDTO;
   public selectedPlaylistSongs: SongDTO[] = [];
   public songsColumns: string[] = ['author', 'title', 'category', 'actions'];
 
-  constructor(private playlistService: PlaylistResourceService, private songService: SongResourceService, private router: Router) {
+  constructor(private playlistService: PlaylistResourceService, private songService: SongResourceService, private router: Router,
+              private userService: UserResourceService) {
   }
 
   ngOnInit(): void {
+    this.userService.getPlaylistsByUserIdUsingGET(this.user.id).subscribe(res => this.playlists = res);
     this.initPlaylist();
   }
 
@@ -37,33 +42,36 @@ export class UserPlaylistPanelComponent implements OnInit {
       id: 0,
       isPrivate: true,
       name: '',
-      ownerId: this.user.id,
-      songs: []
+      ownerId: this.user.id
     };
     this.selectedPlaylistSongs = [];
   }
 
   createPlaylist() {
-    this.playlistService.createUsingPOST2(this.selectedPlaylist).subscribe(
-      playlist => {
-        this.playlists.push(playlist);
-        this.playlistsChange.emit(this.playlists);
-        this.selectedPlaylist = playlist;
-        this.refreshTable();
+    const createPlaylist: CreatePlaylistDTO = {
+      ownerId: this.user.id,
+      songs: [],
+      name: this.selectedPlaylist.name,
+      isPrivate: this.selectedPlaylist.isPrivate
+    };
+    this.userService.addPlaylistUsingPATCH(this.user.id, createPlaylist).subscribe(
+      () => {
+        this.userService.getPlaylistsByUserIdUsingGET(this.user.id).subscribe(res => {
+          this.playlists = res;
+          this.refreshTable();
+          this.deselect();
+        });
       });
   }
 
   delete(event: MouseEvent, id: number) {
     event.stopPropagation();
-    this.playlistService.deleteUsingDELETE2(id).subscribe(() => {
+    this.userService.removePlaylistUsingPATCH(this.user.id, id).subscribe(() => {
       const copy = this.playlists.slice();
       const item = copy.filter(it => it.id === id)[0];
-      if (this.selectedPlaylist.id === id) {
-        this.initPlaylist();
-      }
+      this.deselect();
       copy.splice(this.playlists.indexOf(item), 1);
       this.playlists = copy;
-      this.playlistsChange.emit(this.playlists);
     });
   }
 
@@ -78,11 +86,10 @@ export class UserPlaylistPanelComponent implements OnInit {
   }
 
   editPlaylist() {
-    this.playlistService.updateUsingPUT2(this.selectedPlaylist).subscribe(playlist => {
+    this.playlistService.updatePlaylistUsingPUT(this.selectedPlaylist).subscribe(playlist => {
       const old = this.playlists.filter(it => it.id === playlist.id)[0];
       const index = this.playlists.indexOf(old);
       this.playlists.splice(index, 1, playlist);
-      this.playlistsChange.emit(this.playlists);
       this.refreshTable();
       this.select(playlist);
     });
@@ -100,9 +107,7 @@ export class UserPlaylistPanelComponent implements OnInit {
   }
 
   private getPlaylistSongs(): void {
-    const songs$: Observable<SongDTO>[] = [];
-    this.selectedPlaylist.songs.forEach(it => songs$.push(this.songService.getByIdUsingGET4(it)));
-    forkJoin(songs$).subscribe(res => this.selectedPlaylistSongs = res);
+    this.playlistService.getPlaylistSongsUsingGET(this.selectedPlaylist.id).subscribe(res => this.selectedPlaylistSongs = res);
   }
 
   openSongDetails(id: number) {
@@ -111,8 +116,7 @@ export class UserPlaylistPanelComponent implements OnInit {
 
   removeSong(event: MouseEvent, id: number) {
     event.stopPropagation();
-    const item = this.selectedPlaylist.songs.filter(it => it === id)[0];
-    this.selectedPlaylist.songs.splice(this.selectedPlaylist.songs.indexOf(item), 1);
-    this.editPlaylist();
+    this.playlistService.removeSongFromPlaylistUsingPATCH(this.selectedPlaylist.id, id).subscribe(() => this.getPlaylistSongs());
   }
+
 }

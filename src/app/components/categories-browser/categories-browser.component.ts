@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CategoryDTO, CategoryResourceService} from '../../songbook';
 import {FormControl, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories-browser',
@@ -21,13 +23,17 @@ export class CategoriesBrowserComponent implements OnInit {
     name: ''
   };
 
-  categories: CategoryDTO[] = [];
+  categoriesData: { category: CategoryDTO, songCount$: Observable<number> }[] = [];
 
   constructor(private categoryService: CategoryResourceService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
+    this.categoryService.getAllCategoriesUsingGET().subscribe(res => {
+      this.categoriesData = res.map(category => {
+        return {category, songCount$: this.categoryService.getSongsByCategoryIdUsingGET(category.id).pipe(map(songs => songs.length))};
+      });
+    });
   }
 
   addCategory() {
@@ -37,11 +43,11 @@ export class CategoriesBrowserComponent implements OnInit {
       this.errorMessage = 'Provide valid name';
       return;
     }
-    this.categoryService.createUsingPOST1(this.selectedCategory).subscribe(res => {
+    this.categoryService.createCategoryUsingPOST(this.selectedCategory).subscribe(res => {
         this.selectedCategory = res;
-        const copy = this.categories.slice();
-        copy.push(res);
-        this.categories = copy;
+        const copy = this.categoriesData.slice();
+        copy.push({category: res, songCount$: this.categoryService.getSongsByCategoryIdUsingGET(res.id).pipe(map(songs => songs.length))});
+        this.categoriesData = copy;
       },
       error => {
         this.isError = true;
@@ -53,9 +59,8 @@ export class CategoriesBrowserComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  getCategorySongCount(element: CategoryDTO) {
-    return 'not implemented yet';
-    // this.songService.getByCategoryUsingGET(element.id).subscribe()
+  getCategorySongCount(element: CategoryDTO): Observable<number> {
+    return this.categoryService.getSongsByCategoryIdUsingGET(element.id).pipe(map(it => it.length));
   }
 
   editCategory() {
@@ -65,12 +70,15 @@ export class CategoriesBrowserComponent implements OnInit {
       this.errorMessage = 'Provide valid name';
       return;
     }
-    this.categoryService.updateUsingPUT1(this.selectedCategory).subscribe(res => {
+    this.categoryService.updateCategoryUsingPUT(this.selectedCategory).subscribe(res => {
         this.selectedCategory = res;
-        const copy = this.categories.slice();
-        const item = copy.filter(it => it.id === res.id)[0];
-        copy.splice(copy.indexOf(item), 1, res);
-        this.categories = copy;
+        const copy = this.categoriesData.slice();
+        const item = copy.filter(it => it.category.id === res.id)[0];
+        copy.splice(copy.indexOf(item), 1, {
+          category: res,
+          songCount$: this.categoryService.getSongsByCategoryIdUsingGET(res.id).pipe(map(songs => songs.length))
+        });
+        this.categoriesData = copy;
       },
       error => {
         this.isError = true;
@@ -94,12 +102,12 @@ export class CategoriesBrowserComponent implements OnInit {
 
   delete(event: MouseEvent, id: number) {
     event.stopPropagation();
-    this.categoryService.deleteUsingDELETE1(id).subscribe(() => {
+    this.categoryService.deleteCategoryUsingDELETE(id).subscribe(() => {
       this.deselect();
-      const copy = this.categories.slice();
-      const item = copy.filter(it => it.id === id)[0];
-      copy.splice(copy.indexOf(item), 1,);
-      this.categories = copy;
+      const copy = this.categoriesData.slice();
+      const item = copy.filter(it => it.category.id === id)[0];
+      copy.splice(copy.indexOf(item), 1);
+      this.categoriesData = copy;
     });
   }
 

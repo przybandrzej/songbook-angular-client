@@ -4,18 +4,17 @@ import {
   AuthorResourceService,
   CategoryDTO,
   CategoryResourceService,
+  CreateCoauthorDTO,
   SongCoauthorDTO,
-  SongCoauthorResourceService,
-  SongDTO,
   SongResourceService,
   TagDTO,
-  TagResourceService,
   UniversalCreateDTO
 } from '../../../songbook';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import {rolesForModerator} from '../../../model/user-roles-combinations';
 import {FormControl, Validators} from '@angular/forms';
+import {SongDetailsData} from '../../../model/song-details-data';
+import {SongDetailsService} from '../../../services/song-details.service';
 
 @Component({
   selector: 'app-song-edit',
@@ -31,38 +30,17 @@ export class SongEditComponent implements OnInit {
 
   rolesForModerator = rolesForModerator;
 
-  song: SongDTO = {
-    author: {
-      id: -1,
-      name: ''
-    },
-    averageRating: 0,
-    category: {
-      id: -1,
-      name: ''
-    },
-    coauthors: [],
-    edits: [],
-    addedBy: null,
-    guitarTabs: '',
-    id: -1,
-    lyrics: '',
-    tags: [],
-    title: '',
-    trivia: ''
-  };
+  songData: SongDetailsData;
 
   coauthorFunctions = Object.values(SongCoauthorDTO.CoauthorFunctionEnum);
 
   authors: AuthorDTO[] = [];
   categories: CategoryDTO[] = [];
 
-  coauthorToAdd: SongCoauthorDTO = {
-    authorId: -1,
-    songId: -1,
+  coauthorToAdd: CreateCoauthorDTO = {
+    authorName: '',
     coauthorFunction: null
   };
-  coauthorToAddName = '';
   authorToAdd: UniversalCreateDTO = {
     id: null,
     name: ''
@@ -79,7 +57,7 @@ export class SongEditComponent implements OnInit {
 
   constructor(private songService: SongResourceService, private route: ActivatedRoute, private router: Router,
               private categoryService: CategoryResourceService, private authorService: AuthorResourceService,
-              private coauthorService: SongCoauthorResourceService, private tagService: TagResourceService) {
+              private songDetailsService: SongDetailsService) {
   }
 
   public hasError(control: FormControl, errorName: string): boolean {
@@ -87,13 +65,9 @@ export class SongEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      if (params.keys.length > 0) {
-        this.songService.getByIdUsingGET4(+params.get('id')).subscribe(res => this.song = res);
-      }
-    });
-    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
-    this.categoryService.getAllUsingGET2().subscribe(res => this.categories = res);
+    this.songData = this.route.snapshot.data.data;
+    this.authorService.getAllAuthorsUsingGET().subscribe(res => this.authors = res);
+    this.categoryService.getAllCategoriesUsingGET().subscribe(res => this.categories = res);
   }
 
   cancel() {
@@ -103,141 +77,91 @@ export class SongEditComponent implements OnInit {
   saveSong() {
     this.songErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
     this.songErrors = [];
-    if (this.song.author.id) {
-      this.song.author = this.authors.filter(it => it.id === this.song.author.id)[0];
-    }
-
-    let createAuthorRequest: Observable<AuthorDTO>;
-    if (this.authorToAdd.name.length > 0) {
-      createAuthorRequest = this.authorService.createUsingPOST(this.authorToAdd);
-    }
-    this.song.category.name = this.categories.filter(
-      (value, index, array) => value.id === this.song.category.id)[0].name;
-
-    if (createAuthorRequest) {
-      createAuthorRequest.subscribe(author => {
-          this.song.author = author;
-          this.songService.updateUsingPUT4(this.song).subscribe(song => {
-              this.goToDetailScreen();
-            },
-            error => {
-              if (error.error.subErrors) {
-                this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-                this.songErrors.forEach(it => this.errors.push(it));
-              } else {
-                this.songErrors = [error.error.message];
-                this.songErrors.forEach(it => this.errors.push(it));
-              }
-            });
-        },
-        error => {
-          if (error.error.subErrors) {
-            this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-            this.songErrors.forEach(it => this.errors.push(it));
-          } else {
-            this.songErrors = [error.error.message];
-            this.songErrors.forEach(it => this.errors.push(it));
-          }
-        });
-    } else {
-      this.songService.updateUsingPUT4(this.song).subscribe(song => {
-          this.goToDetailScreen();
-        },
-        error => {
-          if (error.error.subErrors) {
-            this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-            this.songErrors.forEach(it => this.errors.push(it));
-          } else {
-            this.songErrors = [error.error.message];
-            this.songErrors.forEach(it => this.errors.push(it));
-          }
-        });
-    }
+    this.songService.updateSongUsingPUT(this.songData.song).subscribe(song => {
+        this.goToDetailScreen();
+      },
+      error => {
+        if (error.error.subErrors) {
+          this.songErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+          this.songErrors.forEach(it => this.errors.push(it));
+        } else {
+          this.songErrors = [error.error.message];
+          this.songErrors.forEach(it => this.errors.push(it));
+        }
+      });
   }
 
   goToDetailScreen() {
-    this.router.navigateByUrl('song/' + this.song.id);
+    this.router.navigateByUrl('song/' + this.songData.song.id);
+  }
+
+  setCategory() {
+    this.songService.setCategoryUsingPATCH(this.songData.song.categoryId, this.songData.song.id).subscribe(() => {
+      this.songService.getSongCategoryUsingGET(this.songData.song.id).subscribe(category => this.songData.category = category);
+    });
+  }
+
+  setAuthor() {
+    this.songService.setAuthorUsingPATCH(this.songData.song.authorId, this.songData.song.id).subscribe(() => {
+      this.authorToAdd.name = '';
+      this.songService.getSongAuthorUsingGET(this.songData.song.id).subscribe(author => this.songData.author = author);
+    });
+  }
+
+  setNewAuthor() {
+    this.authorService.createAuthorUsingPOST(this.authorToAdd).subscribe(author => {
+      this.authorToAdd.name = '';
+      this.songService.setAuthorUsingPATCH(author.id, this.songData.song.id).subscribe(() => {
+        this.songData.author = author;
+        this.songData.song.authorId = author.id;
+      });
+    });
   }
 
   addCouathor() {
     this.coauthorErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
     this.coauthorErrors = [];
-    if (this.coauthorToAdd.authorId === -1) {
-      this.coauthorToAdd.songId = this.song.id;
-      this.authorService.createUsingPOST({id: null, name: this.coauthorToAddName}).subscribe(author => {
-          this.coauthorToAdd.authorId = author.id;
-          this.authors.push(author);
-          this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
-              this.song.coauthors.push(coauthor);
-              this.coauthorToAdd.authorId = -1;
-              this.coauthorToAdd.coauthorFunction = null;
-              this.coauthorToAddName = '';
-            },
-            error => {
-              if (error.error.subErrors) {
-                this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-                this.coauthorErrors.forEach(it => this.errors.push(it));
-              } else {
-                this.coauthorErrors = [error.error.message];
-                this.coauthorErrors.forEach(it => this.errors.push(it));
-              }
-            });
-        },
-        error => {
-          if (error.error.subErrors) {
-            this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-            this.coauthorErrors.forEach(it => this.errors.push(it));
-          } else {
-            this.coauthorErrors = [error.error.message];
-            this.coauthorErrors.forEach(it => this.errors.push(it));
-          }
+    this.songService.addCoauthorToSongUsingPATCH(this.coauthorToAdd, this.songData.song.id).subscribe(() => {
+        this.coauthorToAdd.coauthorFunction = null;
+        this.coauthorToAdd.authorName = '';
+        this.songDetailsService.getSongCoauthorsData(this.songData.song.id).subscribe(coauthors => {
+          this.songData.coauthors = coauthors;
         });
-    } else {
-      this.coauthorToAdd.songId = this.song.id;
-      this.coauthorService.createUsingPOST3(this.coauthorToAdd).subscribe(coauthor => {
-          this.song.coauthors.push(coauthor);
-          this.coauthorToAdd.authorId = -1;
-          this.coauthorToAdd.coauthorFunction = null;
-          this.coauthorToAddName = '';
-        },
-        error => {
-          if (error.error.subErrors) {
-            this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
-            this.coauthorErrors.forEach(it => this.errors.push(it));
-          } else {
-            this.coauthorErrors = [error.error.message];
-            this.coauthorErrors.forEach(it => this.errors.push(it));
-          }
-        });
-    }
-  }
-
-  removeCoauthor(coauthorDTO: SongCoauthorDTO) {
-    this.coauthorService.deleteUsingDELETE3(coauthorDTO.authorId, coauthorDTO.coauthorFunction, coauthorDTO.songId)
-      .subscribe(() => {
-        this.song.coauthors.splice(this.song.coauthors.indexOf(coauthorDTO), 1);
+      },
+      error => {
+        if (error.error.subErrors) {
+          this.coauthorErrors = error.error.subErrors.map(it => '(' + it.parameter + ') ' + it.message);
+          this.coauthorErrors.forEach(it => this.errors.push(it));
+        } else {
+          this.coauthorErrors = [error.error.message];
+          this.coauthorErrors.forEach(it => this.errors.push(it));
+        }
       });
   }
 
-  getCoauthorName(coauthor: SongCoauthorDTO) {
-    return this.authors.filter(it => it.id === coauthor.authorId)[0].name;
+  removeCoauthor(coauthorDTO: SongCoauthorDTO) {
+    this.songService.removeCoauthorFromSongUsingPATCH(coauthorDTO.id, this.songData.song.id)
+      .subscribe(() => {
+        this.songDetailsService.getSongCoauthorsData(this.songData.song.id).subscribe(res => this.songData.coauthors = res);
+      });
   }
 
   removeTag(tag: TagDTO) {
-    this.songService.removeTagFromSongUsingPATCH(this.song.id, tag.id).subscribe(song => this.song = song);
+    this.songService.removeTagFromSongUsingPATCH(this.songData.song.id, tag.id)
+      .subscribe(() => this.songService.getSongTagsUsingGET(this.songData.song.id).subscribe(res => this.songData.tags = res));
   }
 
   approveSong() {
-    this.songService.approveSongUsingPUT(this.song.id).subscribe(res => this.song = res);
+    this.songService.approveSongUsingPATCH(this.songData.song.id).subscribe(res => this.songData.song.isAwaiting = res.isAwaiting);
   }
 
   addTag(): void {
     this.tagErrors.forEach(it => this.errors.splice(this.errors.indexOf(it), 1));
     this.tagErrors = [];
     if (this.tagToAdd.name.length > 0) {
-      this.songService.addTagToSongUsingPATCH(this.song.id, this.tagToAdd).subscribe(
-        song => {
-          this.song = song;
+      this.songService.addTagToSongUsingPATCH(this.songData.song.id, this.tagToAdd).subscribe(
+        () => {
+          this.songService.getSongTagsUsingGET(this.songData.song.id).subscribe(res => this.songData.tags = res);
         },
         error => {
           if (error.error.subErrors) {

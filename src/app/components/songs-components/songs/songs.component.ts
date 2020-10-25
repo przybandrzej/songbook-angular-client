@@ -1,7 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {AwaitingSongResourceService, SongDTO, SongResourceService, UserResourceService} from '../../../songbook';
+import {
+  AuthorDTO,
+  AuthorResourceService,
+  AwaitingSongResourceService,
+  CategoryDTO,
+  CategoryResourceService,
+  SongDTO,
+  SongResourceService
+} from '../../../songbook';
 import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-songs',
@@ -10,13 +18,13 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class SongsComponent implements OnInit {
 
-  public approvedSongs: SongDTO[] = [];
-  public awaitingSongs: SongDTO[] = [];
+  public approvedSongs: { song: SongDTO, author: Observable<AuthorDTO>, category: Observable<CategoryDTO> }[] = [];
+  public awaitingSongs: { song: SongDTO, author: Observable<AuthorDTO> }[] = [];
   displayedColumnsAwaiting: string[] = ['author', 'title', 'added by', 'edits'];
   displayedColumnsApproved: string[] = ['author', 'title', 'average rating', 'category'];
 
   constructor(private songService: SongResourceService, private awaitingSongResourceService: AwaitingSongResourceService,
-              private userResourceService: UserResourceService, public router: Router, private dialog: MatDialog) {
+              public router: Router, private authorService: AuthorResourceService, private categoryService: CategoryResourceService) {
   }
 
   ngOnInit(): void {
@@ -24,8 +32,20 @@ export class SongsComponent implements OnInit {
   }
 
   private getAllSongs() {
-    this.songService.getAllUsingGET4().subscribe(next => this.approvedSongs = next);
-    this.awaitingSongResourceService.getAllUsingGET1().subscribe(next => this.awaitingSongs = next);
+    this.songService.getAllSongsUsingGET(false).subscribe(next => {
+      this.approvedSongs = next.map(song => {
+        return {
+          song,
+          author: this.authorService.getAuthorByIdUsingGET(song.authorId),
+          category: this.categoryService.getCategoryByIdUsingGET(song.categoryId)
+        };
+      });
+    });
+    this.awaitingSongResourceService.getAllAwaitingSongsUsingGET().subscribe(next => {
+      this.awaitingSongs = next.map(song => {
+        return {song, author: this.authorService.getAuthorByIdUsingGET(song.authorId)};
+      });
+    });
   }
 
   openSongDetails(songId: number) {

@@ -159,7 +159,7 @@ export class AuthService {
     }).subscribe(loggedOut => {
       this.authService.isAuthenticatedUsingGET().subscribe(authenticated => {
         if (authenticated === loggedOut) {
-          alert('Your session has been ended!');
+          alert('Your session has ended!');
           this.setLogged(loggedOut);
           this.router.navigateByUrl('login');
         }

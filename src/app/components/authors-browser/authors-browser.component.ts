@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthorDTO, AuthorResourceService, CategoryDTO, UniversalCreateDTO} from '../../songbook';
+import {AuthorDTO, AuthorResourceService} from '../../songbook';
 import {FormControl, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-authors-browser',
@@ -21,22 +23,25 @@ export class AuthorsBrowserComponent implements OnInit {
     name: ''
   };
 
-  authors: AuthorDTO[] = [];
+  authorsData: { author: AuthorDTO, songCount$: Observable<number> }[] = [];
 
   constructor(private router: Router, private authorService: AuthorResourceService) {
   }
 
   ngOnInit(): void {
-    this.authorService.getAllUsingGET().subscribe(res => this.authors = res);
+    this.authorService.getAllAuthorsUsingGET().subscribe(res => {
+      this.authorsData = res.map(author => {
+        return {author, songCount$: this.authorService.getSongsByAuthorIdUsingGET(author.id).pipe(map(songs => songs.length))};
+      });
+    });
   }
 
   close() {
     this.router.navigateByUrl('');
   }
 
-  getAuthorSongCount(element: CategoryDTO) {
-    return 'not implemented yet';
-    // this.songService.getByCategoryUsingGET(element.id).subscribe()
+  getAuthorSongCount(element: AuthorDTO): Observable<number> {
+    return this.authorService.getSongsByAuthorIdUsingGET(element.id).pipe(map(it => it.length));
   }
 
   addAuthor() {
@@ -46,11 +51,11 @@ export class AuthorsBrowserComponent implements OnInit {
       this.errorMessage = 'Provide valid name';
       return;
     }
-    this.authorService.createUsingPOST(this.selectedAuthor).subscribe(res => {
+    this.authorService.createAuthorUsingPOST(this.selectedAuthor).subscribe(res => {
         this.selectedAuthor = res;
-        const copy = this.authors.slice();
-        copy.push(res);
-        this.authors = copy;
+        const copy = this.authorsData.slice();
+        copy.push({author: res, songCount$: this.authorService.getSongsByAuthorIdUsingGET(res.id).pipe(map(songs => songs.length))});
+        this.authorsData = copy;
       },
       error => {
         this.isError = true;
@@ -65,12 +70,15 @@ export class AuthorsBrowserComponent implements OnInit {
       this.errorMessage = 'Provide valid name';
       return;
     }
-    this.authorService.updateUsingPUT(this.selectedAuthor).subscribe(res => {
+    this.authorService.updateAuthorUsingPUT(this.selectedAuthor).subscribe(res => {
         this.selectedAuthor = res;
-        const copy = this.authors.slice();
-        const item = copy.filter(it => it.id === res.id)[0];
-        copy.splice(copy.indexOf(item), 1, res);
-        this.authors = copy;
+        const copy = this.authorsData.slice();
+        const item = copy.filter(it => it.author.id === res.id)[0];
+        copy.splice(copy.indexOf(item), 1, {
+          author: res,
+          songCount$: this.authorService.getSongsByAuthorIdUsingGET(res.id).pipe(map(songs => songs.length))
+        });
+        this.authorsData = copy;
       },
       error => {
         this.isError = true;
@@ -85,7 +93,7 @@ export class AuthorsBrowserComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  select(row: CategoryDTO) {
+  select(row: AuthorDTO) {
     this.selectedAuthor.id = row.id;
     this.selectedAuthor.name = row.name;
     this.isError = false;
@@ -94,12 +102,12 @@ export class AuthorsBrowserComponent implements OnInit {
 
   delete(event: MouseEvent, id: number) {
     event.stopPropagation();
-    this.authorService.deleteUsingDELETE(id).subscribe(() => {
+    this.authorService.deleteAuthorUsingDELETE(id).subscribe(() => {
       this.deselect();
-      const copy = this.authors.slice();
-      const item = copy.filter(it => it.id === id)[0];
-      copy.splice(copy.indexOf(item), 1,);
-      this.authors = copy;
+      const copy = this.authorsData.slice();
+      const item = copy.filter(it => it.author.id === id)[0];
+      copy.splice(copy.indexOf(item), 1);
+      this.authorsData = copy;
     });
   }
 

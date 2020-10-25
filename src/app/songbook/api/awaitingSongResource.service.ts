@@ -57,16 +57,16 @@ export class AwaitingSongResourceService {
 
 
     /**
-     * getAll
+     * getAllAwaitingSongs
      * 
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsingGET(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getAllUsingGET(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getAllUsingGET(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getAllUsingGET(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllAwaitingSongsUsingGET(limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getAllAwaitingSongsUsingGET(limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getAllAwaitingSongsUsingGET(limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getAllAwaitingSongsUsingGET(limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -101,19 +101,19 @@ export class AwaitingSongResourceService {
     }
 
     /**
-     * getById
+     * getAwaitingSongById
      * 
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
-    public getByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
-    public getByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
-    public getByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAwaitingSongByIdUsingGET(id: number, observe?: 'body', reportProgress?: boolean): Observable<SongDTO>;
+    public getAwaitingSongByIdUsingGET(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SongDTO>>;
+    public getAwaitingSongByIdUsingGET(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SongDTO>>;
+    public getAwaitingSongByIdUsingGET(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getByIdUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getAwaitingSongByIdUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -142,20 +142,20 @@ export class AwaitingSongResourceService {
     }
 
     /**
-     * getByTitleFragment
+     * getAwaitingSongByTitleFragment
      * 
      * @param title title
      * @param limit limit
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
-    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
-    public getByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
-    public getByTitleFragmentUsingGET(title: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAwaitingSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SongDTO>>;
+    public getAwaitingSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SongDTO>>>;
+    public getAwaitingSongByTitleFragmentUsingGET(title: string, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SongDTO>>>;
+    public getAwaitingSongByTitleFragmentUsingGET(title: string, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (title === null || title === undefined) {
-            throw new Error('Required parameter title was null or undefined when calling getByTitleFragmentUsingGET.');
+            throw new Error('Required parameter title was null or undefined when calling getAwaitingSongByTitleFragmentUsingGET.');
         }
 
 

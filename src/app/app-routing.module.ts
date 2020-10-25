@@ -17,7 +17,6 @@ import {NotLoggedInGuard} from './guards/not-logged-in.guard';
 import {ActivateComponent} from './components/account/activate/activate.component';
 import {PasswordResetComponent} from './components/account/password-reset/password-reset.component';
 import {PasswordResetRequestComponent} from './components/account/password-reset-request/password-reset-request.component';
-import {UserSongsDataResolveService} from './services/resolve/user-songs-data-resolve.service';
 import {AuthorsBrowserComponent} from './components/authors-browser/authors-browser.component';
 import {TagsBrowserComponent} from './components/tags-browser/tags-browser.component';
 import {AdminPanelComponent} from './components/admin/admin-panel/admin-panel.component';
@@ -40,6 +39,7 @@ const routes: Routes = [
   {
     path: 'edit-song/:id',
     component: SongEditComponent,
+    resolve: {data: SongResolveService},
     canActivate: [AuthenticationGuard]
   },
   {
@@ -66,7 +66,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: UserProfileComponent,
-    resolve: {data: UserResolveService, songData: UserSongsDataResolveService},
+    resolve: {data: UserResolveService},
     canActivate: [AuthenticationGuard]
   },
   {

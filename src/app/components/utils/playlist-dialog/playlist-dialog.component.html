@@ -3,7 +3,7 @@
   <ul>
     <li *ngFor="let playlist of data.playlists">
       <mat-checkbox (change)="onSelect($event, playlist)" [checked]="isChecked(playlist)">
-        {{playlist.name}}
+        {{playlist.playlist.name}}
       </mat-checkbox>
     </li>
   </ul>

@@ -1,6 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AuthenticationResourceService, SongDTO, UserDTO} from '../../../songbook';
+import {Component, Input, OnInit} from '@angular/core';
+import {AuthenticationResourceService, UserDTO, UserResourceService} from '../../../songbook';
 import {Router} from '@angular/router';
+import {SongDetailsData} from '../../../model/song-details-data';
+import {SongDetailsService} from '../../../services/song-details.service';
 
 @Component({
   selector: 'app-user-songs-panel',
@@ -10,19 +12,18 @@ import {Router} from '@angular/router';
 export class UserSongsPanelComponent implements OnInit {
 
   @Input()
-  public songs: SongDTO[];
-  @Output()
-  public songsChange: EventEmitter<SongDTO[]> = new EventEmitter<SongDTO[]>();
-
-  @Input()
   public user: UserDTO;
+
+  public songs: SongDetailsData[] = [];
 
   public columns: string[] = ['author', 'title', 'average rating', 'category', 'actions'];
 
-  constructor(private router: Router, private authService: AuthenticationResourceService) {
+  constructor(private router: Router, private authService: AuthenticationResourceService, private songDetailsService: SongDetailsService,
+              private userService: UserResourceService) {
   }
 
   ngOnInit(): void {
+    this.songDetailsService.getLoggedUserSongsData().subscribe(data => this.songs = data);
   }
 
   openSongDetails(id: number) {
@@ -31,14 +32,11 @@ export class UserSongsPanelComponent implements OnInit {
 
   delete(event: MouseEvent, id: number) {
     event.stopPropagation();
-    const userItem = this.user.songs.filter(it => it === id)[0];
-    this.user.songs.splice(this.user.songs.indexOf(userItem), 1);
-    this.authService.saveAccountUsingPOST(this.user).subscribe(user => {
+    this.userService.removeSongFromLibraryUsingPATCH(this.user.id, id).subscribe(() => {
       const copy = this.songs.slice();
-      const item = copy.filter(it => it.id === id)[0];
+      const item = copy.filter(it => it.song.id === id)[0];
       copy.splice(this.songs.indexOf(item), 1);
       this.songs = copy;
-      this.songsChange.emit(this.songs);
     });
   }
 }
