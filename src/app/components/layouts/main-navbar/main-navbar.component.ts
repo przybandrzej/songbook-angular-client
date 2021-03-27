@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {UserDTO} from '../../../songbook';
 import {Router} from '@angular/router';
@@ -17,6 +17,7 @@ export class MainNavbarComponent implements OnInit, OnDestroy {
   username = '';
   profileImgUrl = '';
   siteName = environment.applicationName;
+  openMenu = false;
 
   constructor(private router: Router, private authService: AuthService) {
   }
@@ -55,11 +56,16 @@ export class MainNavbarComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('login');
   }
 
-  expandUserMenu() {
+  openProfile() {
     this.router.navigateByUrl('profile');
   }
 
   logout() {
     this.authService.logout();
+  }
+
+  onFloatClicked() {
+    this.openMenu = !this.openMenu;
+    console.log('open menu');
   }
 }

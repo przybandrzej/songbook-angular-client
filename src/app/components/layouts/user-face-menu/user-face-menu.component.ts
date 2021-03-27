@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-user-face-menu',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-face-menu.component.scss']
 })
 export class UserFaceMenuComponent implements OnInit {
+
+  @Input()
+  toggle = false;
 
   constructor() { }
 

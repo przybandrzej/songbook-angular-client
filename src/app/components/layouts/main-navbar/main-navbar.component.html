@@ -6,10 +6,22 @@
   <div fxLayoutAlign="end center" fxLayout="row" fxLayoutGap="15px">
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="register()">Register</button>
     <button *ngIf="!loggedIn" mat-raised-button color="accent" (click)="login()">Log in</button>
-    <div class="link" *ngIf="loggedIn" (click)="expandUserMenu()" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+    <div class="link" *ngIf="loggedIn" (click)="openProfile()" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
       <img class="avatar-placeholder" [src]="profileImgUrl" alt="">
       <div>{{username}}</div>
     </div>
+    <div class="float-nav" (click)="onFloatClicked()">
+      <div class="menu-btn" [class.active]="openMenu">
+        <ul>
+          <li class="line"></li>
+          <li class="line"></li>
+          <li class="line"></li>
+        </ul>
+      </div>
+    </div>
     <button *ngIf="loggedIn" mat-raised-button color="accent" (click)="logout()">Log out</button>
   </div>
+  <app-user-face-menu class="user-menu" [toggle]="openMenu"></app-user-face-menu>
 </mat-toolbar>
+
+
