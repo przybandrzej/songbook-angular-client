@@ -1,0 +1,5 @@
+<div fxLayout="column">
+  <mat-slide-toggle [(ngModel)]="verse.chorus">Chorus</mat-slide-toggle>
+  <app-line-editor *ngFor="let line of verse.lines" [line]="line"></app-line-editor>
+  <button mat-stroked-button color="accent" (click)="addLine()">Add line</button>
+</div>

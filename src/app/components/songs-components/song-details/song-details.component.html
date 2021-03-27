@@ -36,57 +36,51 @@
       </div>
     </div>
 
-        <div class="song-details-content" fxLayout="column">
-          <!--
-          <mat-card fxLayout="row" class="song-lyrics">
-            <mat-card-content fxFlex="50%" fxLayout="column" fxLayoutGap="15px">
-              <mat-card-subtitle>Lyrics</mat-card-subtitle>
-              <pre>{{data.song.lyrics}}</pre>
-            </mat-card-content>
-            <mat-card-content fxFlex="50%" fxLayout="column">
-              <mat-card-subtitle>Guitar tabs</mat-card-subtitle>
-              <pre>{{data.song.guitarTabs}}</pre>
-            </mat-card-content>
-          </mat-card>
-    -->
-          <mat-card fxLayout="row" class="song-extras">
-            <div fxFlex="25%">
-              <mat-chip selected color="primary">Category: {{data.category.name}}</mat-chip>
-              <div fxLayout="column" class="tag-container">
-                <span>Tags:</span>
-                <mat-chip-list>
-                  <mat-chip *ngFor="let chip of data.tags" selected color="accent">
-                    {{chip.name}}
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
-            </div>
-            <div fxFlex="25%">
-              <div *ngIf="data.coauthors.length > 0" fxLayout="column">
-                <span>Coauthors: </span>
-                <mat-chip-list fxLayout="column" class="coauthor-list">
-                  <mat-chip *ngFor="let coauthor of data.coauthors" selected color="warn">
-                    {{coauthor.coauthor.coauthorFunction}}: {{coauthor.author.name}}
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
-            </div>
-            <div fxFlex="25%">
-              <span>Added by: {{data.add.user.username}} {{data.add.songAdd.timestamp | dateFormatPipe}}</span>
-            </div>
-            <mat-expansion-panel fxFlex="25%">
-              <mat-expansion-panel-header>
-                <mat-panel-title>Edits:</mat-panel-title>
-              </mat-expansion-panel-header>
-              <div *ngFor="let edit of data.edits">
-                <span>{{edit.user.username}} - {{edit.edit.timestamp | dateFormatPipe}}</span>
-                <mat-divider></mat-divider>
-              </div>
-            </mat-expansion-panel>
-          </mat-card>
+    <div class="song-details-content" fxLayout="row">
+
+      <mat-card fxLayout="column" class="song-lyrics">
+        <mat-card-content fxLayout="column" fxLayoutGap="15px">
+          <app-verse *ngFor="let verse of data.verses"></app-verse>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card fxLayout="column" class="song-extras">
+        <div fxFlex="25%">
+          <mat-chip selected color="primary">Category: {{data.category.name}}</mat-chip>
+          <div fxLayout="column" class="tag-container">
+            <mat-chip-list>
+              <mat-chip *ngFor="let chip of data.tags" selected color="accent">
+                {{chip.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
         </div>
-      </div>
+        <div fxFlex="25%">
+          <div *ngIf="data.coauthors.length > 0" fxLayout="column">
+            <span>Coauthors: </span>
+            <mat-chip-list fxLayout="column" class="coauthor-list">
+              <mat-chip *ngFor="let coauthor of data.coauthors" selected color="warn">
+                {{coauthor.coauthor.coauthorFunction}}: {{coauthor.author.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div fxFlex="25%">
+          <span>Added by: {{data.add.user.username}} {{data.add.songAdd.timestamp | dateFormatPipe}}</span>
+        </div>
+        <mat-expansion-panel fxFlex="25%">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Edits:</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngFor="let edit of data.edits">
+            <span>{{edit.user.username}} - {{edit.edit.timestamp | dateFormatPipe}}</span>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-expansion-panel>
+      </mat-card>
     </div>
+  </div>
+</div>
 
 
 

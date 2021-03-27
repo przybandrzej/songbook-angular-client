@@ -85,6 +85,12 @@ import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.
 import { UserAvatarUpdateDialogComponent } from './components/user/user-avatar-update-dialog/user-avatar-update-dialog.component';
 import { SongInstructionsDialogComponent } from './components/utils/song-instructions-dialog/song-instructions-dialog.component';
 import {AppDatePipe} from './utils/app-date-pipe';
+import { VerseComponent } from './components/songs-components/verses/verse/verse.component';
+import { LineComponent } from './components/songs-components/verses/line/line.component';
+import { CordComponent } from './components/songs-components/verses/cord/cord.component';
+import { VerseEditorComponent } from './components/songs-components/verses/verse-editor/verse-editor.component';
+import { LineEditorComponent } from './components/songs-components/verses/line-editor/line-editor.component';
+import { CordEditorComponent } from './components/songs-components/verses/cord-editor/cord-editor.component';
 
 export function getAPIConfiguration() {
   return new Configuration({basePath: environment.baseUrl});
@@ -127,7 +133,13 @@ export function getAPIConfiguration() {
     AdminPanelComponent,
     UserAvatarUpdateDialogComponent,
     SongInstructionsDialogComponent,
-    AppDatePipe
+    AppDatePipe,
+    VerseComponent,
+    LineComponent,
+    CordComponent,
+    VerseEditorComponent,
+    LineEditorComponent,
+    CordEditorComponent
   ],
   imports: [
     ApiModule.forRoot(getAPIConfiguration),

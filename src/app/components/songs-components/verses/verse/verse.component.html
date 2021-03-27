@@ -1,0 +1,4 @@
+<div fxLayout="column">
+  <span *ngIf="verse.verse.chorus">Chorus:</span>
+  <app-line *ngFor="let line of verse.lines" [line]="line"></app-line>
+</div>

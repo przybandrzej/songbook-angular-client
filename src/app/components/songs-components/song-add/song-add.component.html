@@ -84,33 +84,14 @@
       </mat-card>
     </div>
 
-    <!--
     <div fxLayout="row" class="song-lyrics">
-      <mat-card fxFlex="50%">
+      <mat-card fxFlex="100%%">
         <mat-card-content fxLayout="column">
-          <mat-card-header>
-            <mat-card-title>Lyrics</mat-card-title>
-          </mat-card-header>
-          <textarea fxFlex="100%" matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="30" [(ngModel)]="song.lyrics"></textarea>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card fxFlex="50%">
-        <mat-card-content fxLayout="column">
-          <mat-card-header>
-            <mat-card-title>Guitar tabs</mat-card-title>
-          </mat-card-header>
-          <textarea fxFlex="100%" matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="30" [(ngModel)]="song.guitarTabs"></textarea>
+          <app-verse-editor *ngFor="let verse of song.verses; index as i" [(verse)]="song.verses[i]"></app-verse-editor>
+          <button mat-stroked-button color="accent" (click)="addVerse()">Add verse</button>
         </mat-card-content>
       </mat-card>
     </div>
-    -->
 
     <!-- Coauthors Tags and Trivia -->
     <div fxLayout="row">

@@ -1,0 +1,14 @@
+<div fxLayout="column">
+  <div fxLayout="row">
+    <div fxLayout="column" *ngFor="let char of line.content.split(''); index as index">
+      <div>
+        <app-cord-editor *ngIf="cordExists(index)" [cord]="getCord(index)"></app-cord-editor>
+      </div>
+      <div>
+      <span matTooltip="Add guitar cord"
+            (click)="addCord(index)">{{char}}</span>
+      </div>
+    </div>
+  </div>
+  <input matInput [(ngModel)]="line.content">
+</div>

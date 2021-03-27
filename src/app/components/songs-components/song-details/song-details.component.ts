@@ -16,6 +16,7 @@ import {map} from 'rxjs/operators';
 import {rolesForUser} from '../../../model/user-roles-combinations';
 import {SongDetailsService} from '../../../services/song-details.service';
 import {PlaylistData} from '../../../model/playlist-data';
+import {SortingAlgorithms} from '../../../utils/sorting-algorithms';
 
 @Component({
   selector: 'app-song-details',
@@ -40,6 +41,7 @@ export class SongDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.source = +this.route.snapshot.queryParamMap.get('source');
     this.data = this.route.snapshot.data.data;
+    this.data.verses.sort(SortingAlgorithms.compareVersesOrder);
     this.songDetailsService.getLoggedUserRatingForSong(this.data.song.id).subscribe(rating => this.songRating = rating);
     this.songDetailsService.isSongInLoggedUserLibrary(this.data.song.id).subscribe(is => this.inUserLib = is);
   }

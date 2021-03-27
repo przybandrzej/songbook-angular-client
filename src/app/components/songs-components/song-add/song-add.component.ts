@@ -5,7 +5,7 @@ import {
   CategoryDTO,
   CategoryResourceService,
   CreateCoauthorDTO,
-  CreateSongDTO,
+  CreateSongDTO, CreateVerseDTO,
   SongCoauthorDTO,
   SongResourceService
 } from '../../../songbook';
@@ -122,5 +122,14 @@ export class SongAddComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       return;
     });
+  }
+
+  addVerse() {
+    const verse: CreateVerseDTO = {
+      chorus: false,
+      order: this.song.verses.length,
+      lines: []
+    };
+    this.song.verses.push(verse);
   }
 }
